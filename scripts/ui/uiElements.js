@@ -60,3 +60,5 @@ export const forgePercentage = getElement("forge-percentage");
 export const forgeRecord = getElement("forge-record");
 export const forgeBtnContainer = getElement("forge-btn-list");
 export const forgeStorageList = getElement("forge-storage-list");
+
+export const stageListContainer = getElement("stage-list");

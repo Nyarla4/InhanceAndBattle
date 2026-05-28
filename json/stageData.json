@@ -1,0 +1,31 @@
+{
+  "stages": [
+    {
+      "id": "stage_01",
+      "name": "평화로운 언덕",
+      "enemyBaseHp": 1000,
+      "maxCost": 1000,
+      "enemies": [
+        { "id": "enemy_01", "name": "임시 적1", "spawnTime": 5000, "count": 5 },
+        { "id": "enemy_02", "name": "임시 적2", "spawnTime": 15000, "count": 2 }
+      ],
+      "rewards": {
+        "exp": 100,
+        "items": []
+      }
+    },
+    {
+      "id": "stage_02",
+      "name": "불타는 강화실",
+      "enemyBaseHp": 3000,
+      "maxCost": 2000,
+      "enemies": [
+        { "id": "enemy_03", "name": "임시 적3", "spawnTime": 3000, "count": 10 }
+      ],
+      "rewards": {
+        "exp": 500,
+        "items": ["rare_scroll"]
+      }
+    }
+  ]
+}
