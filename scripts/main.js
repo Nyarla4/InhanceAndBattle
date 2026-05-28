@@ -4,10 +4,15 @@
 import * as UI from './ui/uiElements.js';
 import { sceneManager } from './ui/sceneManager.js';
 import { initModeView } from './ui/views/modeView.js';
+import { initEnhancement } from './game/enhancement.js';
+import { initEnhanceView } from './ui/views/enhanceView.js';
 
 /** 게임 전체 시스템 초기화 및 시동 */
 function initGame() {
     console.log("[시스템] 구동 완료.");
+
+    // 저장소 세팅 로드
+    initEnhancement();
 
     // 1. 하위 뷰 모듈 초기화 (솔로/멀티 모드 버튼 이벤트 바인딩)
     initModeView();
@@ -24,7 +29,7 @@ function initGame() {
     // [네즈밍 강화실] 버튼 클릭 -> 강화 화면으로 이동
     UI.upgradeBtn.addEventListener('click', () => {
         sceneManager.showScreen(UI.upgradeScreen);
-        // TODO: 추후 로컬스토리지 등에서 데이터를 받아와서 updateEnhanceUI() 호출 예정
+        initEnhanceView(); // 🔥 매번 강화실 진입 시 활성화된 그룹(기본값 nezming) 상태로 화면 갱신
     });
 
     // [설정] 버튼 클릭 -> 설정 모달 팝업 열기

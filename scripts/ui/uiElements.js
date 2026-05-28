@@ -41,3 +41,11 @@ export const playerHp = getElement("playerHp");
 export const enemyHp = getElement("enemyHp");
 export const creatureBtnContainer = getElement("creature-btn-list");
 export const upgradeBtnContainer = getElement("upgrade-btn-list");
+
+// 🔥 추가된 강화소 다중 그룹 UI 엘리먼트들
+export const enhanceGroupList = getElement("enhance-group-list");
+export const targetDisplay = getElement("display");
+export const enhanceName = getElement("enhance-name");
+export const currentLevel = getElement("current-level");
+export const enhancePercentage = getElement("enhance-percentage");
+export const enhanceRecord = getElement("enhance-record");
