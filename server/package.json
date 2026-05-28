@@ -1,0 +1,13 @@
+{
+  "name": "enhance-defense-server",
+  "version": "1.0.0",
+  "description": "Enhancement & Defense Multiplayer Server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
