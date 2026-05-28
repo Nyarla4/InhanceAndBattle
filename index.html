@@ -58,26 +58,72 @@
         <button id="back-btn" class="back-btn" style="margin-top: 20px;">타이틀로 이동</button>
     </div>
 
-    <div id="stage" class="screen hidden">
-        <div id="inStage">
-            <div class="game-header">
+    <div id="stage" class="screen hidden"
+        style="display: flex; width: 100vw; height: 100vh; overflow: hidden; background: #111;">
+        <!-- 왼쪽: 인게임 전투 영역 -->
+        <div id="inStage"
+            style="flex: 7; display: flex; flex-direction: column; border-right: 3px solid #2c3e50; box-sizing: border-box; height: 100%; position: relative; padding: 15px;">
+            <div class="game-header"
+                style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 6px;">
                 <div class="hp-container">
-                    <div id="playerHp">아군 기지: 1000</div>
-                    <div id="enemyHp">적군 기지: 1000</div>
+                    <div id="playerHp" style="color: #3498db; font-weight: bold;">아군 기지: 1000</div>
+                    <div id="enemyHp" style="color: #e74c3c; font-weight: bold;">적군 기지: 1000</div>
                 </div>
-                <div class="cost-container">
-                    COST: <span id="cost">0</span>
+                <div class="cost-container" style="font-size: 20px; color: #f1c40f; font-weight: bold;">
+                    소환 에너지(COST): <span id="cost">0</span>
                 </div>
             </div>
-
-            <div id="field">
-                <div id="playerBase" class="base">아군기지</div>
-                <div id="enemyBase" class="base">적군기지</div>
+    
+            <div id="field"
+                style="flex: 1; position: relative; margin: 15px 0; background: #222; border-radius: 8px; overflow: hidden;">
+                <div id="playerBase" class="base"
+                    style="position: absolute; left: 10px; bottom: 20px; background: #2980b9; padding: 10px; color: white;">
+                    아군기지</div>
+                <div id="enemyBase" class="base"
+                    style="position: absolute; right: 10px; bottom: 20px; background: #c0392b; padding: 10px; color: white;">
+                    적군기지</div>
+            </div>
+    
+            <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px;">
+                <h4 style="color: #fff; margin: 0 0 8px 0; font-size: 14px;">🛠️ 소환 가능 보관 목록 (클릭 시 소모성 소환)</h4>
+                <div id="creature-btn-list"
+                    style="display: flex; gap: 10px; overflow-x: auto; min-height: 70px; padding-bottom: 5px;">
                 </div>
-
-            <div id="creature-btn-list">
-                </div>
+            </div>
+    
+            <button id="stage-back-btn" class="back-btn"
+                style="position: absolute; top: 15px; left: 15px; padding: 5px 10px; font-size: 12px; z-index: 10;">후퇴하기</button>
         </div>
+        <!-- 오른쪽: 실시간 강화실 영역 -->
+        <div id="side-upgrade"
+            style="flex: 3; background: #1a252f; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; height: 100%; color: #fff; overflow-y: auto;">
+            <h3
+                style="text-align: center; color: #f1c40f; margin-top: 0; border-bottom: 2px solid #34495e; padding-bottom: 10px;">
+                실시간 강화실</h3>
+    
+            <div id="forge-group-list" style="display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap;"></div>
+    
+            <div id="forge-card"
+                style="background: #2c3e50; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid #34495e;">
+                <img id="forge-display" src="" alt="Target"
+                    style="width: 80px; height: 80px; object-fit: contain; margin-bottom: 10px;">
+                <h4 id="forge-name" style="margin: 5px 0; color: #f1c40f;">-</h4>
+                <p style="margin: 5px 0; font-size: 14px;">현재 등급: <span id="forge-level"
+                        style="font-weight: bold; color: #e74c3c;">0</span></p>
+                <p id="forge-percentage" style="margin: 5px 0; font-size: 12px; color: #bdc3c7;">확률: 0%</p>
+                <p id="forge-record" style="margin: 5px 0; font-size: 12px; color: #2ecc71;">최고 기록: -</p>
+            </div>
+    
+            <div id="forge-btn-list" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;"></div>
+    
+            <div id="forge-storage-box" style="border-top: 1px dashed #555; padding-top: 15px;">
+                <h4 style="color: #ecf0f1; margin: 0 0 10px 0; font-size: 13px;">📦 보관실 창고 상태</h4>
+                <div id="forge-storage-list"
+                    style="display: flex; gap: 8px; flex-wrap: wrap; background: #111; padding: 10px; border-radius: 6px; min-height: 80px;">
+                </div>
+            </div>
+        </div>
+    
     </div>
 
     <div id="settings" class="modal hidden">

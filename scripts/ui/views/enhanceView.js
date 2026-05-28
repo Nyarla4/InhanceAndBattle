@@ -1,9 +1,39 @@
 // scripts/ui/views/enhanceView.js
 
 import * as UI from '../uiElements.js';
-import { ENHANCE_GROUPS, enhanceState, changeGroup, tryUpgrade, resetGroupProgress, storeCurrentCreature, withdrawCreature } from '../../game/enhancement.js';
+import { 
+    ENHANCE_GROUPS, 
+    enhanceState, 
+    changeGroup, 
+    tryUpgrade, 
+    resetGroupProgress, 
+    storeCurrentCreature, 
+    withdrawCreature,
+    consumeStoredCreature
+} from '../../game/enhancement.js';
+import { summonCreature } from '../../game/summon.js'; // 📦 인게임 소환 연동
 
-/** 강화소 진입 시 탭 버튼 및 핵심 액션 이벤트 최초 연결 */
+/* =================================================================
+   1. [공통] 통합 뷰 리프레시 분기 함수
+================================================================= */
+/**
+ * 상호작용 후 현재 켜져 있는 화면(메인 강화실 vs 인게임 스테이지)을 
+ * 자동으로 감지하여 알맞은 UI를 리프레시합니다.
+ */
+function refreshActiveUI() {
+    // 인게임 전체 화면(stageScreen)이 열려있고 hidden이 없다면
+    if (UI.stageScreen && !UI.stageScreen.classList.contains('hidden')) {
+        renderForgeUI();
+    } else {
+        renderEnhanceUI();
+    }
+}
+
+
+/* =================================================================
+   2. [메인 메뉴] 일반 강화소 초기화 및 렌더링 (기존 유지/보완)
+================================================================= */
+/** 메인 메뉴 강화소 진입 시 탭 버튼 및 핵심 액션 이벤트 최초 연결 */
 export function initEnhanceView() {
     // 1. 상단 그룹 탭 버튼 목록 동적 빌드
     UI.enhanceGroupList.innerHTML = '';
@@ -28,47 +58,46 @@ export function initEnhanceView() {
     const goUpgradeBtn = document.createElement('button');
     goUpgradeBtn.id = 'action-upgrade-btn';
     goUpgradeBtn.textContent = '강화하기';
+    goUpgradeBtn.style.cssText = 'padding:10px 20px; font-size:16px; font-weight:bold; background:#2ecc71; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     goUpgradeBtn.addEventListener('click', () => {
-        tryUpgrade();
+        const groupKey = enhanceState.currentGroup;
+        const result = tryUpgrade(groupKey);
+        alert(result.message);
         renderEnhanceUI();
     });
 
-    // 🔥 [보관하기] 버튼 배치
     const storeBtn = document.createElement('button');
     storeBtn.id = 'action-store-btn';
-    storeBtn.textContent = '📦 보관하기';
-    storeBtn.style.backgroundColor = '#3498db';
-    storeBtn.style.boxShadow = '0 4px 0 #2980b9';
+    storeBtn.textContent = '보관실 저장 (초기화)';
+    storeBtn.style.cssText = 'padding:10px 20px; font-size:16px; font-weight:bold; background:#9b59b6; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     storeBtn.addEventListener('click', () => {
-        const result = storeCurrentCreature();
-        if(!result.success) {
-            alert(result.message);
-        } else {
-            renderEnhanceUI(); // 성공 시 강화화면 리프레시 (기본값 원상복구 확인용)
-        }
+        const groupKey = enhanceState.currentGroup;
+        const result = storeCurrentCreature(groupKey);
+        alert(result.message);
+        renderEnhanceUI();
     });
 
-    const goResetBtn = document.createElement('button');
-    goResetBtn.id = 'action-reset-btn';
-    goResetBtn.textContent = '초기화';
-    goResetBtn.style.backgroundColor = '#7f8c8d';
-    goResetBtn.style.boxShadow = '0 4px 0 #95a5a6';
-    goResetBtn.addEventListener('click', () => {
-        if (confirm('정말 이 대상의 강화 기록을 초기화하시겠습니까? (최고기록은 유지됩니다)')) {
-            resetGroupProgress();
+    const resetBtn = document.createElement('button');
+    resetBtn.id = 'action-reset-btn';
+    resetBtn.textContent = '진척도 리셋';
+    resetBtn.style.cssText = 'padding:10px 20px; font-size:16px; font-weight:bold; background:#e74c3c; border:none; color:#fff; cursor:pointer; border-radius:4px;';
+    resetBtn.addEventListener('click', () => {
+        if(confirm("정말로 현재 그룹의 강화 단계를 초기화하시겠습니까? (보관실은 유지)")) {
+            const groupKey = enhanceState.currentGroup;
+            resetGroupProgress(groupKey);
             renderEnhanceUI();
         }
     });
 
     UI.upgradeBtnContainer.appendChild(goUpgradeBtn);
     UI.upgradeBtnContainer.appendChild(storeBtn);
-    UI.upgradeBtnContainer.appendChild(goResetBtn);
+    UI.upgradeBtnContainer.appendChild(resetBtn);
 
-    // 3. 첫 초기 화면 렌더링 가동
+    // 최초 1회 화면 렌더링 시동
     renderEnhanceUI();
 }
 
-/** 데이터 모델의 최신 상태를 화면 엘리먼트들에 반영 */
+/** 메인 메뉴 강화소 스크린 상태 리프레시 */
 export function renderEnhanceUI() {
     const groupKey = enhanceState.currentGroup;
     const currentIdx = enhanceState.levels[groupKey];
@@ -76,94 +105,262 @@ export function renderEnhanceUI() {
     
     const groupData = ENHANCE_GROUPS[groupKey];
     const currentItem = groupData.items[currentIdx];
-    
     const totalLevels = groupData.items.length;
 
-    // 1. 선택된 상단 그룹 탭 버튼 활성화 시각 효과 부여
+    // 활성화된 탭 하이라이트 토글
     const tabs = UI.enhanceGroupList.querySelectorAll('.enhance-group-tab');
-    tabs.forEach(tab => {
-        if (tab.dataset.group === groupKey) {
-            tab.style.backgroundColor = '#f1c40f'; // 노란색으로 활성화 표시
-            tab.style.color = '#1a1a1a';
+    tabs.forEach(btn => {
+        if (btn.dataset.group === groupKey) {
+            btn.style.background = '#3498db';
+            btn.style.color = '#fff';
         } else {
-            tab.style.backgroundColor = '#e74c3c'; // 기본 비활성 색상
-            tab.style.color = '#ffffff';
+            btn.style.background = '#ecf0f1';
+            btn.style.color = '#333';
         }
     });
 
-    // 2. 중앙 이미지 카드 정보 데이터 매핑
-    // 인덱스가 낮을수록 최종 고성능이므로 (전체 개수 - 현재 인덱스)로 등급 역산 표기
-    const calculatedLevel = totalLevels - currentIdx;
-    const calculatedBest = totalLevels - bestIdx;
+    // 핵심 레이아웃 노드 데이터 매핑
+    if (UI.targetDisplay instanceof HTMLImageElement) {
+        UI.targetDisplay.src = currentItem.img;
+        UI.targetDisplay.alt = currentItem.name;
+    }
+    if (UI.enhanceName) UI.enhanceName.textContent = currentItem.name;
+    
+    const currentGrade = totalLevels - currentIdx;
+    if (UI.currentLevel) UI.currentLevel.textContent = currentGrade.toString();
+    if (UI.enhancePercentage) UI.enhancePercentage.textContent = `확률: ${currentItem.percent}%`;
+    
+    const bestGrade = totalLevels - bestIdx;
+    if (UI.enhanceRecord) UI.enhanceRecord.textContent = `최고 기록: ${bestGrade}강`;
 
-    UI.targetDisplay.src = currentItem.img;
-    UI.targetDisplay.alt = currentItem.name;
-    UI.enhanceName.textContent = currentItem.name;
-    UI.currentLevel.textContent = `${calculatedLevel}강 (순위: ${currentIdx + 1}위)`;
-    UI.enhancePercentage.textContent = `강화 성공 확률: ${currentItem.percent}%`;
-    UI.enhanceRecord.textContent = `최고 기록: ${calculatedBest}강 (${bestIdx + 1}위)`;
-
-    // 3. 만약 완강(인덱스 0) 상태라면 강화하기 버튼 잠금
-    const upgradeButton = document.getElementById('action-upgrade-btn');
-    if (upgradeButton) {
-        if (currentIdx === 0) {
-            upgradeButton.textContent = '최대 강화 도달';
-            upgradeButton.disabled = true;
-            upgradeButton.style.opacity = '0.5';
-            upgradeButton.style.cursor = 'not-allowed';
-        } else {
-            upgradeButton.textContent = '강화하기';
-            upgradeButton.disabled = false;
-            upgradeButton.style.opacity = '1';
-            upgradeButton.style.cursor = 'pointer';
-        }
+    // 완강(최고등급 0번 인덱스) 도달 시 버튼 잠금 제어
+    const upBtn = document.getElementById('action-upgrade-btn');
+    if (upBtn instanceof HTMLButtonElement) {
+        upBtn.disabled = (currentIdx === 0);
+        upBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
     }
 
-    // 🔥 보관실 목록 화면 렌더링 호출 연동
+    // 메인 창고 목록 렌더링 호출
     renderStorageUI();
 }
-/** 🔥 [새로 추가] 보관실 내역 동적 드로잉 */
+
+/** 메인 메뉴 전용 창고 리스트 그리개 */
 function renderStorageUI() {
+    if (!UI.storageList) return;
     UI.storageList.innerHTML = '';
 
     if (enhanceState.storage.length === 0) {
-        UI.storageList.innerHTML = '<p style="color: #bdc3c7; font-size: 13px; margin: auto;">보관실이 비어 있습니다. 고강화 개체를 보관해 보세요!</p>';
+        UI.storageList.innerHTML = '<p style="color:#aaa; font-size:12px; margin:10px auto;">보관소 창고가 비어 있습니다.</p>';
         return;
     }
 
     enhanceState.storage.forEach((item) => {
-        // 미니 보관 카드 생성
         const card = document.createElement('div');
-        card.style.cssText = `
-            background: #34495e; padding: 10px; border-radius: 6px; 
-            text-align: center; width: 90px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        `;
-
+        card.style.cssText = 'background: #34495e; padding: 10px; border-radius: 6px; text-align: center; width: 90px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);';
         card.innerHTML = `
             <img src="${item.img}" style="width: 40px; height: 40px; object-fit: contain; display:block; margin:0 auto 5px;">
             <div style="font-size: 11px; color: #fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.name}</div>
         `;
 
-        // [꺼내기] 버튼 추가
         const withdrawBtn = document.createElement('button');
         withdrawBtn.textContent = '꺼내기';
-        withdrawBtn.style.cssText = `
-            margin-top: 5px; font-size: 10px; padding: 2px 6px; 
-            background: #e67e22; border: none; color: white; cursor: pointer; border-radius:3px;
-        `;
-        
+        withdrawBtn.style.cssText = 'margin-top: 5px; font-size: 10px; padding: 2px 6px; background: #e67e22; border: none; color: white; cursor: pointer; border-radius:3px;';
         withdrawBtn.addEventListener('click', () => {
             const result = withdrawCreature(item.id);
-            if (!result.success) {
-                alert(result.message);
-            } else {
-                // 꺼내기 성공 시, 꺼낸 개체의 종류 탭으로 강제 전환 후 UI 새로고침
-                changeGroup(item.groupKey);
-                renderEnhanceUI();
+            alert(result.message);
+            renderEnhanceUI(); // 리프레시
+        });
+        
+        card.appendChild(withdrawBtn);
+        UI.storageList.appendChild(card);
+    });
+}
+
+
+/* =================================================================
+   3. 🧪 [인게임 전용] 실시간 강화실 (`forge-`) 시스템 (신규 통합)
+================================================================= */
+/** * 인게임(stage) 스크린 전입 직후 최초 1회 실행하는 초기화 함수.
+ * 우측 패널의 그룹 탭과 컨트롤러 버튼 이벤트를 개별 바인딩합니다.
+ */
+export function initForgeView() {
+    if (!UI.forgeGroupList || !UI.forgeBtnContainer) return;
+
+    // 1. 우측 패널 상단 그룹 탭 버튼 목록 빌드
+    UI.forgeGroupList.innerHTML = '';
+    Object.keys(ENHANCE_GROUPS).forEach(groupKey => {
+        const tabBtn = document.createElement('button');
+        tabBtn.className = 'forge-group-tab';
+        tabBtn.textContent = ENHANCE_GROUPS[groupKey].name;
+        tabBtn.style.padding = '6px 12px';
+        tabBtn.style.fontSize = '12px';
+        tabBtn.style.cursor = 'pointer';
+        tabBtn.dataset.group = groupKey;
+        
+        tabBtn.addEventListener('click', () => {
+            changeGroup(groupKey);
+            renderForgeUI(); // 변경 후 인게임 뷰 새로고침
+        });
+        UI.forgeGroupList.appendChild(tabBtn);
+    });
+
+    // 2. 우측 패널 중앙 컨트롤러 액션 버튼 동적 배치
+    UI.forgeBtnContainer.innerHTML = '';
+
+    const forgeUpgradeBtn = document.createElement('button');
+    forgeUpgradeBtn.id = 'forge-action-upgrade-btn';
+    forgeUpgradeBtn.textContent = '🧪 실시간 강화';
+    forgeUpgradeBtn.style.cssText = 'padding:8px; font-size:13px; font-weight:bold; background:#2ecc71; border:none; color:#fff; cursor:pointer; border-radius:4px;';
+    forgeUpgradeBtn.addEventListener('click', () => {
+        const groupKey = enhanceState.currentGroup;
+        const result = tryUpgrade(groupKey);
+        console.log(result.message); // 전투의 흐름을 깨지 않기 위해 alert 대신 console 혹은 인게임 텍스트 로그 추천
+        renderForgeUI();
+    });
+
+    const forgeStoreBtn = document.createElement('button');
+    forgeStoreBtn.id = 'forge-action-store-btn';
+    forgeStoreBtn.textContent = '📦 창고 보관 (초기화)';
+    forgeStoreBtn.style.cssText = 'padding:8px; font-size:13px; font-weight:bold; background:#9b59b6; border:none; color:#fff; cursor:pointer; border-radius:4px;';
+    forgeStoreBtn.addEventListener('click', () => {
+        const groupKey = enhanceState.currentGroup;
+        const result = storeCurrentCreature(groupKey);
+        console.log(result.message);
+        renderForgeUI();
+    });
+
+    const forgeResetBtn = document.createElement('button');
+    forgeResetBtn.textContent = '🔄 강화 초기화';
+    forgeResetBtn.style.cssText = 'padding:6px; font-size:12px; background:#e74c3c; border:none; color:#fff; cursor:pointer; border-radius:4px;';
+    forgeResetBtn.addEventListener('click', () => {
+        const groupKey = enhanceState.currentGroup;
+        resetGroupProgress(groupKey);
+        renderForgeUI();
+    });
+
+    UI.forgeBtnContainer.appendChild(forgeUpgradeBtn);
+    UI.forgeBtnContainer.appendChild(forgeStoreBtn);
+    UI.forgeBtnContainer.appendChild(forgeResetBtn);
+
+    // 초기 화면 그리기
+    renderForgeUI();
+}
+
+/** 인게임 실시간 강화실 패널 스크린 데이터 바인딩 및 갱신 */
+export function renderForgeUI() {
+    if (!UI.forgeGroupList) return;
+
+    const groupKey = enhanceState.currentGroup;
+    const currentIdx = enhanceState.levels[groupKey];
+    const bestIdx = enhanceState.bestRecords[groupKey];
+    
+    const groupData = ENHANCE_GROUPS[groupKey];
+    const currentItem = groupData.items[currentIdx];
+    const totalLevels = groupData.items.length;
+
+    // 1. 인게임 전용 탭 활성화 토글 스타일링
+    const tabs = UI.forgeGroupList.querySelectorAll('.forge-group-tab');
+    tabs.forEach(btn => {
+        if (btn.dataset.group === groupKey) {
+            btn.style.background = '#f1c40f';
+            btn.style.color = '#000';
+        } else {
+            btn.style.background = '#34495e';
+            btn.style.color = '#fff';
+        }
+    });
+
+    // 2. 인게임 전용 캐싱 노드에 데이터 출력
+    if (UI.forgeDisplay instanceof HTMLImageElement) {
+        UI.forgeDisplay.src = currentItem.img;
+        UI.forgeDisplay.alt = currentItem.name;
+    }
+    if (UI.forgeName) UI.forgeName.textContent = currentItem.name;
+    
+    const currentGrade = totalLevels - currentIdx;
+    if (UI.forgeLevel) UI.forgeLevel.textContent = `${currentGrade}강 (${currentIdx + 1}위)`;
+    if (UI.forgePercentage) UI.forgePercentage.textContent = `성공 확률: ${currentItem.percent}%`;
+    if (UI.forgeRecord) UI.forgeRecord.textContent = `최고 기록: ${totalLevels - bestIdx}강`;
+
+    // 완강 시 인게임 강화 버튼 비활성화
+    const upBtn = document.getElementById('forge-action-upgrade-btn');
+    if (upBtn instanceof HTMLButtonElement) {
+        upBtn.disabled = (currentIdx === 0);
+        upBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
+    }
+
+    // 3. 동일 공유 저장소를 기반으로 인게임 창고 목록 출력
+    renderForgeStorageUI();
+}
+
+/** 인게임 전용 실시간 보관함 창고 그리기 (★소환 연동 및 영구 소모 뼈대 탑재) */
+function renderForgeStorageUI() {
+    if (!UI.forgeStorageList) return;
+    UI.forgeStorageList.innerHTML = '';
+
+    if (enhanceState.storage.length === 0) {
+        UI.forgeStorageList.innerHTML = '<p style="color:#7f8c8d; font-size:11px; margin:10px auto;">보관된 크리처가 없습니다.</p>';
+        return;
+    }
+
+    enhanceState.storage.forEach((item) => {
+        const card = document.createElement('div');
+        // 클릭해서 즉시 전장에 내보낼 수 있는 느낌을 주도록 인터랙티브 스타일링 적용
+        card.style.cssText = `
+            background: #2c3e50; border: 1px solid #34495e; padding: 6px; 
+            border-radius: 6px; text-align: center; width: 75px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer; transition: transform 0.1s;
+        `;
+        card.title = "클릭 시 코스트를 소모해 전장에 소환합니다!";
+
+        card.innerHTML = `
+            <img src="${item.img}" style="width: 35px; height: 35px; object-fit: contain; display:block; margin:0 auto 3px;">
+            <div style="font-size: 10px; color: #f1c40f; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:bold;">${item.name}</div>
+            <div style="font-size: 9px; color: #2ecc71; margin-top:2px;">소환(소모)</div>
+        `;
+
+        // 마우스 호버 효과
+        card.addEventListener('mouseenter', () => card.style.transform = 'scale(1.05)');
+        card.addEventListener('mouseleave', () => card.style.transform = 'scale(1)');
+
+        // 🔥 [핵심 기획 반영] 인게임 보관함 개체 클릭 -> 소환 및 소모 처리
+        card.addEventListener('click', () => {
+            // 임시 전역 gameState 구조체 참조 (인게임 룹 환경에 따라 메인 컨텍스트에서 가져와야 함)
+            const gameState = window.currentGameState || null; 
+            if (!gameState) {
+                alert("현재 진행 중인 전투 데이터 세션을 찾을 수 없습니다.");
+                return;
+            }
+
+            // [가정 및 밸런스 확장 검증용]: 창고 개체 정보를 기반으로 스탯 복합 개체 변환
+            // 유닛별 고유 스탯을 매핑할 수 있도록 유연한 인스턴스 정보가 주어져야 합니다.
+            const summonTarget = {
+                id: item.id,
+                name: item.name,
+                idle: item.img,
+                cost: 0, // 인게임 강화실 보관 유닛은 이미 자원을 들여 만든 것이므로 소환 Cost 0 또는 패널티 적용 가능
+                attackRange: 100,
+                canAttackMultipleTargets: false
+                // ... 기타 스탯 데이터
+            };
+
+            // 1. 필드에 유닛 소환 트리거 가동 (`summon.js`)
+            // 유닛 생성 제한 상황이 발생하지 않았는지 검증 후 소환을 실행합니다.
+            summonCreature(gameState, summonTarget, true, () => {
+                // 비용(cost) 변경 UI 핸들러 업데이트 콜백
+                if (UI.costSpan) UI.costSpan.textContent = gameState.cost.toString();
+            });
+
+            // 2. 🌟 공유 저장소(`enhanceState.storage`)에서 해당 유닛 파괴 및 로컬스토리지 동기화
+            const isConsumed = consumeStoredCreature(item.id);
+
+            if (isConsumed) {
+                console.log(`[실시간 강화소] 보관 유닛 [${item.name}] 소환 완료 및 인벤토리 소모.`);
+                // 3. 인게임 우측 강화소 UI 실시간 리프레시
+                renderForgeUI();
             }
         });
 
-        card.appendChild(withdrawBtn);
-        UI.storageList.appendChild(card);
+        UI.forgeStorageList.appendChild(card);
     });
 }

@@ -42,7 +42,7 @@ export const enemyHp = getElement("enemyHp");
 export const creatureBtnContainer = getElement("creature-btn-list");
 export const upgradeBtnContainer = getElement("upgrade-btn-list");
 
-// 🔥 추가된 강화소 다중 그룹 UI 엘리먼트들
+// 강화소 다중 그룹 UI 엘리먼트들
 export const enhanceGroupList = getElement("enhance-group-list");
 export const targetDisplay = getElement("display");
 export const enhanceName = getElement("enhance-name");
@@ -50,3 +50,13 @@ export const currentLevel = getElement("current-level");
 export const enhancePercentage = getElement("enhance-percentage");
 export const enhanceRecord = getElement("enhance-record");
 export const storageList = getElement("storage-list");
+
+// 인게임(stage) 내 우측 '실시간 강화실' 전용 UI 엘리먼트 캐싱
+export const forgeGroupList = getElement("forge-group-list");
+export const forgeDisplay = getElement("forge-display");
+export const forgeName = getElement("forge-name");
+export const forgeLevel = getElement("forge-level");
+export const forgePercentage = getElement("forge-percentage");
+export const forgeRecord = getElement("forge-record");
+export const forgeBtnContainer = getElement("forge-btn-list");
+export const forgeStorageList = getElement("forge-storage-list");
