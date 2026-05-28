@@ -5,7 +5,7 @@ import {
     ENHANCE_GROUPS, 
     tryUpgrade
 } from '../../game/enhancement.js';
-import { enhanceState, changeGroup, storeCurrentCreature, withdrawCreature, consumeStoredCreature, resetGroupProgress } from "../core/state";
+import { enhanceState, changeGroup, storeCurrentCreature, withdrawCreature, consumeStoredCreature, resetGroupProgress } from '../../core/state.js';
 import { summonCreature } from '../../game/summon.js'; // 📦 인게임 소환 연동
 import { eventBus } from '../../core/eventBus.js';
 import { EVENTS } from '../../core/config.js';

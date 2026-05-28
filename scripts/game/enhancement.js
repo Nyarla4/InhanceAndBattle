@@ -1,7 +1,6 @@
 // 확률형 강화 및 열화 연산
 // scripts/game/enhancement.js
-
-import { enhanceState } from "../core/state";
+import { enhanceState } from "../core/state.js";
 
 // 1. 강화 그룹 데이터 정의
 export const ENHANCE_GROUPS = {
