@@ -134,10 +134,9 @@ export function renderEnhanceUI() {
     if (UI.enhanceRecord) UI.enhanceRecord.textContent = `최고 기록: ${bestGrade}강`;
 
     // 완강(최고등급 0번 인덱스) 도달 시 버튼 잠금 제어
-    const upBtn = document.getElementById('action-upgrade-btn');
-    if (upBtn instanceof HTMLButtonElement) {
-        upBtn.disabled = (currentIdx === 0);
-        upBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
+    if (UI.upBtn instanceof HTMLButtonElement) {
+        UI.upBtn.disabled = (currentIdx === 0);
+        UI.upBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
     }
 
     // 메인 창고 목록 렌더링 호출
@@ -283,10 +282,9 @@ export function renderForgeUI() {
     if (UI.forgeRecord) UI.forgeRecord.textContent = `최고 기록: ${totalLevels - bestIdx}강`;
 
     // 완강 시 인게임 강화 버튼 비활성화
-    const upBtn = document.getElementById('forge-action-upgrade-btn');
-    if (upBtn instanceof HTMLButtonElement) {
-        upBtn.disabled = (currentIdx === 0);
-        upBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
+    if (UI.forgeUpBtn instanceof HTMLButtonElement) {
+        UI.forgeUpBtn.disabled = (currentIdx === 0);
+        UI.forgeUpBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
     }
 
     // 3. 동일 공유 저장소를 기반으로 인게임 창고 목록 출력
