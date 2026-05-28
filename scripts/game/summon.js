@@ -1,4 +1,5 @@
 // 자원 체크 및 유닛 생성 요청
+// scripts/game/summon.js
 
 /** 개체 소환 함수 */
 export function summonCreature(gameState, creature, isPlayer, updateCost) {

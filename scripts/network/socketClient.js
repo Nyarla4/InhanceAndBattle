@@ -1,4 +1,5 @@
 // WSS 연결, 자동 재연결(지수 백오프), 핑퐁 처리
+// scripts/network/socketClient.js
 
 import { eventBus } from '../core/eventBus.js';
 

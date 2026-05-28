@@ -1,4 +1,5 @@
 // 유닛 스탯 데이터 및 게임 세션 설정 구조
+// scripts/core/config.js
 
 /*
 export const CreatureData {

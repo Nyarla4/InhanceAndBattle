@@ -1,4 +1,5 @@
 // 모듈 간 결합도를 낮추기 위한 글로벌 이벤트 객체
+// scripts/core/eventBus.js
 
 class EventBus {
     constructor() {

@@ -1,4 +1,5 @@
 // DOM 요소 캐싱 및 맵핑
+// scripts/ui/uiElements.js
 
 function getElement(id) {
     const element = document.getElementById(id);

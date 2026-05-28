@@ -1,4 +1,5 @@
 // 유닛 이동/전투 및 베이스 파괴 판정
+// scripts/game/battle.js
 
 /** 개체 업데이트 */
 export function updateCreatures(creatures, opponents, isPlayerSide, now, deltaTime, gameState) {

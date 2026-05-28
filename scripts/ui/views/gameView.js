@@ -1,3 +1,5 @@
+// scripts/ui/views/gameView.js
+
 /** 개체 렌더 */
 function renderCreature(creature, sameSideCreatures) {
     const count = sameSideCreatures.filter((target) => target.data.id === creature.data.id).length;

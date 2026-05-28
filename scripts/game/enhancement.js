@@ -1,4 +1,5 @@
 // 확률형 강화 및 열화 연산
+// scripts/game/enhancement.js
 
 /* 네즈밍 강화 기반
 var curImg = 9;
