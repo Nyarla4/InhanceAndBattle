@@ -49,3 +49,4 @@ export const enhanceName = getElement("enhance-name");
 export const currentLevel = getElement("current-level");
 export const enhancePercentage = getElement("enhance-percentage");
 export const enhanceRecord = getElement("enhance-record");
+export const storageList = getElement("storage-list");

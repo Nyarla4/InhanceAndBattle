@@ -33,6 +33,21 @@ export function initEnhanceView() {
         renderEnhanceUI();
     });
 
+    // 🔥 [보관하기] 버튼 배치
+    const storeBtn = document.createElement('button');
+    storeBtn.id = 'action-store-btn';
+    storeBtn.textContent = '📦 보관하기';
+    storeBtn.style.backgroundColor = '#3498db';
+    storeBtn.style.boxShadow = '0 4px 0 #2980b9';
+    storeBtn.addEventListener('click', () => {
+        const result = storeCurrentCreature();
+        if(!result.success) {
+            alert(result.message);
+        } else {
+            renderEnhanceUI(); // 성공 시 강화화면 리프레시 (기본값 원상복구 확인용)
+        }
+    });
+
     const goResetBtn = document.createElement('button');
     goResetBtn.id = 'action-reset-btn';
     goResetBtn.textContent = '초기화';
@@ -46,6 +61,7 @@ export function initEnhanceView() {
     });
 
     UI.upgradeBtnContainer.appendChild(goUpgradeBtn);
+    UI.upgradeBtnContainer.appendChild(storeBtn);
     UI.upgradeBtnContainer.appendChild(goResetBtn);
 
     // 3. 첫 초기 화면 렌더링 가동
@@ -102,4 +118,52 @@ export function renderEnhanceUI() {
             upgradeButton.style.cursor = 'pointer';
         }
     }
+
+    // 🔥 보관실 목록 화면 렌더링 호출 연동
+    renderStorageUI();
+}
+/** 🔥 [새로 추가] 보관실 내역 동적 드로잉 */
+function renderStorageUI() {
+    UI.storageList.innerHTML = '';
+
+    if (enhanceState.storage.length === 0) {
+        UI.storageList.innerHTML = '<p style="color: #bdc3c7; font-size: 13px; margin: auto;">보관실이 비어 있습니다. 고강화 개체를 보관해 보세요!</p>';
+        return;
+    }
+
+    enhanceState.storage.forEach((item) => {
+        // 미니 보관 카드 생성
+        const card = document.createElement('div');
+        card.style.cssText = `
+            background: #34495e; padding: 10px; border-radius: 6px; 
+            text-align: center; width: 90px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        `;
+
+        card.innerHTML = `
+            <img src="${item.img}" style="width: 40px; height: 40px; object-fit: contain; display:block; margin:0 auto 5px;">
+            <div style="font-size: 11px; color: #fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.name}</div>
+        `;
+
+        // [꺼내기] 버튼 추가
+        const withdrawBtn = document.createElement('button');
+        withdrawBtn.textContent = '꺼내기';
+        withdrawBtn.style.cssText = `
+            margin-top: 5px; font-size: 10px; padding: 2px 6px; 
+            background: #e67e22; border: none; color: white; cursor: pointer; border-radius:3px;
+        `;
+        
+        withdrawBtn.addEventListener('click', () => {
+            const result = withdrawCreature(item.id);
+            if (!result.success) {
+                alert(result.message);
+            } else {
+                // 꺼내기 성공 시, 꺼낸 개체의 종류 탭으로 강제 전환 후 UI 새로고침
+                changeGroup(item.groupKey);
+                renderEnhanceUI();
+            }
+        });
+
+        card.appendChild(withdrawBtn);
+        UI.storageList.appendChild(card);
+    });
 }

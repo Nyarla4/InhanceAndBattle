@@ -34,7 +34,9 @@ export const ENHANCE_GROUPS = {
 export const enhanceState = {
     currentGroup: "nezming", // 기본값은 요구사항대로 'nezming' 처리
     levels: {},        // 각 그룹의 현재 인덱스 저장 { nezming: 9, slime: 4 }
-    bestRecords: {}    // 각 그룹의 최고 기록 인덱스 저장
+    bestRecords: {},    // 각 그룹의 최고 기록 인덱스 저장
+    battleDeck: [],    // 🔥 [출전 명단] 현재 전투에 사용 가능한 개체 리스트 저장
+    storage: []        // 🔥 [추가] 보관실에 저장된 개체 목록 [{ id, groupKey, levelIdx, name, img }]
 };
 
 /** 게임 기동 시 로컬스토리지에서 모든 그룹의 강화 상태 로드 */
@@ -49,6 +51,10 @@ export function initEnhancement() {
         // 최고 기록 로드
         const savedBest = localStorage.getItem(`enhance_best_${groupKey}`);
         enhanceState.bestRecords[groupKey] = savedBest !== null ? parseInt(savedBest) : maxIdx;
+
+        // 🔥 저장된 보관실 데이터 로드
+        const savedStorage = localStorage.getItem("enhance_storage");
+        enhanceState.storage = savedStorage ? JSON.parse(savedStorage) : [];
     });
 }
 
@@ -105,4 +111,64 @@ export function resetGroupProgress() {
     
     enhanceState.levels[groupKey] = maxIdx;
     localStorage.setItem(`enhance_cur_${groupKey}`, maxIdx);
+}
+
+/** 🔥 [기능 1] 현재 강화실 개체를 보관실에 넣고, 가장 아래 단계로 초기화 */
+export function storeCurrentCreature() {
+    const groupKey = enhanceState.currentGroup;
+    const currentIdx = enhanceState.levels[groupKey];
+    const groupData = ENHANCE_GROUPS[groupKey];
+    const maxIdx = groupData.items.length - 1; // 가장 아래 단계 (예: 네즈밍의 경우 9번 이쑤시개)
+
+    // 예외 처리: 이미 가장 아래 단계(기본 상태)라면 보관할 필요가 없음
+    if (currentIdx === maxIdx) {
+        return { success: false, message: "기본 등급의 개체는 보관할 수 없습니다. 더 강화한 후 보관하세요!" };
+    }
+
+    const currentItem = groupData.items[currentIdx];
+
+    // 1. 보관실 배열에 현재 상태 객체 추가
+    const storageItem = {
+        id: Date.now(), // 고유 ID 고안
+        groupKey: groupKey,
+        levelIdx: currentIdx,
+        name: currentItem.name,
+        img: currentItem.img
+    };
+    enhanceState.storage.push(storageItem);
+
+    // 2. 🌟 중요: 현재 그룹의 강화 단계를 가장 아래 단계(최하위 인덱스)로 초기화
+    enhanceState.levels[groupKey] = maxIdx;
+
+    // 3. 로컬스토리지 디스크 동기화
+    localStorage.setItem(`enhance_cur_${groupKey}`, maxIdx);
+    localStorage.setItem("enhance_storage", JSON.stringify(enhanceState.storage));
+
+    return { success: true, message: `[${storageItem.name}]이(가) 보관실에 저장되었으며, 강화창이 초기화되었습니다.` };
+}
+
+/** 🔥 [기능 2] 보관실에서 개체를 선택해 다시 강화실 화면으로 꺼내기 */
+export function withdrawCreature(storageId) {
+    // 1. 보관실에서 해당 아이템 찾기
+    const findIdx = enhanceState.storage.findIndex(item => item.id === storageId);
+    if (findIdx === -1) return { success: false, message: "해당 개체를 찾을 수 없습니다." };
+    
+    const item = enhanceState.storage[findIdx];
+    const groupKey = item.groupKey;
+    const maxIdx = ENHANCE_GROUPS[groupKey].items.length - 1;
+
+    // 2. 안전 장치: 현재 강화실 슬롯이 비어있지(기본 등급이 아니면) 않으면 덮어쓰기 방지 경고
+    if (enhanceState.levels[groupKey] !== maxIdx) {
+        return { success: false, message: "현재 강화실에 이미 강화 중인 개체가 존재합니다! 기존 개체를 보관하거나 초기화한 후 꺼내주세요." };
+    }
+
+    // 3. 강화실 슬롯으로 복구 배치 및 보관실에서 제거
+    enhanceState.levels[groupKey] = item.levelIdx;
+    enhanceState.storage.splice(findIdx, 1);
+
+    // 4. 로컬스토리지 저장
+    localStorage.setItem(`enhance_cur_${groupKey}`, item.levelIdx);
+    localStorage.setItem("enhance_storage", JSON.stringify(enhanceState.storage));
+
+    return { success: true, message: `[${item.name}]을(를) 다시 강화실로 꺼냈습니다.` };
 }
