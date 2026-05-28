@@ -1,6 +1,8 @@
 // playerState 메모리 객체 관리 및 localStorage 연동
 // scripts/core/state.js
 
+import { ENHANCE_GROUPS } from "./config.js";
+
 // 전역 상태 관리 객체 (싱글톤)
 export const enhanceState = {
     currentGroup: 'nezming',
