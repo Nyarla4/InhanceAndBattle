@@ -62,7 +62,7 @@ export function initEnhanceView() {
     goUpgradeBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
         const result = tryUpgrade(groupKey);
-        alert(result.message);
+        //alert(result.message);
         renderEnhanceUI();
     });
 
@@ -73,7 +73,7 @@ export function initEnhanceView() {
     storeBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
         const result = storeCurrentCreature(groupKey);
-        alert(result.message);
+        //alert(result.message);
         renderEnhanceUI();
     });
 
@@ -167,7 +167,7 @@ function renderStorageUI() {
         withdrawBtn.style.cssText = 'margin-top: 5px; font-size: 10px; padding: 2px 6px; background: #e67e22; border: none; color: white; cursor: pointer; border-radius:3px;';
         withdrawBtn.addEventListener('click', () => {
             const result = withdrawCreature(item.id);
-            alert(result.message);
+            //alert(result.message);
             renderEnhanceUI(); // 리프레시
         });
         
