@@ -4,9 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>강화 대전쟁일까</title>
+    <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-    
+
+    <div id="title" class="screen">
+        <h1>이름 아직 못정함</h1>
+        <div class="menu-buttons">
+            <button id="stage-btn">출전하기</button>
+            <button id="upgrade-btn">강화실</button>
+            <button id="setting-btn">설정</button>
+        </div>
+    </div>
+
+    <div id="modeSelector" class="screen hidden">
+        <h2>출전 모드 선택</h2>
+        <div class="mode-buttons">
+            <button id="solo-mode-btn">솔로 스테이지</button>
+            <button id="multi-mode-btn">멀티 대전 모드</button>
+        </div>
+        <button id="mode-back-btn" class="back-btn">뒤로가기</button>
+    </div>
+
+    <div id="stageSelector" class="screen hidden">
+        <h2>스테이지 선택</h2>
+        <div id="stage-list">
+            </div>
+        <button id="stage-back-btn" class="back-btn">뒤로가기</button>
+    </div>
+
+    <div id="upgrade" class="screen hidden">
+        <h2>강화실</h2>
+        <div class="enhance-container">
+            <div id="enhance-card">
+                <img id="nezming-display" src="" alt="Nezming">
+                <p>현재 등급: <span id="current-level">0</span>강</p>
+            </div>
+            <div id="upgrade-btn-list">
+                </div>
+        </div>
+        <button id="back-btn" class="back-btn">타이틀로 이동</button>
+    </div>
+
+    <div id="stage" class="screen hidden">
+        <div id="inStage">
+            <div class="game-header">
+                <div class="hp-container">
+                    <div id="playerHp">아군 기지: 1000</div>
+                    <div id="enemyHp">적군 기지: 1000</div>
+                </div>
+                <div class="cost-container">
+                    COST: <span id="cost">0</span>
+                </div>
+            </div>
+
+            <div id="field">
+                <div id="playerBase" class="base">아군기지</div>
+                <div id="enemyBase" class="base">적군기지</div>
+                </div>
+
+            <div id="creature-btn-list">
+                </div>
+        </div>
+    </div>
+
+    <div id="settings" class="modal hidden">
+        <div class="modal-content">
+            <h3>게임 설정</h3>
+            <button id="close-settings">닫기</button>
+        </div>
+    </div>
+
+    <div id="network-loading" class="modal hidden">
+        <div class="modal-content text-center">
+            <div class="spinner"></div>
+            <p id="loading-text">멀티플레이 서버에 연결 중입니다...<br>(최대 1분이 소요될 수 있습니다)</p>
+        </div>
+    </div>
+
+    <script type="module" src="./scripts/main.js"></script>
 </body>
 </html>

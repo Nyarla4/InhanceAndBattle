@@ -1,1 +1,273 @@
 /* 화면 전환 및 인게임 UI 레이아웃 스타일 */
+/* =================================================================
+   1. 글로벌 리셋 및 기본 스타일
+================================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    user-select: none; /* 게임 중 드래그 방지 */
+}
+
+body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 게임 전체 화면을 감싸는 컨테이너 (16:9 비율 유지 권장) */
+.screen {
+    width: 100%;
+    max-width: 1024px;
+    height: 100%;
+    max-height: 576px;
+    background-color: #2c3e50;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 4px solid #34495e;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    padding: 20px;
+}
+
+/* 💡 SPA 화면 전환의 핵심: 숨김 처리 */
+.hidden {
+    display: none !important;
+}
+
+/* 공통 버튼 디자인 */
+button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s;
+    box-shadow: 0 4px 0 #c0392b;
+}
+
+button:hover {
+    background-color: #ff6b6b;
+}
+
+button:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.back-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: #7f8c8d;
+    box-shadow: 0 4px 0 #95a5a6;
+}
+.back-btn:hover { background-color: #95a5a6; }
+
+/* =================================================================
+   2. 각 화면별 레이아웃 (Title, Mode, Stage, Upgrade)
+================================================================= */
+h1 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    color: #f1c40f;
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.menu-buttons, .mode-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+}
+
+/* 강화실 레이아웃 */
+.enhance-container {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#enhance-card {
+    background: #34495e;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid #f1c40f;
+}
+
+#nezming-display {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* =================================================================
+   3. 인게임 전투 화면 레이아웃 (Stage & Field)
+================================================================= */
+#stage {
+    padding: 0; /* 인게임은 꽉 차게 */
+    justify-content: flex-start;
+}
+
+#inStage {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 상단 상태 바 */
+.game-header {
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.hp-container {
+    display: flex;
+    gap: 30px;
+}
+#playerHp { color: #2ecc71; }
+#enemyHp { color: #e74c3c; }
+.cost-container { color: #f1c40f; }
+
+/* ⚔️ 핵심: 디펜스 라인 필드 */
+#field {
+    flex: 1;
+    background-color: #34495e;
+    background-image: linear-gradient(#34495e 70%, #2c3e50 70%); /* 하늘과 땅 분할 연출 */
+    position: relative;
+    overflow: hidden; /* 필드 밖으로 나가는 유닛 숨김 */
+    border-bottom: 4px solid #2c3e50;
+}
+
+/* 기지 스타일 */
+.base {
+    position: absolute;
+    bottom: 0;
+    width: 100px;
+    height: 140px;
+    background-color: #7f8c8d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border: 3px solid #34495e;
+}
+#playerBase { left: 0; background-color: #27ae60; border-radius: 0 20px 0 0; }
+#enemyBase { right: 0; background-color: #c0392b; border-radius: 20px 0 0 0; }
+
+/* 🐹 소환되는 개체(Creature) 스타일 */
+.creature {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    pointer-events: none; /* 클릭 차단 */
+    transition: left 0.05s linear; /* 부드러운 이동 */
+}
+
+.creature img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+}
+
+/* 하단 컨트롤 바 (소환 버튼 목록) */
+#creature-btn-list {
+    height: 100px;
+    background-color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+}
+
+#creature-btn-list button {
+    height: 100%;
+    padding: 0 20px;
+    background-color: #2980b9;
+    box-shadow: 0 4px 0 #1f618d;
+}
+#creature-btn-list button:hover { background-color: #3498db; }
+
+/* =================================================================
+   4. 모달 및 서버 로딩 애니메이션 (Modal & Spinner)
+================================================================= */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background-color: #2c3e50;
+    padding: 30px;
+    border-radius: 10px;
+    border: 3px solid #34495e;
+    min-width: 300px;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.text-center {
+    text-align: center;
+}
+
+#loading-text {
+    margin-top: 20px;
+    line-height: 1.5;
+    color: #f1c40f;
+    font-weight: bold;
+}
+
+/* 🔄 로딩 회전 스피너 */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #e74c3c;
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
