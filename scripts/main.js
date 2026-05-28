@@ -4,7 +4,7 @@
 import * as UI from './ui/uiElements.js';
 import { sceneManager } from './ui/sceneManager.js';
 import { initModeView } from './ui/views/modeView.js';
-import { initEnhancement } from './game/enhancement.js';
+import { initEnhancement } from './core/state.js';
 import { initEnhanceView } from './ui/views/enhanceView.js';
 
 /** 게임 전체 시스템 초기화 및 시동 */

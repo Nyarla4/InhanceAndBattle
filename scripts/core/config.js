@@ -87,3 +87,14 @@ async function fetchCreatureData() {
     }
     return await response.json();
 }
+
+export const EVENTS = Object.freeze({
+    // 시스템 및 네트워크 관련
+    SOCKET_CONNECTED: 'SOCKET_CONNECTED',
+    
+    // 전투 및 소환 관련 (구조 -> 흐름 요청)
+    REQUEST_STORAGE_SUMMON: 'REQUEST_STORAGE_SUMMON',
+    
+    // 상태 변경 및 UI 갱신 관련 (흐름 -> 구조 통지)
+    STORAGE_STATE_CHANGED: 'STORAGE_STATE_CHANGED'
+});

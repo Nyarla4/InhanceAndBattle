@@ -3,15 +3,12 @@
 import * as UI from '../uiElements.js';
 import { 
     ENHANCE_GROUPS, 
-    enhanceState, 
-    changeGroup, 
-    tryUpgrade, 
-    resetGroupProgress, 
-    storeCurrentCreature, 
-    withdrawCreature,
-    consumeStoredCreature
+    tryUpgrade
 } from '../../game/enhancement.js';
+import { enhanceState, changeGroup, storeCurrentCreature, withdrawCreature, consumeStoredCreature, resetGroupProgress } from "../core/state";
 import { summonCreature } from '../../game/summon.js'; // 📦 인게임 소환 연동
+import { eventBus } from '../../core/eventBus.js';
+import { EVENTS } from '../../core/config.js';
 
 /* =================================================================
    1. [공통] 통합 뷰 리프레시 분기 함수
@@ -92,6 +89,16 @@ export function initEnhanceView() {
     UI.upgradeBtnContainer.appendChild(goUpgradeBtn);
     UI.upgradeBtnContainer.appendChild(storeBtn);
     UI.upgradeBtnContainer.appendChild(resetBtn);
+
+    eventBus.on(EVENTS.STORAGE_STATE_CHANGED, ({ currentCost }) => {
+        // 1. 비용 UI 갱신
+        if (UI.costSpan) {
+            UI.costSpan.textContent = currentCost.toString();
+        }
+
+        // 2. 인게임 실시간 강화소 UI 리프레시
+        renderForgeUI();
+    })
 
     // 최초 1회 화면 렌더링 시동
     renderEnhanceUI();
@@ -323,40 +330,7 @@ function renderForgeStorageUI() {
 
         // 🔥 [핵심 기획 반영] 인게임 보관함 개체 클릭 -> 소환 및 소모 처리
         card.addEventListener('click', () => {
-            // 임시 전역 gameState 구조체 참조 (인게임 룹 환경에 따라 메인 컨텍스트에서 가져와야 함)
-            const gameState = window.currentGameState || null; 
-            if (!gameState) {
-                alert("현재 진행 중인 전투 데이터 세션을 찾을 수 없습니다.");
-                return;
-            }
-
-            // [가정 및 밸런스 확장 검증용]: 창고 개체 정보를 기반으로 스탯 복합 개체 변환
-            // 유닛별 고유 스탯을 매핑할 수 있도록 유연한 인스턴스 정보가 주어져야 합니다.
-            const summonTarget = {
-                id: item.id,
-                name: item.name,
-                idle: item.img,
-                cost: 0, // 인게임 강화실 보관 유닛은 이미 자원을 들여 만든 것이므로 소환 Cost 0 또는 패널티 적용 가능
-                attackRange: 100,
-                canAttackMultipleTargets: false
-                // ... 기타 스탯 데이터
-            };
-
-            // 1. 필드에 유닛 소환 트리거 가동 (`summon.js`)
-            // 유닛 생성 제한 상황이 발생하지 않았는지 검증 후 소환을 실행합니다.
-            summonCreature(gameState, summonTarget, true, () => {
-                // 비용(cost) 변경 UI 핸들러 업데이트 콜백
-                if (UI.costSpan) UI.costSpan.textContent = gameState.cost.toString();
-            });
-
-            // 2. 🌟 공유 저장소(`enhanceState.storage`)에서 해당 유닛 파괴 및 로컬스토리지 동기화
-            const isConsumed = consumeStoredCreature(item.id);
-
-            if (isConsumed) {
-                console.log(`[실시간 강화소] 보관 유닛 [${item.name}] 소환 완료 및 인벤토리 소모.`);
-                // 3. 인게임 우측 강화소 UI 실시간 리프레시
-                renderForgeUI();
-            }
+            eventBus.emit(EVENTS.REQUEST_STORAGE_SUMMON,{itemId:item.id});
         });
 
         UI.forgeStorageList.appendChild(card);
