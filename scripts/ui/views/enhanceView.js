@@ -1,7 +1,7 @@
 // scripts/ui/views/enhanceView.js
 
 import * as UI from '../uiElements.js';
-import { ENHANCE_GROUPS, enhanceState, changeGroup, tryUpgrade, resetGroupProgress } from '../../game/enhancement.js';
+import { ENHANCE_GROUPS, enhanceState, changeGroup, tryUpgrade, resetGroupProgress, storeCurrentCreature } from '../../game/enhancement.js';
 
 /** 강화소 진입 시 탭 버튼 및 핵심 액션 이벤트 최초 연결 */
 export function initEnhanceView() {
