@@ -62,6 +62,7 @@ export function initEnhanceView() {
         //alert(result.message);
         renderEnhanceUI();
     });
+    UI.upBtn = goUpgradeBtn;
 
     const storeBtn = document.createElement('button');
     storeBtn.id = 'action-store-btn';
@@ -223,6 +224,7 @@ export function initForgeView() {
         console.log(result.message); // 전투의 흐름을 깨지 않기 위해 alert 대신 console 혹은 인게임 텍스트 로그 추천
         renderForgeUI();
     });
+    UI.forgeUpBtn = forgeUpgradeBtn;
 
     const forgeStoreBtn = document.createElement('button');
     forgeStoreBtn.id = 'forge-action-store-btn';
