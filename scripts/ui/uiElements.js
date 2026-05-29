@@ -10,14 +10,14 @@ function getElement(id) {
 }
 
 // 1. 화면(스크린) 컨테이너
-export const titleScreen = getElement("title");
-export const modeSelectorScreen = getElement("modeSelector");
-export const stageSelectorScreen = getElement("stageSelector");
-export const stageScreen = getElement("stage"); // 인게임 전체 화면
-export const upgradeScreen = getElement("upgrade");
-export const dictionaryScreen = getElement("dictionary");
-export const settingsModal = getElement("settings");
-export const networkLoadingModal = getElement("network-loading"); // 추가
+export const titleScreen = getElement("title-screen");
+export const modeSelectorScreen = getElement("modeSelector-screen");
+export const stageSelectorScreen = getElement("stageSelector-screen");
+export const stageScreen = getElement("stage-screen"); // 인게임 전체 화면
+export const upgradeScreen = getElement("upgrade-screen");
+export const dictionaryScreen = getElement("dictionary-screen");
+export const settingsModal = getElement("settings-modal");
+export const networkLoadingModal = getElement("network-loading");
 
 // 2. 주요 제어 버튼들
 export const stageBtn = getElement("stage-btn");       // 타이틀 -> 모드선택 이동 버튼
@@ -36,14 +36,11 @@ export const multiModeBtn = getElement("multi-mode-btn");
 export const stageList = getElement("stage-list");
 
 // 4. 인게임(전투) 내부 UI 구성요소
-export const inStage = getElement("inStage");
+export const inStage = getElement("battle-field-container");
 export const field = getElement("field");
 export const costSpan = getElement("cost");
 export const playerBase = getElement("playerBase");
 export const enemyBase = getElement("enemyBase");
-export const playerHp = getElement("playerHp");
-export const enemyHp = getElement("enemyHp");
-export const creatureBtnContainer = getElement("creature-btn-list");
 export const upgradeBtnContainer = getElement("upgrade-btn-list");
 
 // 강화소 다중 그룹 UI 엘리먼트들
@@ -61,10 +58,7 @@ export const forgeGroupList = getElement("forge-group-list");
 export const forgeDisplay = getElement("forge-display");
 export const forgeName = getElement("forge-name");
 export const forgeLevel = getElement("forge-level");
-export const forgePercentage = getElement("forge-percentage");
-export const forgeDropPercentage = getElement("forge-drop-percentage");
-export const forgeRecord = getElement("forge-record");
-export const forgeBtnContainer = getElement("forge-btn-list");
+export const forgeBtnContainer = document.getElementById('forge-btn-container');
 export const forgeStorageList = getElement("forge-storage-list");
 
 export const stageListContainer = getElement("stage-list");

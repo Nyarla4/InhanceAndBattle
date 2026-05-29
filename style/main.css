@@ -124,46 +124,49 @@ h2 {
 /* =================================================================
    3. 인게임 전투 화면 레이아웃 (Stage & Field)
 ================================================================= */
-#stage {
-    padding: 0; /* 인게임은 꽉 차게 */
-    justify-content: flex-start;
+#stage-screen {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
-#inStage {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+#battle-field-container {
+    flex: 7; /* 70% 영역 */
+    position: relative;
+    background-color: #87ceeb; /* 임시 필드 배경색 */
 }
-
-/* 상단 상태 바 */
-.game-header {
-    height: 60px;
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.hp-container {
-    display: flex;
-    gap: 30px;
-}
-#playerHp { color: #2ecc71; }
-#enemyHp { color: #e74c3c; }
-.cost-container { color: #f1c40f; }
 
 /* ⚔️ 핵심: 디펜스 라인 필드 */
 #field {
     flex: 1;
     background-color: #34495e;
-    background-image: linear-gradient(#34495e 70%, #2c3e50 70%); /* 하늘과 땅 분할 연출 */
+    background-image: linear-gradient(#7b94ad 70%, #2c3e50 70%); /* 하늘과 땅 분할 연출 */
+    width: 100%;
+    height: 100%;
     position: relative;
     overflow: hidden; /* 필드 밖으로 나가는 유닛 숨김 */
     border-bottom: 4px solid #2c3e50;
+}
+
+#forge-panel {
+    flex: 3; /* 30% 영역 */
+    background-color: #2c3e50;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    color: white;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#forge-storage-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 10px;
+    align-content: flex-start;
 }
 
 /* 기지 스타일 */
@@ -216,25 +219,6 @@ h2 {
     display: block;
 }
 
-/* 하단 컨트롤 바 (소환 버튼 목록) */
-#creature-btn-list {
-    height: 100px;
-    background-color: #222;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 10px;
-}
-
-#creature-btn-list button {
-    height: 100%;
-    padding: 0 20px;
-    background-color: #2980b9;
-    box-shadow: 0 4px 0 #1f618d;
-}
-#creature-btn-list button:hover { background-color: #3498db; }
-
 /* =================================================================
    4. 모달 및 서버 로딩 애니메이션 (Modal & Spinner)
 ================================================================= */
@@ -286,9 +270,4 @@ h2 {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-}
-
-/* 스테이지 화면(전투+강화)은 가로(좌/우) 배치로 구조 변경 */
-#stage-screen {
-    flex-direction: row !important; /* 강제로 가로 배치 적용 */
 }

@@ -306,10 +306,9 @@ export function renderForgeUI() {
         }
         if (UI.forgeName) UI.forgeName.textContent = '비었음';
         if (UI.forgeLevel) UI.forgeLevel.textContent = '-';
-        if (UI.forgePercentage) UI.forgePercentage.textContent = '성공 확률: -';
-        if (UI.forgeDropPercentage) UI.forgeDropPercentage.classList.add('hidden');
-        if (UI.forgeRecord) UI.forgeRecord.textContent = `최고 기록: ${totalLevels - bestIdx}강`;
-
+        // if (UI.forgePercentage) UI.forgePercentage.textContent = '성공 확률: -';
+        // if (UI.forgeDropPercentage) UI.forgeDropPercentage.classList.add('hidden');
+        
         if (forgeUpBtn instanceof HTMLButtonElement) {
             forgeUpBtn.disabled = true;
             forgeUpBtn.style.opacity = "0.5";
@@ -327,20 +326,20 @@ export function renderForgeUI() {
     
     const currentGrade = totalLevels - currentIdx;
     if (UI.forgeLevel) UI.forgeLevel.textContent = `${currentGrade}강 (${currentIdx + 1}위)`;
-    if (UI.forgePercentage) UI.forgePercentage.textContent = `성공 확률: ${currentItem.percent}%`;
-    if (UI.forgeDropPercentage) {
-        if (currentItem.dropPercentage > 0) {
-            if (!UI.forgeDropPercentage.classList.contains('hidden')) {
-                UI.forgeDropPercentage.classList.remove('hidden');
-            }
-            UI.forgeDropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
-        }
-        else {
-            if (!UI.forgeDropPercentage.classList.contains('hidden')) {
-                UI.forgeDropPercentage.classList.add('hidden');
-            }
-        }
-    }
+    // if (UI.forgePercentage) UI.forgePercentage.textContent = `성공 확률: ${currentItem.percent}%`;
+    // if (UI.forgeDropPercentage) {
+    //     if (currentItem.dropPercentage > 0) {
+    //         if (!UI.forgeDropPercentage.classList.contains('hidden')) {
+    //             UI.forgeDropPercentage.classList.remove('hidden');
+    //         }
+    //         UI.forgeDropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
+    //     }
+    //     else {
+    //         if (!UI.forgeDropPercentage.classList.contains('hidden')) {
+    //             UI.forgeDropPercentage.classList.add('hidden');
+    //         }
+    //     }
+    // }
     if (UI.forgeRecord) UI.forgeRecord.textContent = `최고 기록: ${totalLevels - bestIdx}강`;
 
     // 완강 시 인게임 강화 버튼 비활성화
