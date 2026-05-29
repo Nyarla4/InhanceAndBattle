@@ -68,6 +68,9 @@ export function withdrawCreature(storageId) {
         };
     }
 
+    // 그룹 강제 전환
+    enhanceState.currentGroup = groupKey;
+
     // 1. 핵심 구조(State) 복구: 강화실 현재 단계를 저장된 levelIdx로 변경
     enhanceState.levels[groupKey] = item.levelIdx;
     localStorage.setItem(`enhance_cur_${groupKey}`, item.levelIdx);
