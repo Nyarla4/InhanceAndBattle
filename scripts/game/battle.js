@@ -5,6 +5,7 @@ import { consumeStoredCreature, createBattleSession, enhanceState, getGameState 
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
+import { renderCreature } from '../ui/views/gameView.js';
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
 let isBattleRunning = false;

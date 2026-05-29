@@ -1,6 +1,8 @@
 // 자원 체크 및 유닛 생성 요청
 // scripts/game/summon.js
 
+import { renderCreature } from '../ui/views/gameView.js';
+
 /** 개체 소환 함수 */
 export function summonCreature(gameState, creature, isPlayer, updateCost) {
     if (isPlayer && gameState.cost < creature.cost) {
