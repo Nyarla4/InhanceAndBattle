@@ -26,7 +26,7 @@ export function tryUpgrade(groupKey) {
         return { success: true, message: "강화 성공!" };
     } else {
         if (dropChance > 0) {
-            const isDrop = Math.random() * 100 <= DROP_CHANCE;
+            const isDrop = Math.random() * 100 <= dropChance;
             if (isDrop) {
                 const didDowngrade = downgradeGroupProgress(groupKey, maxIdx);
                 if (didDowngrade) {
