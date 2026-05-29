@@ -33,6 +33,7 @@ export const dictionaryBackBtn = getElement("dictionary-back-btn"); // 도감 ->
 // 3. 모드 선택 화면 버튼들
 export const soloModeBtn = getElement("solo-mode-btn");
 export const multiModeBtn = getElement("multi-mode-btn");
+export const stageList = getElement("stage-list");
 
 // 4. 인게임(전투) 내부 UI 구성요소
 export const inStage = getElement("inStage");
