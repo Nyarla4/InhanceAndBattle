@@ -48,6 +48,7 @@ export const targetDisplay = getElement("display");
 export const enhanceName = getElement("enhance-name");
 export const currentLevel = getElement("current-level");
 export const enhancePercentage = getElement("enhance-percentage");
+export const dropPercentage = getElement("drop-percentage");
 export const enhanceRecord = getElement("enhance-record");
 export const storageList = getElement("storage-list");
 
@@ -57,6 +58,7 @@ export const forgeDisplay = getElement("forge-display");
 export const forgeName = getElement("forge-name");
 export const forgeLevel = getElement("forge-level");
 export const forgePercentage = getElement("forge-percentage");
+export const forgeDropPercentage = getElement("forge-drop-percentage");
 export const forgeRecord = getElement("forge-record");
 export const forgeBtnContainer = getElement("forge-btn-list");
 export const forgeStorageList = getElement("forge-storage-list");

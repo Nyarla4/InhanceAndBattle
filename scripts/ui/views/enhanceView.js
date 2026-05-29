@@ -137,6 +137,19 @@ export function renderEnhanceUI() {
     const currentGrade = totalLevels - currentIdx;
     if (UI.currentLevel) UI.currentLevel.textContent = currentGrade.toString();
     if (UI.enhancePercentage) UI.enhancePercentage.textContent = `확률: ${currentItem.percent}%`;
+    if (UI.dropPercentage) {
+        if (currentItem.dropPercentage > 0) {
+            if (!UI.dropPercentage.classList.contains('hidden')) {
+                UI.dropPercentage.classList.remove('hidden');
+                UI.dropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
+            }
+        }
+        else {
+            if (!UI.dropPercentage.classList.contains('hidden')) {
+                UI.dropPercentage.classList.add('hidden');
+            }
+        }
+    }
     
     const bestGrade = totalLevels - bestIdx;
     if (UI.enhanceRecord) UI.enhanceRecord.textContent = `최고 기록: ${bestGrade}강`;
@@ -288,6 +301,19 @@ export function renderForgeUI() {
     const currentGrade = totalLevels - currentIdx;
     if (UI.forgeLevel) UI.forgeLevel.textContent = `${currentGrade}강 (${currentIdx + 1}위)`;
     if (UI.forgePercentage) UI.forgePercentage.textContent = `성공 확률: ${currentItem.percent}%`;
+    if (UI.forgeDropPercentage) {
+        if (currentItem.dropPercentage > 0) {
+            if (!UI.forgeDropPercentage.classList.contains('hidden')) {
+                UI.forgeDropPercentage.classList.remove('hidden');
+                UI.forgeDropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
+            }
+        }
+        else {
+            if (!UI.forgeDropPercentage.classList.contains('hidden')) {
+                UI.forgeDropPercentage.classList.add('hidden');
+            }
+        }
+    }
     if (UI.forgeRecord) UI.forgeRecord.textContent = `최고 기록: ${totalLevels - bestIdx}강`;
 
     // 완강 시 인게임 강화 버튼 비활성화
