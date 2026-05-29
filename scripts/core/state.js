@@ -132,7 +132,9 @@ export function createBattleSession(stageData) {
         playerCreatures: [],
         enemyCreatures: [],
         stageData: stageData,
-        isGameOver: false
+        isGameOver: false,
+        playerSpawnX: 0,
+        enemySpawnX: 0
     };
     return currentGameState;
 }
