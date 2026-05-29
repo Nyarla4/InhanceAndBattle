@@ -1,6 +1,7 @@
 import * as UI from '../uiElements.js';
 import { sceneManager } from '../sceneManager.js';
 import stageData from '../../../json/stageData.json' with { type: 'json' };
+import { startBattle } from '../../game/battle.js';
 
 export function renderStageList() {
     if (!UI.stageList) return;
@@ -13,6 +14,7 @@ export function renderStageList() {
         
         btn.addEventListener('click', () => {
             sceneManager.showScreen(UI.stageScreen); // 배틀 화면 이동
+            startBattle(stage);
         });
         UI.stageList.appendChild(btn);
     });

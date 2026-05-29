@@ -8,6 +8,7 @@ import creaturesData from '../../json/creatures.json' with { type: 'json' };
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
 let isBattleRunning = false;
 let currentStage = null;
+let isEventBound = false; // 이벤트 중복 등록 방지용 플래그
 
 /** 전투 초기화 및 시작 인터페이스 (스테이지 선택 시 호출됨) */
 export function startBattle(stageData) {
@@ -23,6 +24,12 @@ export function startBattle(stageData) {
     };
 
     currentStage = createBattleSession(stageData, dimensions);
+
+    // 2. 이벤트 바인딩 (최초 1회만 등록)
+    if (!isEventBound) {
+        eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, handleStorageSummon);
+        isEventBound = true;
+    }
 
     // 2. 우측 30% 영역(강화/보관함) 뷰 초기화 및 렌더링
     // enhanceView.js에 정의된 initForgeView를 호출하여 state.js의 storage 데이터를 화면에 그림
@@ -48,35 +55,6 @@ function startBattleLoop() {
 
 export function stopBattleLoop() {
     isBattleRunning = false;
-}
-
-let isEventBound = false; // 이벤트 중복 등록 방지용 플래그
-export function startBattle(stageData) {
-    // 1. 뷰 레이어 치수 수집 및 세션 생성
-    const fieldEl = document.getElementById('field') || { clientWidth: 800 };
-    const pBaseEl = document.getElementById('playerBase') || { clientWidth: 100 };
-    const eBaseEl = document.getElementById('enemyBase') || { clientWidth: 100 };
-    
-    const dimensions = {
-        width: fieldEl.clientWidth,
-        playerBaseWidth: pBaseEl.clientWidth,
-        enemyBaseWidth: eBaseEl.clientWidth
-    };
-
-    currentStage = createBattleSession(stageData, dimensions);
-
-    // 2. 이벤트 바인딩 (최초 1회만 등록)
-    if (!isEventBound) {
-        eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, handleStorageSummon);
-        isEventBound = true;
-    }
-
-    // 3. 뷰 렌더링
-    initForgeView(); 
-
-    // 4. 전투 루프 시작
-    isBattleRunning = true;
-    startBattleLoop();
 }
 
 /** 보관함 개체 클릭 시 실행되는 소환 로직 
