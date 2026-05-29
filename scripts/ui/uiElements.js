@@ -38,7 +38,6 @@ export const stageList = getElement("stage-list");
 // 4. 인게임(전투) 내부 UI 구성요소
 export const inStage = getElement("battle-field-container");
 export const field = getElement("field");
-export const costSpan = getElement("cost");
 export const playerBase = getElement("playerBase");
 export const enemyBase = getElement("enemyBase");
 export const upgradeBtnContainer = getElement("upgrade-btn-list");

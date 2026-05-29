@@ -80,10 +80,7 @@ export function initEnhanceView() {
 
     eventBus.on(EVENTS.STORAGE_STATE_CHANGED, ({ currentCost }) => {
         // 1. 비용 UI 갱신
-        if (UI.costSpan) {
-            UI.costSpan.textContent = currentCost.toString();
-        }
-
+        
         // 2. 인게임 실시간 강화소 UI 리프레시
         renderForgeUI();
     })
