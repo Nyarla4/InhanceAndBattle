@@ -1,6 +1,5 @@
 import * as UI from '../uiElements.js';
 import { sceneManager } from '../sceneManager.js';
-import { startBattle } from '../../game/battle.js';
 import stageData from '../../../json/stageData.json' with { type: 'json' };
 
 export function renderStageList() {
