@@ -5,6 +5,7 @@ import { EVENTS } from "../core/config.js";
 import { eventBus } from "../core/eventBus.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' }; // 마스터 스탯 데이터
 import { summonCreature } from "./summon.js";
+import { getGameState } from "../core/state.js";
 
 // 배틀 세션 내부 상태 상태 관리 변수
 let stageTimer = 0;
@@ -76,7 +77,7 @@ export function initBattleEvents() {
     storageSummonUnsubscribe =
         eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, ({ itemId }) => {
             // 1. 시스템 구조체(배틀 세션) 검증
-            const gameState = window.currentGameState || null;
+            const gameState = getGameState();
             if (!gameState) {
                 console.error("현재 진행 중인 전투 데이터 세션을 찾을 수 없습니다.");
                 return;
@@ -138,7 +139,7 @@ export function startBattle(stageData) {
     // 에너미 스폰 스케줄 데이터 복사
     spawnQueue = JSON.parse(JSON.stringify(stageData.enemies));
     
-    // 필요 시 현재 전장 세션 상태 초기화 코드 추가 (window.currentGameState 설정 등)
+    startBattleLoop();
 }
 
 /** 메인 게임 루프 또는 프레임 업데이트에서 매번 호출해야 하는 스폰 타이머 함수 */

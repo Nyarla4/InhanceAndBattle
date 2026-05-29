@@ -117,3 +117,32 @@ export function downgradeGroupProgress(groupKey, maxIdx) {
     localStorage.setItem(`enhance_cur_${groupKey}`, enhanceState.levels[groupKey]);
     return true;
 }
+
+// [구조: 데이터 저장소] 외부에서 직접 수정할 수 없도록 내부(캡슐화) 변수로 관리
+let currentGameState = null;
+
+/** [구조: 세션 생성] 전투 시작 시 새로운 세션 데이터 구조 구축 */
+export function createBattleSession(stageData) {
+    currentGameState = {
+        cost: 0,
+        maxCost: stageData.maxCost || 1000,
+        playerHp: 1000,
+        playerMaxHp: 1000,
+        enemyHp: stageData.enemyBaseHp || 1000,
+        playerCreatures: [],
+        enemyCreatures: [],
+        stageData: stageData,
+        isGameOver: false
+    };
+    return currentGameState;
+}
+
+/** [구조: 데이터 제공] 안전한 조회를 위한 Getter */
+export function getGameState() {
+    return currentGameState;
+}
+
+/** [구조: 세션 종료] 전투 종료 시 메모리 해제 및 구조 초기화 */
+export function clearBattleSession() {
+    currentGameState = null;
+}

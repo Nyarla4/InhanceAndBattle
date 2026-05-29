@@ -391,3 +391,11 @@ function renderForgeStorageUI() {
         UI.forgeStorageList.appendChild(card);
     });
 }
+
+// 인게임 세션 중 데이터 변경 흐름을 감지하는 리스너 등록
+export function initBattleStorageListener() {
+    eventBus.on(EVENTS.STORAGE_STATE_CHANGED, () => {
+        // 앞서 구현한 현재 활성화된 보관함 화면(인게임 vs 메인) 분기 업데이트 함수 호출
+        renderForgeStorageUI(); 
+    });
+}
