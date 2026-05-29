@@ -49,7 +49,6 @@ export const enhanceName = getElement("enhance-name");
 export const currentLevel = getElement("current-level");
 export const enhancePercentage = getElement("enhance-percentage");
 export const dropPercentage = getElement("drop-percentage");
-export const enhanceRecord = getElement("enhance-record");
 export const storageList = getElement("storage-list");
 
 // 인게임(stage) 내 우측 '실시간 강화실' 전용 UI 엘리먼트 캐싱

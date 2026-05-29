@@ -122,7 +122,6 @@ export function renderEnhanceUI() {
         if (UI.dropPercentage) UI.dropPercentage.classList.add('hidden');
         
         const bestGrade = totalLevels - bestIdx;
-        if (UI.enhanceRecord) UI.enhanceRecord.textContent = `최고 기록: ${bestGrade}강`;
 
         if (upBtn instanceof HTMLButtonElement) {
             upBtn.disabled = true;
@@ -157,7 +156,6 @@ export function renderEnhanceUI() {
     }
     
     const bestGrade = totalLevels - bestIdx;
-    if (UI.enhanceRecord) UI.enhanceRecord.textContent = `최고 기록: ${bestGrade}강`;
 
     // 완강(최고등급 0번 인덱스) 도달 시 버튼 잠금 제어
     if (upBtn instanceof HTMLButtonElement) {
@@ -337,7 +335,6 @@ export function renderForgeUI() {
     //         }
     //     }
     // }
-    if (UI.forgeRecord) UI.forgeRecord.textContent = `최고 기록: ${totalLevels - bestIdx}강`;
 
     // 완강 시 인게임 강화 버튼 비활성화
     if (forgeUpBtn instanceof HTMLButtonElement) {

@@ -7,7 +7,6 @@ import { ENHANCE_GROUPS } from "./config.js";
 export const enhanceState = {
     currentGroup: 'nezming',
     levels: {},        // 그룹별 현재 강화 단계 (인덱스)
-    bestRecords: {},   // 그룹별 최고 기록
     storage: []        // 공유 보관함
 };
 
