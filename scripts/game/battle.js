@@ -138,8 +138,8 @@ export function startBattle(stageData) {
     currentStage = stageData;
     // 에너미 스폰 스케줄 데이터 복사
     spawnQueue = JSON.parse(JSON.stringify(stageData.enemies));
-    createBattleSession(currentStage)
-    startBattleLoop();
+    currentStage = createBattleSession(currentStage);
+    startBattleLoop(currentStage);
 }
 
 /** 메인 게임 루프 또는 프레임 업데이트에서 매번 호출해야 하는 스폰 타이머 함수 */
