@@ -131,9 +131,6 @@ export function renderEnhanceUI() {
             upBtn.disabled = true;
             upBtn.style.opacity = "0.5";
         }
-        if (!UI.dropPercentage.classList.contains('hidden')) {
-            UI.dropPercentage.classList.add('hidden');
-        }
         renderStorageUI();
         return;
     }
@@ -150,7 +147,7 @@ export function renderEnhanceUI() {
     if (UI.enhancePercentage) UI.enhancePercentage.textContent = `확률: ${currentItem.percent}%`;
     if (UI.dropPercentage) {
         if (currentItem.dropPercentage > 0) {
-            if (!UI.dropPercentage.classList.contains('hidden')) {
+            if (UI.dropPercentage.classList.contains('hidden')) {
                 UI.dropPercentage.classList.remove('hidden');
             }
             UI.dropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
