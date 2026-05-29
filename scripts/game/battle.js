@@ -5,7 +5,7 @@ import { EVENTS } from "../core/config.js";
 import { eventBus } from "../core/eventBus.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' }; // 마스터 스탯 데이터
 import { summonCreature } from "./summon.js";
-import { getGameState } from "../core/state.js";
+import { createBattleSession, getGameState } from "../core/state.js";
 
 // 배틀 세션 내부 상태 상태 관리 변수
 let stageTimer = 0;
@@ -138,7 +138,7 @@ export function startBattle(stageData) {
     currentStage = stageData;
     // 에너미 스폰 스케줄 데이터 복사
     spawnQueue = JSON.parse(JSON.stringify(stageData.enemies));
-    
+    createBattleSession(currentStage)
     startBattleLoop();
 }
 
