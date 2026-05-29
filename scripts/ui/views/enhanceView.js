@@ -2,7 +2,7 @@
 
 import * as UI from '../uiElements.js';
 import { tryUpgrade } from '../../game/enhancement.js';
-import { enhanceState, changeGroup, storeCurrentCreature, withdrawCreature, consumeStoredCreature, resetGroupProgress } from '../../core/state.js';
+import { enhanceState, changeGroup, storeCurrentCreature, withdrawCreature, consumeStoredCreature } from '../../core/state.js';
 import { summonCreature } from '../../game/summon.js'; // 📦 인게임 소환 연동
 import { eventBus } from '../../core/eventBus.js';
 import { EVENTS, ENHANCE_GROUPS } from '../../core/config.js';
@@ -250,15 +250,6 @@ export function initForgeView() {
         const groupKey = enhanceState.currentGroup;
         const result = storeCurrentCreature(groupKey);
         console.log(result.message);
-        renderForgeUI();
-    });
-
-    const forgeResetBtn = document.createElement('button');
-    forgeResetBtn.textContent = '🔄 강화 초기화';
-    forgeResetBtn.style.cssText = 'padding:6px; font-size:12px; background:#e74c3c; border:none; color:#fff; cursor:pointer; border-radius:4px;';
-    forgeResetBtn.addEventListener('click', () => {
-        const groupKey = enhanceState.currentGroup;
-        resetGroupProgress(groupKey);
         renderForgeUI();
     });
 
