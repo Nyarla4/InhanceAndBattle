@@ -250,7 +250,6 @@ export function initForgeView() {
 
     UI.forgeBtnContainer.appendChild(forgeUpgradeBtn);
     UI.forgeBtnContainer.appendChild(forgeStoreBtn);
-    UI.forgeBtnContainer.appendChild(forgeResetBtn);
 
     // 초기 화면 그리기
     renderForgeUI();
