@@ -114,6 +114,30 @@ export function renderEnhanceUI() {
         }
     });
 
+    if (!currentItem) {
+        if (UI.targetDisplay instanceof HTMLImageElement) {
+            UI.targetDisplay.src = '';
+            UI.targetDisplay.alt = '비었음';
+        }
+        if (UI.enhanceName) UI.enhanceName.textContent = '비었음';
+        if (UI.currentLevel) UI.currentLevel.textContent = '-';
+        if (UI.enhancePercentage) UI.enhancePercentage.textContent = '확률: -';
+        if (UI.dropPercentage) UI.dropPercentage.classList.add('hidden');
+        
+        const bestGrade = totalLevels - bestIdx;
+        if (UI.enhanceRecord) UI.enhanceRecord.textContent = `최고 기록: ${bestGrade}강`;
+
+        if (upBtn instanceof HTMLButtonElement) {
+            upBtn.disabled = true;
+            upBtn.style.opacity = "0.5";
+        }
+        if (!UI.dropPercentage.classList.contains('hidden')) {
+            UI.dropPercentage.classList.add('hidden');
+        }
+        renderStorageUI();
+        return;
+    }
+
     // 핵심 레이아웃 노드 데이터 매핑
     if (UI.targetDisplay instanceof HTMLImageElement) {
         UI.targetDisplay.src = currentItem.img;
@@ -277,6 +301,25 @@ export function renderForgeUI() {
             btn.style.color = '#fff';
         }
     });
+
+    if (!currentItem) {
+        if (UI.forgeDisplay instanceof HTMLImageElement) {
+            UI.forgeDisplay.src = '';
+            UI.forgeDisplay.alt = '비었음';
+        }
+        if (UI.forgeName) UI.forgeName.textContent = '비었음';
+        if (UI.forgeLevel) UI.forgeLevel.textContent = '-';
+        if (UI.forgePercentage) UI.forgePercentage.textContent = '성공 확률: -';
+        if (UI.forgeDropPercentage) UI.forgeDropPercentage.classList.add('hidden');
+        if (UI.forgeRecord) UI.forgeRecord.textContent = `최고 기록: ${totalLevels - bestIdx}강`;
+
+        if (forgeUpBtn instanceof HTMLButtonElement) {
+            forgeUpBtn.disabled = true;
+            forgeUpBtn.style.opacity = "0.5";
+        }
+        renderForgeStorageUI();
+        return;
+    }
 
     // 2. 인게임 전용 캐싱 노드에 데이터 출력
     if (UI.forgeDisplay instanceof HTMLImageElement) {
