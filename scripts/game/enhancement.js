@@ -8,6 +8,9 @@ export function tryUpgrade(groupKey) {
     const currentIdx = enhanceState.levels[groupKey];
     if (currentIdx === 0) return { success: false, message: "이미 최고 등급입니다!" };
 
+    const groupData = ENHANCE_GROUPS[groupKey];
+    const maxIdx = groupData.items.length - 1;
+
     const successChance = ENHANCE_GROUPS[groupKey].items[currentIdx].percent;
     const dropChance = ENHANCE_GROUPS[groupKey].items[currentIdx].antiPercent;
     const isSuccess = Math.random() * 100 <= successChance;
@@ -26,7 +29,6 @@ export function tryUpgrade(groupKey) {
         return { success: true, message: "강화 성공!" };
     } else {
         if (dropChance > 0) {
-            const maxIdx = ENHANCE_GROUPS[groupKey].items.length - 1;
             const isDrop = Math.random() * 100 <= dropChance;
             if (isDrop) {
                 const didDowngrade = downgradeGroupProgress(groupKey, maxIdx);

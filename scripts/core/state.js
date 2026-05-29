@@ -42,7 +42,8 @@ export function storeCurrentCreature(groupKey) {
         id: Date.now(), // 고유 ID 부여
         groupKey: groupKey,
         name: item.name,
-        img: item.img
+        img: item.img,
+        levelIdx: currentIdx
     };
 
     enhanceState.storage.push(storageItem);
