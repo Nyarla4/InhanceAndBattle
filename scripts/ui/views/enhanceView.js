@@ -152,8 +152,8 @@ export function renderEnhanceUI() {
         if (currentItem.dropPercentage > 0) {
             if (!UI.dropPercentage.classList.contains('hidden')) {
                 UI.dropPercentage.classList.remove('hidden');
-                UI.dropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
             }
+            UI.dropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
         }
         else {
             if (!UI.dropPercentage.classList.contains('hidden')) {
@@ -335,8 +335,8 @@ export function renderForgeUI() {
         if (currentItem.dropPercentage > 0) {
             if (!UI.forgeDropPercentage.classList.contains('hidden')) {
                 UI.forgeDropPercentage.classList.remove('hidden');
-                UI.forgeDropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
             }
+            UI.forgeDropPercentage.textContent = `하락 확률: ${currentItem.dropPercentage}%`;
         }
         else {
             if (!UI.forgeDropPercentage.classList.contains('hidden')) {
