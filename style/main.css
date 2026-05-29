@@ -136,6 +136,7 @@ h2 {
     flex: 7; /* 70% 영역 */
     position: relative;
     background-color: #87ceeb; /* 임시 필드 배경색 */
+    height: 100%;
 }
 
 /* ⚔️ 핵심: 디펜스 라인 필드 */
@@ -159,6 +160,7 @@ h2 {
     color: white;
     box-sizing: border-box;
     overflow-y: auto;
+    height: 100%;
 }
 
 #forge-storage-list {
