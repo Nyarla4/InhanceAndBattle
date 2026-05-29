@@ -93,7 +93,6 @@ export function initEnhanceView() {
 export function renderEnhanceUI() {
     const groupKey = enhanceState.currentGroup;
     const currentIdx = enhanceState.levels[groupKey];
-    const bestIdx = enhanceState.bestRecords[groupKey];
     
     const groupData = ENHANCE_GROUPS[groupKey];
     const currentItem = groupData.items[currentIdx];
@@ -121,8 +120,6 @@ export function renderEnhanceUI() {
         if (UI.enhancePercentage) UI.enhancePercentage.textContent = '확률: -';
         if (UI.dropPercentage) UI.dropPercentage.classList.add('hidden');
         
-        const bestGrade = totalLevels - bestIdx;
-
         if (upBtn instanceof HTMLButtonElement) {
             upBtn.disabled = true;
             upBtn.style.opacity = "0.5";
@@ -155,8 +152,6 @@ export function renderEnhanceUI() {
         }
     }
     
-    const bestGrade = totalLevels - bestIdx;
-
     // 완강(최고등급 0번 인덱스) 도달 시 버튼 잠금 제어
     if (upBtn instanceof HTMLButtonElement) {
         upBtn.disabled = (currentIdx === 0);
@@ -267,7 +262,6 @@ export function renderForgeUI() {
 
     const groupKey = enhanceState.currentGroup;
     const currentIdx = enhanceState.levels[groupKey];
-    const bestIdx = enhanceState.bestRecords[groupKey];
     
     const groupData = ENHANCE_GROUPS[groupKey];
     const currentItem = groupData.items[currentIdx];

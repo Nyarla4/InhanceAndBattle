@@ -15,9 +15,6 @@ export function initEnhancement() {
     Object.keys(ENHANCE_GROUPS).forEach(key => {
         const savedLevel = localStorage.getItem(`enhance_cur_${key}`);
         enhanceState.levels[key] = savedLevel ? parseInt(savedLevel) : ENHANCE_GROUPS[key].items.length - 1;
-        
-        const savedBest = localStorage.getItem(`enhance_best_${key}`);
-        enhanceState.bestRecords[key] = savedBest ? parseInt(savedBest) : ENHANCE_GROUPS[key].items.length - 1;
     });
 
     const savedStorage = localStorage.getItem("enhance_storage");
