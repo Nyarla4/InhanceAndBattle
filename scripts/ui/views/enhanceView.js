@@ -174,7 +174,7 @@ function renderStorageUI() {
         withdrawBtn.style.cssText = 'margin-top: 5px; font-size: 10px; padding: 2px 6px; background: #e67e22; border: none; color: white; cursor: pointer; border-radius:3px;';
         withdrawBtn.addEventListener('click', () => {
             const result = withdrawCreature(item.id);
-            alert(result.message);
+            //alert(result.message);
             renderEnhanceUI(); // 리프레시
         });
         
@@ -319,7 +319,7 @@ function renderForgeStorageUI() {
     UI.forgeStorageList.innerHTML = '';
 
     if (enhanceState.storage.length === 0) {
-        UI.forgeStorageList.innerHTML = '<p style="color:#7f8c8d; font-size:11px; margin:10px auto;">보관된 크리처가 없습니다.</p>';
+        UI.forgeStorageList.innerHTML = '<p style="color:#7f8c8d; font-size:11px; margin:10px auto;">보관된 개체가 없습니다.</p>';
         return;
     }
 

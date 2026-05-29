@@ -58,8 +58,21 @@ export function withdrawCreature(storageId) {
     if (findIdx === -1) return { success: false, message: "아이템 없음" };
 
     const item = enhanceState.storage[findIdx];
+    const groupKey = item.groupKey;
+    const maxIdx = ENHANCE_GROUPS[groupKey].items.length - 1;
     
-    // 현재 강화실이 최고 등급이 아니면 복귀 불가 처리 등 로직 추가 가능
+    if (enhanceState.levels[groupKey] !== maxIdx) {
+        return { 
+            success: false, 
+            message: "현재 강화실에 이미 강화 중인 개체가 있습니다. 먼저 보관하거나 복귀 시켜주세요." 
+        };
+    }
+
+    // 1. 핵심 구조(State) 복구: 강화실 현재 단계를 저장된 levelIdx로 변경
+    enhanceState.levels[groupKey] = item.levelIdx;
+    localStorage.setItem(`enhance_cur_${groupKey}`, item.levelIdx);
+
+    // 2. 보관함(창고) 배열에서 제거 및 로컬스토리지 저장
     enhanceState.storage.splice(findIdx, 1);
     localStorage.setItem("enhance_storage", JSON.stringify(enhanceState.storage));
     
