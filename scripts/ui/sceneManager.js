@@ -10,7 +10,8 @@ class SceneManager {
             UI.modeSelectorScreen,
             UI.stageSelectorScreen,
             UI.upgradeScreen,
-            UI.stageScreen
+            UI.stageScreen,
+            UI.dictionaryScreen
         ];
         this.initNetworkEvents();
     }

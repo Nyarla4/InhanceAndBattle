@@ -11,21 +11,24 @@ function getElement(id) {
 
 // 1. 화면(스크린) 컨테이너
 export const titleScreen = getElement("title");
-export const modeSelectorScreen = getElement("modeSelector"); // 추가
+export const modeSelectorScreen = getElement("modeSelector");
 export const stageSelectorScreen = getElement("stageSelector");
 export const stageScreen = getElement("stage"); // 인게임 전체 화면
 export const upgradeScreen = getElement("upgrade");
+export const dictionaryScreen = getElement("dictionary");
 export const settingsModal = getElement("settings");
 export const networkLoadingModal = getElement("network-loading"); // 추가
 
 // 2. 주요 제어 버튼들
 export const stageBtn = getElement("stage-btn");       // 타이틀 -> 모드선택 이동 버튼
 export const upgradeBtn = getElement("upgrade-btn");   // 타이틀 -> 강화실 이동 버튼
+export const dictionaryBtn = getElement("dictionary-btn");   // 타이틀 -> 도감 이동 버튼
 export const settingBtn = getElement("setting-btn");   // 설정 창 오픈 버튼
 export const closeSettingsBtn = getElement("close-settings");
 export const backBtn = getElement("back-btn");         // 강화실 -> 타이틀 공통 백버튼
 export const modeBackBtn = getElement("mode-back-btn"); // 모드선택 -> 타이틀 백버튼
 export const stageBackBtn = getElement("stage-back-btn"); // 스테이지선택 -> 모드선택 백버튼
+export const dictionaryBackBtn = getElement("dictionary-back-btn"); // 도감 -> 모드선택 백버튼
 
 // 3. 모드 선택 화면 버튼들
 export const soloModeBtn = getElement("solo-mode-btn");

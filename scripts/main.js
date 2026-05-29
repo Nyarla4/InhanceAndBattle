@@ -20,7 +20,7 @@ function initGame() {
     /* =================================================================
        2. 타이틀 화면 메인 버튼 이벤트 리스너
     ================================================================= */
-    
+
     // [출전하기] 버튼 클릭 -> 모드 선택 화면으로 이동
     UI.stageBtn.addEventListener('click', () => {
         sceneManager.showScreen(UI.modeSelectorScreen);
@@ -31,7 +31,9 @@ function initGame() {
         sceneManager.showScreen(UI.upgradeScreen);
         initEnhanceView(); // 🔥 매번 강화실 진입 시 활성화된 그룹(기본값 nezming) 상태로 화면 갱신
     });
-
+    UI.dictionaryBtn.addEventListener('click', () => {
+        sceneManager.showScreen(UI.dictionaryScreen);
+    });
     // [설정] 버튼 클릭 -> 설정 모달 팝업 열기
     UI.settingBtn.addEventListener('click', () => {
         UI.settingsModal.classList.remove('hidden');
@@ -46,7 +48,7 @@ function initGame() {
     /* =================================================================
        3. 각 화면별 뒤로가기(백버튼) 이벤트 리스너
     ================================================================= */
-    
+
     // 모드 선택 창 -> 타이틀 화면으로 돌아가기
     UI.modeBackBtn.addEventListener('click', () => {
         sceneManager.showScreen(UI.titleScreen);
@@ -61,6 +63,12 @@ function initGame() {
     if (UI.stageBackBtn) {
         UI.stageBackBtn.addEventListener('click', () => {
             sceneManager.showScreen(UI.modeSelectorScreen);
+        });
+    }
+
+    if (UI.dictionaryBackBtn) {
+        UI.dictionaryBackBtn.addEventListener('click', () => {
+            sceneManager.showScreen(UI.titleScreen);
         });
     }
 
