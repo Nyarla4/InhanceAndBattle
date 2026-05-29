@@ -50,7 +50,6 @@ export const currentLevel = getElement("current-level");
 export const enhancePercentage = getElement("enhance-percentage");
 export const enhanceRecord = getElement("enhance-record");
 export const storageList = getElement("storage-list");
-export var upBtn;
 
 // 인게임(stage) 내 우측 '실시간 강화실' 전용 UI 엘리먼트 캐싱
 export const forgeGroupList = getElement("forge-group-list");
@@ -61,6 +60,5 @@ export const forgePercentage = getElement("forge-percentage");
 export const forgeRecord = getElement("forge-record");
 export const forgeBtnContainer = getElement("forge-btn-list");
 export const forgeStorageList = getElement("forge-storage-list");
-export var forgeUpBtn;
 
 export const stageListContainer = getElement("stage-list");

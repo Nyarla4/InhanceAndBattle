@@ -23,6 +23,9 @@ function refreshActiveUI() {
     }
 }
 
+let upBtn;
+let forgeUpBtn;
+
 
 /* =================================================================
    2. [메인 메뉴] 일반 강화소 초기화 및 렌더링 (기존 유지/보완)
@@ -59,7 +62,7 @@ export function initEnhanceView() {
         //alert(result.message);
         renderEnhanceUI();
     });
-    UI.upBtn = goUpgradeBtn;
+    upBtn = goUpgradeBtn;
 
     const storeBtn = document.createElement('button');
     storeBtn.id = 'action-store-btn';
@@ -139,9 +142,9 @@ export function renderEnhanceUI() {
     if (UI.enhanceRecord) UI.enhanceRecord.textContent = `최고 기록: ${bestGrade}강`;
 
     // 완강(최고등급 0번 인덱스) 도달 시 버튼 잠금 제어
-    if (UI.upBtn instanceof HTMLButtonElement) {
-        UI.upBtn.disabled = (currentIdx === 0);
-        UI.upBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
+    if (upBtn instanceof HTMLButtonElement) {
+        upBtn.disabled = (currentIdx === 0);
+        upBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
     }
 
     // 메인 창고 목록 렌더링 호출
@@ -221,7 +224,7 @@ export function initForgeView() {
         console.log(result.message); // 전투의 흐름을 깨지 않기 위해 alert 대신 console 혹은 인게임 텍스트 로그 추천
         renderForgeUI();
     });
-    UI.forgeUpBtn = forgeUpgradeBtn;
+    forgeUpBtn = forgeUpgradeBtn;
 
     const forgeStoreBtn = document.createElement('button');
     forgeStoreBtn.id = 'forge-action-store-btn';
@@ -288,9 +291,9 @@ export function renderForgeUI() {
     if (UI.forgeRecord) UI.forgeRecord.textContent = `최고 기록: ${totalLevels - bestIdx}강`;
 
     // 완강 시 인게임 강화 버튼 비활성화
-    if (UI.forgeUpBtn instanceof HTMLButtonElement) {
-        UI.forgeUpBtn.disabled = (currentIdx === 0);
-        UI.forgeUpBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
+    if (forgeUpBtn instanceof HTMLButtonElement) {
+        forgeUpBtn.disabled = (currentIdx === 0);
+        forgeUpBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
     }
 
     // 3. 동일 공유 저장소를 기반으로 인게임 창고 목록 출력
