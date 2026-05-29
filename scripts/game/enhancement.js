@@ -12,7 +12,7 @@ export function tryUpgrade(groupKey) {
     const maxIdx = groupData.items.length - 1;
 
     const successChance = ENHANCE_GROUPS[groupKey].items[currentIdx].percent;
-    const dropChance = ENHANCE_GROUPS[groupKey].items[currentIdx].antiPercent;
+    const dropChance = ENHANCE_GROUPS[groupKey].items[currentIdx].dropPercentage;
     const isSuccess = Math.random() * 100 <= successChance;
 
     if (isSuccess) {
