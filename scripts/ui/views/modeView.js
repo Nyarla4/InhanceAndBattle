@@ -2,11 +2,13 @@
 import * as UI from '../uiElements.js';
 import { sceneManager } from '../sceneManager.js';
 import { socketClient } from '../../network/socketClient.js';
+import { renderStageList } from './stageSelectorView.js';
 
 export function initModeView() {
     // 솔로 모드 선택 시 -> 스테이지 선택창 오픈
     UI.soloModeBtn.addEventListener('click', () => {
         sceneManager.showScreen(UI.stageSelectorScreen);
+        renderStageList();
     });
 
     // 멀티 대전 모드 선택 시 -> 소켓 서버 접속 연동 시도
