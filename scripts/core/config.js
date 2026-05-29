@@ -171,27 +171,27 @@ export const ENHANCE_GROUPS = {
         items: [
             {
                 name: "마지나이 쿠로카",
-                img: "./img/slime/01_gold.png",
+                img: "./img/kuroka/majitomo01.png",
                 percent: 0
             },
             {
                 name: "되어있지않아",
-                img: "./img/slime/02_dia.png",
+                img: "./img/kuroka/majitomo02.png",
                 percent: 15
             },
             {
                 name: "준비가",
-                img: "./img/slime/03_metal.png",
+                img: "./img/kuroka/majitomo03.png",
                 percent: 35
             },
             {
                 name: "아직은",
-                img: "./img/slime/04_liquid.png",
+                img: "./img/kuroka/majitomo04.png",
                 percent: 60
             },
             {
                 name: "미안 마지토모",
-                img: "./img/slime/05_normal.png",
+                img: "./img/kuroka/majitomo05.png",
                 percent: 85
             }
         ]
