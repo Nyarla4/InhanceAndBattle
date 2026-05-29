@@ -3,7 +3,7 @@
 
 import { EVENTS } from "../core/config";
 import { eventBus } from "../core/eventBus";
-import creaturesData from '../../data/creatures.json' with { type: 'json' }; // 마스터 스탯 데이터
+import creaturesData from '../../json/creatures.json' with { type: 'json' }; // 마스터 스탯 데이터
 import { summonCreature } from "./summon";
 
 // 배틀 세션 내부 상태 상태 관리 변수
