@@ -161,6 +161,19 @@ h2 {
     box-sizing: border-box;
     overflow-y: auto;
     height: 100%;
+    overflow-x: hidden; /* 가로로 삐져나가는 현상 방지 */
+}
+
+#forge-display {
+    width: 100%;
+    object-fit: contain;
+    margin: 0 auto 10px;
+    display: block;
+}
+
+#forge-panel img {
+    max-width: 100%;
+    object-fit: contain;
 }
 
 #forge-storage-list {
