@@ -2,8 +2,7 @@
 
 import * as UI from '../uiElements.js';
 import { tryUpgrade } from '../../game/enhancement.js';
-import { enhanceState, changeGroup, storeCurrentCreature, withdrawCreature, consumeStoredCreature } from '../../core/state.js';
-import { summonCreature } from '../../game/summon.js'; // 📦 인게임 소환 연동
+import { enhanceState, changeGroup, storeCurrentCreature, withdrawCreature } from '../../core/state.js';
 import { eventBus } from '../../core/eventBus.js';
 import { EVENTS, ENHANCE_GROUPS } from '../../core/config.js';
 
@@ -77,13 +76,6 @@ export function initEnhanceView() {
 
     UI.upgradeBtnContainer.appendChild(goUpgradeBtn);
     UI.upgradeBtnContainer.appendChild(storeBtn);
-
-    eventBus.on(EVENTS.STORAGE_STATE_CHANGED, ({ currentCost }) => {
-        // 1. 비용 UI 갱신
-        
-        // 2. 인게임 실시간 강화소 UI 리프레시
-        renderForgeUI();
-    })
 
     // 최초 1회 화면 렌더링 시동
     renderEnhanceUI();

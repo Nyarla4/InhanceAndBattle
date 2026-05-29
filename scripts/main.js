@@ -5,7 +5,7 @@ import * as UI from './ui/uiElements.js';
 import { sceneManager } from './ui/sceneManager.js';
 import { initModeView } from './ui/views/modeView.js';
 import { initEnhancement } from './core/state.js';
-import { initEnhanceView } from './ui/views/enhanceView.js';
+import { initBattleStorageListener, initEnhanceView } from './ui/views/enhanceView.js';
 
 /** 게임 전체 시스템 초기화 및 시동 */
 function initGame() {
@@ -17,6 +17,9 @@ function initGame() {
     // 1. 하위 뷰 모듈 초기화 (솔로/멀티 모드 버튼 이벤트 바인딩)
     initModeView();
 
+    // 리스너 등록
+    initBattleStorageListener();
+    
     /* =================================================================
        2. 타이틀 화면 메인 버튼 이벤트 리스너
     ================================================================= */
