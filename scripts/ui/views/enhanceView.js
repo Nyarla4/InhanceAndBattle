@@ -66,7 +66,7 @@ export function initEnhanceView() {
 
     const storeBtn = document.createElement('button');
     storeBtn.id = 'action-store-btn';
-    storeBtn.textContent = '보관실 저장 (초기화)';
+    storeBtn.textContent = '보관하기';
     storeBtn.style.cssText = 'padding:10px 20px; font-size:16px; font-weight:bold; background:#9b59b6; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     storeBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
@@ -75,21 +75,8 @@ export function initEnhanceView() {
         renderEnhanceUI();
     });
 
-    const resetBtn = document.createElement('button');
-    resetBtn.id = 'action-reset-btn';
-    resetBtn.textContent = '진척도 리셋';
-    resetBtn.style.cssText = 'padding:10px 20px; font-size:16px; font-weight:bold; background:#e74c3c; border:none; color:#fff; cursor:pointer; border-radius:4px;';
-    resetBtn.addEventListener('click', () => {
-        if(confirm("정말로 현재 그룹의 강화 단계를 초기화하시겠습니까? (보관실은 유지)")) {
-            const groupKey = enhanceState.currentGroup;
-            resetGroupProgress(groupKey);
-            renderEnhanceUI();
-        }
-    });
-
     UI.upgradeBtnContainer.appendChild(goUpgradeBtn);
     UI.upgradeBtnContainer.appendChild(storeBtn);
-    UI.upgradeBtnContainer.appendChild(resetBtn);
 
     eventBus.on(EVENTS.STORAGE_STATE_CHANGED, ({ currentCost }) => {
         // 1. 비용 UI 갱신
@@ -187,7 +174,7 @@ function renderStorageUI() {
         withdrawBtn.style.cssText = 'margin-top: 5px; font-size: 10px; padding: 2px 6px; background: #e67e22; border: none; color: white; cursor: pointer; border-radius:3px;';
         withdrawBtn.addEventListener('click', () => {
             const result = withdrawCreature(item.id);
-            //alert(result.message);
+            alert(result.message);
             renderEnhanceUI(); // 리프레시
         });
         
@@ -241,7 +228,7 @@ export function initForgeView() {
 
     const forgeStoreBtn = document.createElement('button');
     forgeStoreBtn.id = 'forge-action-store-btn';
-    forgeStoreBtn.textContent = '📦 창고 보관 (초기화)';
+    forgeStoreBtn.textContent = '보관하기';
     forgeStoreBtn.style.cssText = 'padding:8px; font-size:13px; font-weight:bold; background:#9b59b6; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     forgeStoreBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
