@@ -180,3 +180,45 @@ export function updateStageSpawner(deltaTime, gameState) {
         }
     }
 }
+
+/** 💡 1. 유닛 이동 로직 추가 (방향성 반영) */
+function moveCreature(creature, isPlayerSide, deltaTime) {
+    const speed = creature.data.moveSpeed * (deltaTime / 1000); // 초당 이동 거리 계산
+    if (isPlayerSide) {
+        creature.position -= speed; // 아군은 우측에서 좌측으로 (X 감소)
+    } else {
+        creature.position += speed; // 적군은 좌측에서 우측으로 (X 증가)
+    }
+    creature.element.style.left = `${creature.position}px`;
+}
+
+/** 💡 4. 진행되지 않던 배틀 루프(Ticker) 활성화 흐름 추가 */
+let isBattleRunning = false;
+let lastFrameTime = 0;
+
+export function startBattleLoop(gameState) {
+    isBattleRunning = true;
+    lastFrameTime = performance.now();
+    
+    // 초기 스폰 위치 설정 (아군은 우측 끝 계산, 적군은 좌측 0점 기준)
+    gameState.playerSpawnX = field.clientWidth - playerBase.clientWidth;
+    gameState.enemySpawnX = enemyBase.clientWidth;
+
+    function loop(now) {
+        if (!isBattleRunning) return;
+        
+        const deltaTime = now - lastFrameTime;
+        lastFrameTime = now;
+
+        // 아군/적군 실시간 프레임 업데이트 실행
+        updateCreatures(gameState.playerCreatures, gameState.enemyCreatures, true, now, deltaTime, gameState);
+        updateCreatures(gameState.enemyCreatures, gameState.playerCreatures, false, now, deltaTime, gameState);
+
+        requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+}
+
+export function stopBattleLoop() {
+    isBattleRunning = false;
+}

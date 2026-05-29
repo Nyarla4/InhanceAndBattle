@@ -179,8 +179,17 @@ h2 {
     font-weight: bold;
     border: 3px solid #34495e;
 }
-#playerBase { left: 0; background-color: #27ae60; border-radius: 0 20px 0 0; }
-#enemyBase { right: 0; background-color: #c0392b; border-radius: 20px 0 0 0; }
+
+#playerBase { 
+    right: 0; 
+    background-color: #27ae60; 
+    border-radius: 20px 0 0 0; 
+}
+#enemyBase { 
+    left: 0; 
+    background-color: #c0392b; 
+    border-radius: 0 20px 0 0; 
+}
 
 /* 🐹 소환되는 개체(Creature) 스타일 */
 .creature {
