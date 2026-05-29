@@ -1,10 +1,10 @@
 // 유닛 이동/전투 및 베이스 파괴 판정
 // scripts/game/battle.js
 
-import { EVENTS } from "../core/config";
-import { eventBus } from "../core/eventBus";
+import { EVENTS } from "../core/config.js";
+import { eventBus } from "../core/eventBus.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' }; // 마스터 스탯 데이터
-import { summonCreature } from "./summon";
+import { summonCreature } from "./summon.js";
 
 // 배틀 세션 내부 상태 상태 관리 변수
 let stageTimer = 0;
