@@ -14,7 +14,6 @@ export function renderStageList() {
         
         btn.addEventListener('click', () => {
             sceneManager.showScreen(UI.stageScreen); // 배틀 화면 이동
-            startBattle(stage); // 배틀 루프 초기화 및 시작
         });
         UI.stageList.appendChild(btn);
     });

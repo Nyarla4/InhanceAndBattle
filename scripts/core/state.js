@@ -122,7 +122,7 @@ export function downgradeGroupProgress(groupKey, maxIdx) {
 let currentGameState = null;
 
 /** [구조: 세션 생성] 전투 시작 시 새로운 세션 데이터 구조 구축 */
-export function createBattleSession(stageData) {
+export function createBattleSession(stageData, fieldDimensions = { width: 800, playerBaseWidth: 100, enemyBaseWidth: 100 }) {
     currentGameState = {
         cost: 0,
         maxCost: stageData.maxCost || 1000,
@@ -133,8 +133,11 @@ export function createBattleSession(stageData) {
         enemyCreatures: [],
         stageData: stageData,
         isGameOver: false,
-        playerSpawnX: 0,
-        enemySpawnX: 0
+        playerSpawnX: fieldDimensions.width - fieldDimensions.playerBaseWidth,
+        enemySpawnX: fieldDimensions.enemyBaseWidth,
+        fieldWidth: fieldDimensions.width,
+        playerBaseWidth: fieldDimensions.playerBaseWidth,
+        enemyBaseWidth: fieldDimensions.enemyBaseWidth
     };
     return currentGameState;
 }
