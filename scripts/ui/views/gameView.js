@@ -1,6 +1,6 @@
 // scripts/ui/views/gameView.js
 
-import { enemyBaseHp, field, playerBaseHp } from '../uiElements.js';
+import { enemyBaseHp, field, playerBaseHp, battleResultPanel, battleResultMessage } from '../uiElements.js';
 
 const ENEMY_FALLBACK_IMAGE = './img/default_enemy.png';
 
@@ -103,4 +103,16 @@ export function setCreatureIdleView(creature) {
 export function renderBaseHp(currentStage, playerMaxHp, enemyMaxHp) {
     playerBaseHp.textContent = `${currentStage.playerHp}/${playerMaxHp}`
     enemyBaseHp.textContent = `${currentStage.enemyHp}/${enemyMaxHp}`
+}
+
+/** 전투 결과창 출력 */
+export function showBattleResult(isVictory) {
+   if (!battleResultPanel) return;
+    
+    // 텍스트 흐름 변경
+    battleResultMessage.textContent = isVictory ? "STAGE CLEAR!" : "GAME OVER...";
+    battleResultMessage.style.color = isVictory ? "#2ecc71" : "#e74c3c";
+
+    // 패널 노출
+    battleResultPanel.classList.remove('hidden');
 }

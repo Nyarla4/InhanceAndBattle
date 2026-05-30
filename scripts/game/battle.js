@@ -5,8 +5,9 @@ import { consumeStoredCreature, createBattleSession, enhanceState, getGameState 
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
-import { removeCreatureView, renderBaseHp, renderCreature, setCreatureAttackView, setCreatureIdleView, updateCreatureView } from '../ui/views/gameView.js';
-import { field, playerBase, enemyBase, stageScreen } from "../ui/uiElements.js";
+import { removeCreatureView, renderBaseHp, renderCreature, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
+import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen } from "../ui/uiElements.js";
+import { sceneManager } from "../ui/sceneManager.js";
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
 let isBattleRunning = false;
@@ -41,6 +42,13 @@ export function startBattle(stageData) {
     // 2. 이벤트 바인딩 (최초 1회만 등록)
     if (!isEventBound) {
         eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, handleStorageSummon);
+        resultStageBtn.addEventListener('click', () => {
+            sceneManager.showScreen(stageSelectorScreen);
+        });
+        
+        resultTitleBtn.addEventListener('click', () => {
+            sceneManager.showScreen(titleScreen);
+        });
         isEventBound = true;
     }
 
@@ -236,10 +244,12 @@ function checkGameOver() {
     if (currentStage.enemyHp <= 0) {
         // 플레이어 승리
         isBattleRunning = false;
+        showBattleResult(true);
     }
     else if (currentStage.playerHp <= 0) {
         // 적 승리
         isBattleRunning = false;
+        showBattleResult(false);
     }
 }
 

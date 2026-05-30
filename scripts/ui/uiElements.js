@@ -63,3 +63,9 @@ export const forgeStorageList = getElement("forge-storage-list");
 
 
 export const loadingText = getElement("loading-text");
+
+// 결과창 엘리멘트
+export const battleResultPanel = document.getElementById('battle-result-panel');
+export const battleResultMessage = document.getElementById('battle-result-message');
+export const resultStageBtn = document.getElementById('result-stage-btn');
+export const resultTitleBtn = document.getElementById('result-title-btn');
