@@ -14,6 +14,8 @@ let currentStage = null;
 let isEventBound = false; // 이벤트 중복 등록 방지용 플래그
 let lastFrameTime = 0;
 let animationFrameId = null;
+let playerMaxHp = 0;
+let enemyMaxHp = 0;
 
 /** 전투 초기화 및 시작 인터페이스 (스테이지 선택 시 호출됨) */
 export function startBattle(stageData) {
@@ -43,7 +45,9 @@ export function startBattle(stageData) {
     // enhanceView.js에 정의된 initForgeView를 호출하여 state.js의 storage 데이터를 화면에 그림
     initForgeView();
     renderForgeUI();
-    renderBaseHp(currentStage, stageData);
+    playerMaxHp = currentStage.playerMaxHp;
+    enemyBaseHp = stageData.enemyBaseHp || 1000;
+    renderBaseHp(currentStage, playerMaxHp, enemyBaseHp);
 
     // 3. 전투 루프 시작    
     startBattleLoop();
@@ -178,7 +182,7 @@ function attackBase(creature) {
         currentStage.playerHp -= damage;
         console.log(`💥 적군 -> 아군 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.playerHp})`);
     }
-    renderBaseHp(currentStage, stageData);
+    renderBaseHp(currentStage, playerMaxHp, enemyBaseHp);
 }
 
 /** 공격 연산 처리 및 콘솔 출력 */

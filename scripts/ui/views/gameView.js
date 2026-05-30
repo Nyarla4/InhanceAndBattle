@@ -72,7 +72,7 @@ export function setCreatureIdleView(creature) {
     imgEl.src = creature.data.idle;
 }
 
-export function renderBaseHp(currentStage, stageData) {
-    playerBaseHp.textContent = `${currentStage.playerHp}/${currentStage.playerMaxHp}`
-    enemyBaseHp.textContent = `${currentStage.enemyHp}/${stageData.enemyBaseHp || 1000}`
+export function renderBaseHp(currentStage, playerMaxHp, enemyBaseHp) {
+    playerBaseHp.textContent = `${currentStage.playerHp}/${playerMaxHp}`
+    enemyBaseHp.textContent = `${currentStage.enemyHp}/${enemyBaseHp}`
 }
