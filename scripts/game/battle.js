@@ -219,6 +219,8 @@ function createDebugEnemySpawnButton() {
             position: currentStage.enemySpawnX // 적측 시작 좌표
         };
 
+        data.id = "enemy_01";
+
         // 생성된 적 개체 추가
         currentStage.enemyCreatures.push(newEnemy);
         renderCreature(newEnemy, currentStage.enemyCreatures);
