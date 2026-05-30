@@ -6,8 +6,22 @@
       "enemyBaseHp": 1000,
       "maxCost": 1000,
       "enemies": [
-        { "id": "enemy_01", "name": "임시 적1", "spawnTime": 5000, "count": 5 },
-        { "id": "enemy_02", "name": "임시 적2", "spawnTime": 15000, "count": 2 }
+        {
+          "id": "enemy_01",
+          "spawnTime": 5000
+        },
+        {
+          "id": "enemy_01",
+          "spawnTime": 7000
+        },
+        {
+          "id": "enemy_01",
+          "spawnTime": 9000
+        },
+        {
+          "id": "enemy_02",
+          "spawnTime": 11000
+        }
       ],
       "rewards": {
         "exp": 100,
@@ -20,11 +34,28 @@
       "enemyBaseHp": 3000,
       "maxCost": 2000,
       "enemies": [
-        { "id": "enemy_03", "name": "임시 적3", "spawnTime": 3000, "count": 10 }
+        {
+          "id": "enemy_01",
+          "spawnTime": 5000
+        },
+        {
+          "id": "enemy_01",
+          "spawnTime": 7000
+        },
+        {
+          "id": "enemy_02",
+          "spawnTime": 9000
+        },
+        {
+          "id": "enemy_03",
+          "spawnTime": 11000
+        }
       ],
       "rewards": {
         "exp": 500,
-        "items": ["rare_scroll"]
+        "items": [
+          "rare_scroll"
+        ]
       }
     }
   ]

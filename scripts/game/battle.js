@@ -17,6 +17,9 @@ let animationFrameId = null;
 let playerMaxHp = 0;
 let enemyMaxHp = 0;
 
+let stageTimer = 0; // 스폰 타이머
+let spawnQueue = []; // 스폰 큐
+
 /** 전투 초기화 및 시작 인터페이스 (스테이지 선택 시 호출됨) */
 export function startBattle(stageData) {
     // 1. 뷰 레이어의 치수 수집 및 세션 생성
@@ -45,9 +48,12 @@ export function startBattle(stageData) {
     // enhanceView.js에 정의된 initForgeView를 호출하여 state.js의 storage 데이터를 화면에 그림
     initForgeView();
     renderForgeUI();
+    
     playerMaxHp = currentStage.playerMaxHp;
     enemyMaxHp = stageData.enemyBaseHp || 1000;
     renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
+
+    spawnQueue = [...stageData.enemies];
 
     // 3. 전투 루프 시작    
     startBattleLoop();
@@ -64,6 +70,9 @@ function startBattleLoop() {
         // 델타타임
         const deltaTime = now - lastFrameTime;
         lastFrameTime = now;
+
+        // 2. 적군 스폰 스케줄 처리 (흐름: 데이터 상태 갱신)
+        updateStageSpawner(deltaTime, currentStage);
 
         // 이동 및 전투
         processCreatures(deltaTime, now);
@@ -93,8 +102,8 @@ function processCreatures(deltaTime, now) {
 
         // [흐름 1] 시각적 공격 연출 유지 시간 체크 및 복구
         if (creature.isAttackingVisual) {
-            const duration = creature.data.attackDuration || 200; 
-            
+            const duration = creature.data.attackDuration || 200;
+
             if (now - creature.lastAttackTime >= duration) {
                 creature.isAttackingVisual = false;
                 setCreatureIdleView(creature); // 뷰 레이어에 idle 상태 복구 요청
@@ -102,33 +111,33 @@ function processCreatures(deltaTime, now) {
         }
 
         // 적대 대상
-        const opponents = creature.isPlayer?enemies:players;
+        const opponents = creature.isPlayer ? enemies : players;
 
         // 사거리 내 대상
         const target = findTargetInRange(creature, opponents);
         const isBaseInRange = checkBaseInRange(creature);
         const isTargetExist = target.length > 0;
-        if(isTargetExist || isBaseInRange) { // 대상이 있는 경우: 이동 중지 및 쿨타임 체크
+        if (isTargetExist || isBaseInRange) { // 대상이 있는 경우: 이동 중지 및 쿨타임 체크
             if (!creature.lastAttackTime) creature.lastAttackTime = 0;
 
             if (now - creature.lastAttackTime >= creature.data.attackTerm) {
-                
-                if(isTargetExist) { // 대상이 있다면 대상 공격
+
+                if (isTargetExist) { // 대상이 있다면 대상 공격
                     attackTarget(creature, target);
-                    if(creature.data.canAttackMultipleTargets && isBaseInRange) { // 다중 공격이 가능한 경우 기지도 공격
+                    if (creature.data.canAttackMultipleTargets && isBaseInRange) { // 다중 공격이 가능한 경우 기지도 공격
                         attackBase(creature);
                     }
                 }
-                else if(isBaseInRange) { // 대상이 없고 기지가 있다면 기지 공격
+                else if (isBaseInRange) { // 대상이 없고 기지가 있다면 기지 공격
                     attackBase(creature);
                 }
 
-                
+
                 creature.lastAttackTime = now; // 쿨타임 초기화
                 creature.isAttackingVisual = true; // 공격 이미지로 변환 요청
                 setCreatureAttackView(creature); // 뷰 레이어에 attack 상태 전환 요청
             }
-        } else if(!creature.isAttackingVisual) { // 대상이 없고 공격 이미지가 아닌 경우에만 이동
+        } else if (!creature.isAttackingVisual) { // 대상이 없고 공격 이미지가 아닌 경우에만 이동
             // 초당 이동 속도 보정
             const moveDistance = creature.data.moveSpeed * (deltaTime / 1000);
 
@@ -150,10 +159,10 @@ function findTargetInRange(attacker, opponents) {
 
         // 절대값으로 거리 연산 (서로 마주보고 전진하므로 단순 좌표 차이 사용)
         const distance = Math.abs(attacker.position - opponent.position);
-        
+
         if (distance <= attacker.data.attackRange) {
             targets.push(opponent);
-            if(!attacker.data.canAttackMultipleTargets) // 다중 공격이 아닌 경우
+            if (!attacker.data.canAttackMultipleTargets) // 다중 공격이 아닌 경우
                 return targets; // 사거리 내에 들어온 첫 번째 대상 반환
         }
     }
@@ -164,17 +173,17 @@ function findTargetInRange(attacker, opponents) {
 function checkBaseInRange(creature) {
     // 아군의 목표는 적 기지 좌표(enemySpawnX), 적군의 목표는 아군 기지 좌표(playerSpawnX)
     const targetBasePos = creature.isPlayer ? currentStage.enemySpawnX : currentStage.playerSpawnX;
-    
+
     // 절대값으로 거리 연산
     const distance = Math.abs(creature.position - targetBasePos);
-    
+
     return distance <= creature.data.attackRange;
 }
 
 /** 기지 타격 처리 (상태값 변경 및 콘솔 출력) */
 function attackBase(creature) {
     const damage = creature.data.attackDamage;
-    
+
     if (creature.isPlayer) {
         currentStage.enemyHp -= damage;
         console.log(`💥 아군 -> 적 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.enemyHp})`);
@@ -224,7 +233,12 @@ function cleanupDeadCreatures() {
 
 /** 승패 판정 */
 function checkGameOver() {
-    // Todo: 적 기지 체력 0 되었는지 체크
+    if (currentStage.enemyHp <= 0) {
+        // 플레이어 승리
+    }
+    else if (currentStage.playerHp <= 0) {
+        // 적 승리
+    }
 }
 
 /** 데이터 변경 결과를 화면에 동기화 */
@@ -330,4 +344,44 @@ function createDebugEnemySpawnButton() {
     });
 
     stageScreen.appendChild(btn);
+}
+
+/** 스테이지 데이터에서 적 소환 처리 */
+function updateStageSpawner(deltaTime, gameState) {
+    if (spawnQueue.length === 0) return;
+    stageTimer += deltaTime;
+
+    // 배열 순회 중 요소를 삭제하기 위해 역순 순회
+    for (let i = spawnQueue.length - 1; i >= 0; i--) {
+        const spawnTarget = spawnQueue[i];
+        
+        if (stageTimer >= spawnTarget.spawnTime) {
+            const template = creaturesData[spawnTarget.id];
+            
+            if (template) {
+                // 1. 인스턴스 생성
+                const newEnemy = {
+                    id: Date.now() + Math.random(),
+                    data: template,
+                    hp: template.maxHp,
+                    isAlive: true,
+                    isPlayer: false,
+                    position: gameState.enemySpawnX,
+                    element: document.createElement('div'),
+                    isAttackingVisual: false
+                };
+
+                // (스프라이트 경로는 프로젝트 규칙에 맞게 맵핑)
+                newEnemy.data.idle = `./img/battle/${spawnTarget.id}_idle.png`;
+                newEnemy.data.attack = `./img/battle/${spawnTarget.id}_battle.png`;
+
+                // 2. 상태 반영 및 렌더링
+                gameState.enemyCreatures.push(newEnemy);
+                renderCreature(newEnemy, gameState.enemyCreatures);
+            }
+
+            // 3. 소환된 요소는 스케줄 큐에서 제거 (count 로직 삭제됨)
+            spawnQueue.splice(i, 1);
+        }
+    }
 }
