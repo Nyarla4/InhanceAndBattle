@@ -61,7 +61,7 @@ function startBattleLoop() {
         lastFrameTime = now;
 
         // 이동 및 전투
-        processCreatures(deltaTime);
+        processCreatures(deltaTime, now);
 
         // 죽은 개체 처리
         cleanupDeadCreatures();
@@ -78,20 +78,32 @@ function startBattleLoop() {
 }
 
 /** 개체별 이동 및 공격 처리 */
-function processCreatures(deltaTime) {
+function processCreatures(deltaTime, now) {
+    const players = currentStage.playerCreatures;
+    const enemies = currentStage.enemyCreatures;
     const allCreatures = [...currentStage.playerCreatures, ...currentStage.enemyCreatures];
 
     allCreatures.forEach(creature => {
         if (!creature.isAlive) return;
 
-        // 초당 이동 속도 보정
-        const moveDistance = creature.data.moveSpeed * (deltaTime / 1000);
+        // 적대 대상
+        const opponents = creature.isPlayer?enemies:players;
 
-        // TODO: 향후 공격 사거리 탐색 로직이 여기에 추가됩니다.
-        // 현재는 적 탐색 없이 앞으로 전진만 하도록 구현합니다.
-        const isAttacking = false;
+        // 사거리 내 대상
+        const target = findTargetInRange(creature, opponents);
+        
+        if(target.length > 0) { // 대상이 있는 경우: 이동 중지 및 쿨타임 체크
+            if (!creature.lastAttackTime) creature.lastAttackTime = 0;
 
-        if (!isAttacking) {
+            if (currentTime - creature.lastAttackTime >= creature.data.attackTerm) {
+                attackTarget(creature, target);
+                creature.lastAttackTime = currentTime; // 쿨타임 초기화
+            }
+        }
+        else { // 대상이 없는 경우: 전진
+            // 초당 이동 속도 보정
+            const moveDistance = creature.data.moveSpeed * (deltaTime / 1000);
+
             if (creature.isPlayer) {
                 creature.position -= moveDistance; // 아군은 우측에서 좌측으로 이동 (-)
             } else {
@@ -99,6 +111,36 @@ function processCreatures(deltaTime) {
             }
         }
     });
+}
+
+/** 사거리 내의 적 탐색 */
+function findTargetInRange(attacker, opponents) {
+    const targets = [];
+    for (let i = 0; i < opponents.length; i++) {
+        const opponent = opponents[i];
+        if (!opponent.isAlive) continue;
+
+        // 절대값으로 거리 연산 (서로 마주보고 전진하므로 단순 좌표 차이 사용)
+        const distance = Math.abs(attacker.position - opponent.position);
+        
+        if (distance <= attacker.data.attackRange) {
+            targets.push(opponent);
+            if(!attacker.data.canAttackMultipleTargets) // 다중 공격이 아닌 경우
+                return targets; // 사거리 내에 들어온 첫 번째 대상 반환
+        }
+    }
+    return targets; // 사거리 내에 들어온 모든 대상 반환
+}
+
+/** 공격 연산 처리 및 콘솔 출력 */
+function attackTarget(attacker, target) {
+    const damage = attacker.data.attackDamage;
+    target.hp -= damage;
+    
+    const attackerName = `[${attacker.isPlayer ? '아군' : '적군'}] ${attacker.data.name}`;
+    const targetName = `[${target.isPlayer ? '아군' : '적군'}] ${target.data.name}`;
+    
+    console.log(`⚔️ ${attackerName} -> ${targetName} 공격! (피해량: ${damage}, 남은 HP: ${Math.max(0, target.hp)})`);
 }
 
 /** 체력이 0 이하인 개체 처리 */
