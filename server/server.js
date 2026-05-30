@@ -64,7 +64,8 @@ wss.on('connection', (ws) => {
                     broadcastToOpponent(ws, {
                         type: 'OPPONENT_SPAWN',
                         creatureId: packet.creatureId,
-                        level: packet.level
+                        level: packet.level,
+                        syncId: packet.syncId
                     });
                     break;
                 case 'BASE_DAMAGE':

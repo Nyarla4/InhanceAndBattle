@@ -44,7 +44,7 @@ export function startBattle(stageData) {
         eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, (payload) => {
             const summonResult = handleStorageSummon(payload, currentStage, isBattleRunning);
             if (summonResult && socketClient.isConnected) {
-                socketClient.sendSpawnCreature(summonResult.creatureId, summonResult.level);
+                socketClient.sendSpawnCreature(summonResult.creatureId, summonResult.level, summonResult.syncId);
             }
         });
         eventBus.on('GAME_OPPONENT_SPAWN', (payload) => {

@@ -46,11 +46,11 @@ export function handleStorageSummon({ itemId }, gameState, isBattleRunning) {
     renderCreature(newCreature, gameState.playerCreatures);
 
     eventBus.emit(EVENTS.STORAGE_STATE_CHANGED, {});
-    return { creatureId, level: storageItem.levelIdx };
+    return { creatureId, level: storageItem.levelIdx, syncId: newCreature.id };
 }
 
 /** 네트워크로 수신한 상대 소환을 적군 개체로 반영 */
-export function summonOpponentCreature({ creatureId }, gameState) {
+export function summonOpponentCreature({ creatureId, level, syncId }, gameState) {
     if (!gameState) return false;
 
     const template = creaturesData[creatureId];
@@ -63,7 +63,8 @@ export function summonOpponentCreature({ creatureId }, gameState) {
         creatureId,
         template,
         isPlayer: false,
-        position: gameState.enemySpawnX
+        position: gameState.enemySpawnX,
+        syncId: syncId
     });
     newEnemy.isNetworkOpponent = true;
 
@@ -102,7 +103,7 @@ function summonEnemy(creatureId, gameState) {
     renderCreature(newEnemy, gameState.enemyCreatures);
 }
 
-function createCreatureInstance({ creatureId, template, isPlayer, position }) {
+function createCreatureInstance({ creatureId, template, isPlayer, position, syncId = null }) {
     const creatureData = {
         ...template,
         id: creatureId,
@@ -111,7 +112,8 @@ function createCreatureInstance({ creatureId, template, isPlayer, position }) {
     };
 
     return {
-        id: Date.now() + Math.random(),
+        // 멀티인 경우 syncId, 아닌 경우 기존 ID
+        id: syncId || (Date.now() + Math.random()),
         data: creatureData,
         hp: creatureData.maxHp,
         isPlayer,

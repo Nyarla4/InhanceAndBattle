@@ -129,8 +129,8 @@ class SocketClient {
     }
 
     /** 2. 내 유닛 소환 이벤트 상대방에게 동기화 요청 */
-    sendSpawnCreature(creatureId, level) {
-        this.sendPacket('SPAWN_CREATURE', { creatureId, level });
+    sendSpawnCreature(creatureId, level, syncId) {
+        this.sendPacket('SPAWN_CREATURE', { creatureId, level, syncId });
     }
 
     /** 3. 상대방 기지 타격(데미지 판정) 동기화 요청 */
@@ -198,7 +198,8 @@ class SocketClient {
                 // game/battle.js 또는 ui/views/gameView.js 등에서 구독하여 필드에 생성
                 eventBus.emit('GAME_OPPONENT_SPAWN', {
                     creatureId: packet.creatureId,
-                    level: packet.level
+                    level: packet.level,
+                    syncId: packet.syncId
                 });
                 break;
 
