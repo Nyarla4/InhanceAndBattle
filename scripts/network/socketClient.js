@@ -105,7 +105,7 @@ class SocketClient {
             roomCode,
             playerId: this.myPlayerId,
             nickname: this.myNickname,
-            enhanceLevel
+            enhanceLevel: enhanceLevel
         });
     }
 
