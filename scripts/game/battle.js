@@ -1,11 +1,11 @@
 // scripts/game/battle.js
 
 import { eventBus } from "../core/eventBus.js";
-import { consumeStoredCreature, createBattleSession, enhanceState, getGameState } from "../core/state.js";
+import { createBattleSession } from "../core/state.js";
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
-import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
-import { initBattleResult, removeCreatureView, renderBaseHp, renderCreature, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
+import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
+import { handleStorageSummon, initStageSpawnQueue, updateStageSpawner } from './summon.js';
 import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn, pauseModal, pauseBattleBtn, resumeBattleBtn, exitBattleBtn } from "../ui/uiElements.js";
 import { sceneManager } from "../ui/sceneManager.js";
 
@@ -17,9 +17,6 @@ let lastFrameTime = 0;
 let animationFrameId = null;
 let playerMaxHp = 0;
 let enemyMaxHp = 0;
-
-let stageTimer = 0; // 스폰 타이머
-let spawnQueue = []; // 스폰 큐
 
 let isPaused = false; // 일시정지중 여부
 
@@ -42,7 +39,9 @@ export function startBattle(stageData) {
 
     // 2. 이벤트 바인딩 (최초 1회만 등록)
     if (!isEventBound) {
-        eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, handleStorageSummon);
+        eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, (payload) => {
+            handleStorageSummon(payload, currentStage, isBattleRunning);
+        });
         resultStageBtn.addEventListener('click', () => {
             sceneManager.showScreen(stageSelectorScreen);
         });
@@ -80,9 +79,7 @@ export function startBattle(stageData) {
     renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
 
     initBattleResult();
-    stageTimer = 0;
-    spawnQueue = [];
-    spawnQueue = [...stageData.enemies];
+    initStageSpawnQueue(stageData.enemies);
 
     isPaused = false;
     if (!pauseModal.classList.contains('hidden')) {
@@ -331,97 +328,5 @@ export function stopBattleLoop() {
         creature.isAlive = false;
         removeCreatureView(creature);
         currentStage.enemyCreatures.splice(i, 1);
-    }
-}
-
-/** 보관함 개체 클릭 시 실행되는 소환 로직 
- * View에서 데이터 구조 결정을 하지 않고, 전달받은 ID를 기반으로 여기서 검증 및 처리합니다.
- */
-function handleStorageSummon({ itemId }) {
-    if (!currentStage || !isBattleRunning) return;
-
-    // 1. 데이터 검증 (Structure 조회)
-    const storageItem = enhanceState.storage.find(item => item.id === itemId);
-    if (!storageItem) return;
-
-    // 2. 마스터 데이터(JSON) 매핑: groupKey(예: nezming)와 levelIdx(예: 3)를 조합하여 ID 추론
-    const creatureId = `${storageItem.groupKey}_${storageItem.levelIdx}`;
-    const template = creaturesData[creatureId];
-
-    if (!template) {
-        console.error("데이터베이스에 해당 개체가 없습니다:", creatureId);
-        return;
-    }
-
-    // 3. 상태 변경: 보관함에서 영구 소모
-    const isConsumed = consumeStoredCreature(itemId);
-    if (!isConsumed) return;
-
-    // 4. 엔티티 인스턴스 생성 및 상태 편입
-    const newCreature = {
-        id: Date.now() + Math.random(), // 고유 인스턴스 식별자
-        data: template,
-        hp: template.maxHp,
-        isPlayer: true,
-        isAlive: true,
-        position: currentStage.playerSpawnX, // 우측 아군 기지 앞 좌표
-        element: document.createElement('div'),
-        currentVisualState: 'idle',
-        lastAttackTime: 0,
-        isAttackingVisual: false
-    };
-
-    // 스프라이트 경로 동적 할당
-    newCreature.data.id = creatureId;
-    newCreature.data.idle = `./img/battle/${creatureId}_idle.png`;
-    newCreature.data.attack = `./img/battle/${creatureId}_attack.png`;
-
-    currentStage.playerCreatures.push(newCreature);
-
-    // 5. DOM 렌더링 요청
-    renderCreature(newCreature, currentStage.playerCreatures);
-
-    // 6. UI 동기화 이벤트 발송 (보관함 뷰 갱신)
-    eventBus.emit(EVENTS.STORAGE_STATE_CHANGED, {});
-}
-
-/** 스테이지 데이터에서 적 소환 처리 */
-function updateStageSpawner(deltaTime, gameState) {
-    if (spawnQueue.length === 0) return;
-    stageTimer += deltaTime;
-
-    // 배열 순회 중 요소를 삭제하기 위해 역순 순회
-    for (let i = spawnQueue.length - 1; i >= 0; i--) {
-        const spawnTarget = spawnQueue[i];
-        
-        if (stageTimer >= spawnTarget.spawnTime) {
-            const template = creaturesData[spawnTarget.id];
-            
-            if (template) {
-                // 1. 인스턴스 생성
-                const newEnemy = {
-                    id: Date.now() + Math.random(),
-                    data: template,
-                    hp: template.maxHp,
-                    isAlive: true,
-                    isPlayer: false,
-                    position: gameState.enemySpawnX,
-                    element: document.createElement('div'),
-                    isAttackingVisual: false
-                };
-
-                // (스프라이트 경로는 프로젝트 규칙에 맞게 맵핑)
-                newEnemy.data.id = spawnTarget.id;
-                newEnemy.data.idle = `./img/battle/${spawnTarget.id}_idle.png`;
-                newEnemy.data.attack = `./img/battle/${spawnTarget.id}_battle.png`;
-
-                // 2. 상태 반영 및 렌더링
-                gameState.enemyCreatures.push(newEnemy);
-                renderCreature(newEnemy, gameState.enemyCreatures);
-            }
-
-            // 3. 소환된 요소는 스케줄 큐에서 제거 (count 로직 삭제됨)
-            spawnQueue.splice(i, 1);
-        }
     }
 }
