@@ -1,6 +1,6 @@
 // scripts/ui/views/gameView.js
 
-import { field } from '../uiElements.js';
+import { enemyBaseHp, field, playerBaseHp } from '../uiElements.js';
 
 /** 개체(아군/적군)를 필드 DOM에 추가 */
 export function renderCreature(creature, sameSideCreatures) {

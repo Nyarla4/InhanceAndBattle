@@ -6,7 +6,7 @@ import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
 import { removeCreatureView, renderBaseHp, renderCreature, setCreatureAttackView, setCreatureIdleView, updateCreatureView } from '../ui/views/gameView.js';
-import { field, playerBase, enemyBase, stageScreen, playerBaseHp, enemyBaseHp } from "../ui/uiElements.js";
+import { field, playerBase, enemyBase, stageScreen } from "../ui/uiElements.js";
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
 let isBattleRunning = false;
