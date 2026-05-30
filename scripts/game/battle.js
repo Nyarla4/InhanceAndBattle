@@ -112,9 +112,7 @@ function processCreatures(deltaTime, now) {
                 creature.isAttackingVisual = true; // 공격 이미지로 변환 요청
                 setCreatureAttackView(creature); // 뷰 레이어에 attack 상태 전환 요청
             }
-        }
-
-        if(!creature.isAttackingVisual) { // 공격 이미지가 아닌 경우에만 이동
+        } else if(!creature.isAttackingVisual) { // 대상이 없고 공격 이미지가 아닌 경우에만 이동
             // 초당 이동 속도 보정
             const moveDistance = creature.data.moveSpeed * (deltaTime / 1000);
 
