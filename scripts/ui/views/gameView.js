@@ -6,15 +6,15 @@ import { field } from '../uiElements.js';
 export function renderCreature(creature, sameSideCreatures) {
     const count = sameSideCreatures.filter((target) => target.data.id === creature.data.id).length;
     const sidePrefix = creature.isPlayer ? "player" : "enemy";
-    
+
     creature.element.id = `${sidePrefix}-${creature.data.id}-${count}`;
     creature.element.className = "creature";
     creature.element.style.left = `${creature.position}px`;
-    
+
     // Y축 랜덤 오버랩 방지 (구조적 수치가 아닌 단순 시각적 렌더링 흐름)
-    creature.element.style.bottom = (Math.floor(Math.random() * 3) * 10) + "px"; 
+    creature.element.style.bottom = (Math.floor(Math.random() * 3) * 10) + "px";
     creature.element.innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}">`;
-    
+
     setCreatureImageDirection(creature);
     field.appendChild(creature.element);
 }
@@ -30,10 +30,10 @@ export function setCreatureImageDirection(creature) {
 /** 루프에서 개체 상태 동기화 */
 export function updateCreatureView(creature) {
     if (!creature.element) return;
-    
+
     // 1. 위치 이동 동기화
     creature.element.style.left = `${creature.position}px`;
-    
+
     // Todo: HP 바 갱신, 피격 이펙트 등 시각적 처리
 }
 

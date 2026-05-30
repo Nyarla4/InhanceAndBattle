@@ -6,6 +6,7 @@ import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
 import { removeCreatureView, renderCreature, updateCreatureView } from '../ui/views/gameView.js';
+import { stageScreen } from "../ui/uiElements.js";
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
 let isBattleRunning = false;
@@ -20,7 +21,7 @@ export function startBattle(stageData) {
     const fieldEl = document.getElementById('field') || { clientWidth: 800 };
     const pBaseEl = document.getElementById('playerBase') || { clientWidth: 100 };
     const eBaseEl = document.getElementById('enemyBase') || { clientWidth: 100 };
-    
+
     const dimensions = {
         width: fieldEl.clientWidth,
         playerBaseWidth: pBaseEl.clientWidth,
@@ -28,6 +29,9 @@ export function startBattle(stageData) {
     };
 
     currentStage = createBattleSession(stageData, dimensions);
+
+    // 테스트 버튼 추가
+    createDebugEnemySpawnButton();
 
     // 2. 이벤트 바인딩 (최초 1회만 등록)
     if (!isEventBound) {
@@ -51,11 +55,11 @@ function startBattleLoop() {
 
     function loop(now) {
         if (!isBattleRunning || !currentStage) return;
-        
+
         // 델타타임
         const deltaTime = now - lastFrameTime;
         lastFrameTime = now;
-        
+
         // 이동 및 전투
         processCreatures(deltaTime);
 
@@ -67,7 +71,7 @@ function startBattleLoop() {
 
         // 뷰 동기화
         syncView();
-        
+
         animationFrameId = requestAnimationFrame(loop);
     }
     animationFrameId = requestAnimationFrame(loop);
@@ -85,7 +89,7 @@ function processCreatures(deltaTime) {
 
         // TODO: 향후 공격 사거리 탐색 로직이 여기에 추가됩니다.
         // 현재는 적 탐색 없이 앞으로 전진만 하도록 구현합니다.
-        const isAttacking = false; 
+        const isAttacking = false;
 
         if (!isAttacking) {
             if (creature.isPlayer) {
@@ -179,12 +183,46 @@ function handleStorageSummon({ itemId }) {
     newCreature.data.id = creatureId;
     newCreature.data.idle = `./img/battle/${creatureId}_idle.png`;
     newCreature.data.attack = `./img/battle/${creatureId}_battle.png`;
-    
+
     currentStage.playerCreatures.push(newCreature);
 
     // 5. DOM 렌더링 요청
     renderCreature(newCreature, currentStage.playerCreatures);
-    
+
     // 6. UI 동기화 이벤트 발송 (보관함 뷰 갱신)
     eventBus.emit(EVENTS.STORAGE_STATE_CHANGED, {});
+}
+
+/** 테스트용 적 소환 버튼(추후 삭제) */
+function createDebugEnemySpawnButton() {
+    const buttonId = 'debug-spawn-enemy-btn';
+    if (document.getElementById(buttonId)) return;
+    const btn = document.createElement('button');
+    btn.id = buttonId;
+    btn.textContent = '적 소환 버튼(디버그)';
+    btn.style.cssText = 'position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px;';
+    btn.addEventListener('click', () => {
+        if (!currentStage) return;
+
+        const enemyData = creaturesData["enemy_01"];
+        if (!enemyData) {
+            console.error("enemy_01 데이터 없음");
+            return;
+        }
+
+        const newEnemy = {
+            id: Math.random().toString(36).substring(2, 9), // 고유 식별자 발급
+            data: enemyData,
+            hp: enemyData.maxHp,
+            isAlive: true,
+            isPlayer: false, // 적측 플래그
+            position: currentStage.enemySpawnX // 적측 시작 좌표
+        };
+
+        // 생성된 적 개체 추가
+        currentStage.enemyCreatures.push(newEnemy);
+        renderCreature(newEnemy, currentStage.enemyCreatures);
+    });
+
+    stageScreen.appendChild(btn);
 }
