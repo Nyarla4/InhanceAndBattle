@@ -133,14 +133,16 @@ function findTargetInRange(attacker, opponents) {
 }
 
 /** 공격 연산 처리 및 콘솔 출력 */
-function attackTarget(attacker, target) {
+function attackTarget(attacker, targets) {
     const damage = attacker.data.attackDamage;
-    target.hp -= damage;
-    
-    const attackerName = `[${attacker.isPlayer ? '아군' : '적군'}] ${attacker.data.name}`;
-    const targetName = `[${target.isPlayer ? '아군' : '적군'}] ${target.data.name}`;
-    
-    console.log(`⚔️ ${attackerName} -> ${targetName} 공격! (피해량: ${damage}, 남은 HP: ${Math.max(0, target.hp)})`);
+    for (const target in targets) {
+        target.hp -= damage;
+
+        const attackerName = `[${attacker.isPlayer ? '아군' : '적군'}] ${attacker.data.name}`;
+        const targetName = `[${target.isPlayer ? '아군' : '적군'}] ${target.data.name}`;
+
+        console.log(`⚔️ ${attackerName} -> ${targetName} 공격! (피해량: ${damage}, 남은 HP: ${Math.max(0, target.hp)})`);
+    }
 }
 
 /** 체력이 0 이하인 개체 처리 */
