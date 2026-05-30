@@ -4,7 +4,6 @@
       "id": "stage_01",
       "name": "평화로운 언덕",
       "enemyBaseHp": 1000,
-      "maxCost": 1000,
       "enemies": [
         {
           "id": "enemy_01",
@@ -32,7 +31,6 @@
       "id": "stage_02",
       "name": "불타는 강화실",
       "enemyBaseHp": 3000,
-      "maxCost": 2000,
       "enemies": [
         {
           "id": "enemy_01",

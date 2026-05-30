@@ -120,8 +120,6 @@ let currentGameState = null;
 /** [구조: 세션 생성] 전투 시작 시 새로운 세션 데이터 구조 구축 */
 export function createBattleSession(stageData, fieldDimensions = { width: 800, playerBaseWidth: 100, enemyBaseWidth: 100 }) {
     currentGameState = {
-        cost: 0,
-        maxCost: stageData.maxCost || 1000,
         playerHp: 1000,
         playerMaxHp: 1000,
         enemyHp: stageData.enemyBaseHp || 1000,
