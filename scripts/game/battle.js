@@ -90,7 +90,7 @@ function processCreatures(deltaTime, now) {
         if (creature.isAttackingVisual) {
             const duration = creature.data.attackDuration || 200; 
             
-            if (currentTime - creature.lastAttackTime >= duration) {
+            if (now - creature.lastAttackTime >= duration) {
                 creature.isAttackingVisual = false;
                 setCreatureIdleView(creature); // 뷰 레이어에 idle 상태 복구 요청
             }
