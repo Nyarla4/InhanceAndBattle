@@ -216,7 +216,8 @@ function createDebugEnemySpawnButton() {
             hp: enemyData.maxHp,
             isAlive: true,
             isPlayer: false, // 적측 플래그
-            position: currentStage.enemySpawnX // 적측 시작 좌표
+            position: currentStage.enemySpawnX, // 적측 시작 좌표
+            element: document.createElement('div'), // DOM 개체
         };
 
         newEnemy.data.id = "enemy_01";
