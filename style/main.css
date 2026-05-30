@@ -238,7 +238,8 @@ h2 {
 }
 
 #battle-field-container {
-    flex: 7; /* 70% 영역 */
+    flex-shrink: 0; /* 필드가 좁아지지 않도록 고정 */
+    width: 660px; /* 너비 고정 */
     position: relative;
     background-color: #87ceeb; /* 임시 필드 배경색 */
     height: 100%;
@@ -249,8 +250,7 @@ h2 {
 
 /* ⚔️ 핵심: 디펜스 라인 필드 */
 #field {
-    flex-shrink: 0; /* 필드가 좁아지지 않도록 고정 */
-    width: 660px; /* 너비 고정 */
+    width: 100%;
     background-color: #34495e;
     background-image: linear-gradient(#7b94ad 70%, #2c3e50 70%); /* 하늘과 땅 분할 연출 */
     height: 100%;
