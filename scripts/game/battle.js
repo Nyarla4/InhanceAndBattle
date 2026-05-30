@@ -95,9 +95,9 @@ function processCreatures(deltaTime, now) {
         if(target.length > 0) { // 대상이 있는 경우: 이동 중지 및 쿨타임 체크
             if (!creature.lastAttackTime) creature.lastAttackTime = 0;
 
-            if (currentTime - creature.lastAttackTime >= creature.data.attackTerm) {
+            if (now - creature.lastAttackTime >= creature.data.attackTerm) {
                 attackTarget(creature, target);
-                creature.lastAttackTime = currentTime; // 쿨타임 초기화
+                creature.lastAttackTime = now; // 쿨타임 초기화
             }
         }
         else { // 대상이 없는 경우: 전진
