@@ -182,7 +182,7 @@ function handleStorageSummon({ itemId }) {
     // 스프라이트 경로 동적 할당
     newCreature.data.id = creatureId;
     newCreature.data.idle = `./img/battle/${creatureId}_idle.png`;
-    newCreature.data.attack = `./img/battle/${creatureId}_battle.png`;
+    newCreature.data.attack = `./img/battle/${creatureId}_attack.png`;
 
     currentStage.playerCreatures.push(newCreature);
 
@@ -221,6 +221,8 @@ function createDebugEnemySpawnButton() {
         };
 
         newEnemy.data.id = "enemy_01";
+        newEnemy.data.idle = `./img/default_enemy.png`;
+        newEnemy.data.attack = 'invert';
 
         // 생성된 적 개체 추가
         currentStage.enemyCreatures.push(newEnemy);
