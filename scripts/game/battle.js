@@ -138,6 +138,7 @@ function handleOpponentLeft() {
     eventBus.off("MULTIPLAYER_OPPONENT_LEFT", handleOpponentLeft);
 }
 
+// 전체화면 가로 처리
 function applyLandscapeLock() {
     const isMobile = window.matchMedia('(pointer: coarse)').matches;
     if (!isMobile) return;
@@ -314,7 +315,9 @@ function attackBase(creature) {
         }
         console.log(`💥 아군 -> 적 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.enemyHp})`);
     } else {
-        currentStage.playerHp -= damage;
+        if (!socketClient.isConnected) {
+            currentStage.playerHp -= damage;
+        }
         console.log(`💥 적군 -> 아군 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.playerHp})`);
     }
     renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
