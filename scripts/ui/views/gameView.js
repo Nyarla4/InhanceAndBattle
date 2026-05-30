@@ -2,7 +2,7 @@
 
 import { enemyBaseHp, field, playerBaseHp } from '../uiElements.js';
 
-const ENEMY_FALLBACK_IMAGE = '../../../img/default_enemy.png';
+const ENEMY_FALLBACK_IMAGE = './img/default_enemy.png';
 
 /** 개체(아군/적군)를 필드 DOM에 추가 */
 export function renderCreature(creature, sameSideCreatures) {
