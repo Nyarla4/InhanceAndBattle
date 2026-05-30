@@ -61,7 +61,7 @@ export function startBattle(stageData) {
 
         exitBattleBtn.addEventListener('click', () => {
             isPaused = false;
-            UI.pauseModal.classList.add('hidden');
+            pauseModal.classList.add('hidden');
             stopBattleLoop();
             sceneManager.showScreen(stageSelectorScreen);
         });
