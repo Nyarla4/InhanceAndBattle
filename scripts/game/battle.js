@@ -36,9 +36,6 @@ export function startBattle(stageData) {
 
     currentStage = createBattleSession(stageData, dimensions);
 
-    // 테스트 버튼 추가
-    createDebugEnemySpawnButton();
-
     // 2. 이벤트 바인딩 (최초 1회만 등록)
     if (!isEventBound) {
         eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, handleStorageSummon);
@@ -62,7 +59,8 @@ export function startBattle(stageData) {
     renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
 
     initBattleResult();
-
+    stageTimer = 0;
+    spawnQueue = [];
     spawnQueue = [...stageData.enemies];
 
     // 3. 전투 루프 시작    
@@ -333,46 +331,6 @@ function handleStorageSummon({ itemId }) {
 
     // 6. UI 동기화 이벤트 발송 (보관함 뷰 갱신)
     eventBus.emit(EVENTS.STORAGE_STATE_CHANGED, {});
-}
-
-/** 테스트용 적 소환 버튼(추후 삭제) */
-function createDebugEnemySpawnButton() {
-    const buttonId = 'debug-spawn-enemy-btn';
-    if (document.getElementById(buttonId)) return;
-    const btn = document.createElement('button');
-    btn.id = buttonId;
-    btn.textContent = '적 소환 버튼(디버그)';
-    btn.style.cssText = 'position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px;';
-    btn.addEventListener('click', () => {
-        if (!currentStage) return;
-
-        const enemyData = creaturesData["enemy_01"];
-        if (!enemyData) {
-            console.error("enemy_01 데이터 없음");
-            return;
-        }
-
-        const newEnemy = {
-            id: Math.random().toString(36).substring(2, 9), // 고유 식별자 발급
-            data: enemyData,
-            hp: enemyData.maxHp,
-            isAlive: true,
-            isPlayer: false, // 적측 플래그
-            position: currentStage.enemySpawnX, // 적측 시작 좌표
-            element: document.createElement('div'), // DOM 개체
-            isAttackingVisual: false
-        };
-
-        newEnemy.data.id = "enemy_01";
-        newEnemy.data.idle = `./img/default_enemy.png`;
-        newEnemy.data.attack = 'invert';
-
-        // 생성된 적 개체 추가
-        currentStage.enemyCreatures.push(newEnemy);
-        renderCreature(newEnemy, currentStage.enemyCreatures);
-    });
-
-    stageScreen.appendChild(btn);
 }
 
 /** 스테이지 데이터에서 적 소환 처리 */
