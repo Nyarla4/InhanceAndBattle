@@ -5,12 +5,14 @@ import { consumeStoredCreature, createBattleSession, enhanceState, getGameState 
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
-import { renderCreature } from '../ui/views/gameView.js';
+import { removeCreatureView, renderCreature, updateCreatureView } from '../ui/views/gameView.js';
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
 let isBattleRunning = false;
 let currentStage = null;
 let isEventBound = false; // 이벤트 중복 등록 방지용 플래그
+let lastFrameTime = 0;
+let animationFrameId = null;
 
 /** 전투 초기화 및 시작 인터페이스 (스테이지 선택 시 호출됨) */
 export function startBattle(stageData) {
@@ -38,25 +40,103 @@ export function startBattle(stageData) {
     initForgeView();
     renderForgeUI();
 
-    // 3. 전투 루프 시작 (현재는 빈 루프)
-    isBattleRunning = true;
+    // 3. 전투 루프 시작    
     startBattleLoop();
 }
 
 /** 메인 전투 루프 */
 function startBattleLoop() {
-    function loop(now) {
-        if (!isBattleRunning) return;
-        console.log(`전투 루프 테스트${now}`)
-        // TODO: updateCreatures 등 전투 로직 흐름 추가 예정
+    isBattleRunning = true;
+    lastFrameTime = performance.now();
 
-        requestAnimationFrame(loop);
+    function loop(now) {
+        if (!isBattleRunning || !currentStage) return;
+        
+        // 델타타임
+        const deltaTime = now - lastFrameTime;
+        lastFrameTime = now;
+        
+        // 이동 및 전투
+        processCreatures(deltaTime);
+
+        // 죽은 개체 처리
+        cleanupDeadCreatures();
+
+        // 승패 확인
+        checkGameOver();
+
+        // 뷰 동기화
+        syncView();
+        
+        animationFrameId = requestAnimationFrame(loop);
     }
-    requestAnimationFrame(loop);
+    animationFrameId = requestAnimationFrame(loop);
+}
+
+/** 개체별 이동 및 공격 처리 */
+function processCreatures(deltaTime) {
+    const allCreatures = [...currentStage.playerCreatures, ...currentStage.enemyCreatures];
+
+    allCreatures.forEach(creature => {
+        if (!creature.isAlive) return;
+
+        // 초당 이동 속도 보정
+        const moveDistance = creature.data.moveSpeed * (deltaTime / 1000);
+
+        // TODO: 향후 공격 사거리 탐색 로직이 여기에 추가됩니다.
+        // 현재는 적 탐색 없이 앞으로 전진만 하도록 구현합니다.
+        const isAttacking = false; 
+
+        if (!isAttacking) {
+            if (creature.isPlayer) {
+                creature.position -= moveDistance; // 아군은 우측에서 좌측으로 이동 (-)
+            } else {
+                creature.position += moveDistance; // 적군은 좌측에서 우측으로 이동 (+)
+            }
+        }
+    });
+}
+
+/** 체력이 0 이하인 개체 처리 */
+function cleanupDeadCreatures() {
+    // 아군 정리
+    for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {
+        const creature = currentStage.playerCreatures[i];
+        if (creature.hp <= 0) {
+            creature.isAlive = false;
+            removeCreatureView(creature); // 뷰에서 제거
+            currentStage.playerCreatures.splice(i, 1); // 상태 배열에서 제거
+        }
+    }
+
+    // 적군 정리 (동일 로직)
+    for (let i = currentStage.enemyCreatures.length - 1; i >= 0; i--) {
+        const creature = currentStage.enemyCreatures[i];
+        if (creature.hp <= 0) {
+            creature.isAlive = false;
+            removeCreatureView(creature);
+            currentStage.enemyCreatures.splice(i, 1);
+        }
+    }
+}
+
+/** 승패 판정 */
+function checkGameOver() {
+    // Todo: 적 기지 체력 0 되었는지 체크
+}
+
+/** 데이터 변경 결과를 화면에 동기화 */
+function syncView() {
+    const allCreatures = [...currentStage.playerCreatures, ...currentStage.enemyCreatures];
+    allCreatures.forEach(creature => {
+        // gameView.js의 함수를 호출하여 화면 갱신
+        updateCreatureView(creature);
+    });
 }
 
 export function stopBattleLoop() {
     isBattleRunning = false;
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
 }
 
 /** 보관함 개체 클릭 시 실행되는 소환 로직 

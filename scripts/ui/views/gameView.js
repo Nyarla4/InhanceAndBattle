@@ -26,3 +26,20 @@ export function setCreatureImageDirection(creature) {
         creatureImg.style.transform = "scaleX(-1)";
     }
 }
+
+/** 루프에서 개체 상태 동기화 */
+export function updateCreatureView(creature) {
+    if (!creature.element) return;
+    
+    // 1. 위치 이동 동기화
+    creature.element.style.left = `${creature.position}px`;
+    
+    // Todo: HP 바 갱신, 피격 이펙트 등 시각적 처리
+}
+
+/** 사망한 개체를 전장 DOM에서 제거 */
+export function removeCreatureView(creature) {
+    if (creature.element && creature.element.parentNode) {
+        creature.element.parentNode.removeChild(creature.element);
+    }
+}
