@@ -51,12 +51,12 @@ export function startBattle(stageData) {
 
         pauseBattleBtn.addEventListener('click', () => {
             isPaused = true;
-            UI.pauseModal.classList.remove('hidden');
+            pauseModal.classList.remove('hidden');
         });
 
         resumeBattleBtn.addEventListener('click', () => {
             isPaused = false;
-            UI.pauseModal.classList.add('hidden');
+            pauseModal.classList.add('hidden');
         });
 
         exitBattleBtn.addEventListener('click', () => {
