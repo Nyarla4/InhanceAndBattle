@@ -372,6 +372,7 @@ function updateStageSpawner(deltaTime, gameState) {
                 };
 
                 // (스프라이트 경로는 프로젝트 규칙에 맞게 맵핑)
+                newEnemy.data.id = spawnTarget.id;
                 newEnemy.data.idle = `./img/battle/${spawnTarget.id}_idle.png`;
                 newEnemy.data.attack = `./img/battle/${spawnTarget.id}_battle.png`;
 
