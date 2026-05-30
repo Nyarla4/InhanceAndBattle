@@ -8,6 +8,7 @@ class SceneManager {
         this.screens = [
             UI.titleScreen,
             UI.modeSelectorScreen,
+            UI.multiRoomScreen,
             UI.stageSelectorScreen,
             UI.upgradeScreen,
             UI.stageScreen,

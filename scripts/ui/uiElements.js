@@ -12,6 +12,7 @@ function getElement(id) {
 // 1. 화면(스크린) 컨테이너
 export const titleScreen = getElement("title-screen");
 export const modeSelectorScreen = getElement("modeSelector-screen");
+export const multiRoomScreen = getElement("multiRoom-screen");
 export const stageSelectorScreen = getElement("stageSelector-screen");
 export const stageScreen = getElement("stage-screen"); // 인게임 전체 화면
 export const upgradeScreen = getElement("upgrade-screen");
@@ -27,12 +28,16 @@ export const settingBtn = getElement("setting-btn");   // 설정 창 오픈 버�
 export const closeSettingsBtn = getElement("close-settings");
 export const backBtn = getElement("back-btn");         // 강화실 -> 타이틀 공통 백버튼
 export const modeBackBtn = getElement("mode-back-btn"); // 모드선택 -> 타이틀 백버튼
+export const multiRoomBackBtn = getElement("multi-room-back-btn"); // 멀티방 -> 모드선택 백버튼
 export const stageBackBtn = getElement("stage-back-btn"); // 스테이지선택 -> 모드선택 백버튼
 export const dictionaryBackBtn = getElement("dictionary-back-btn"); // 도감 -> 모드선택 백버튼
 
 // 3. 모드 선택 화면 버튼들
 export const soloModeBtn = getElement("solo-mode-btn");
 export const multiModeBtn = getElement("multi-mode-btn");
+export const createRoomBtn = getElement("create-room-btn");
+export const roomCodeInput = getElement("room-code-input");
+export const joinRoomBtn = getElement("join-room-btn");
 export const stageList = getElement("stage-list");
 
 // 4. 인게임(전투) 내부 UI 구성요소

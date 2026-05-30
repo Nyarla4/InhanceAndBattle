@@ -99,6 +99,31 @@ h2 {
     width: 250px;
 }
 
+.room-code-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.room-code-row input {
+    min-width: 0;
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #34495e;
+    border-radius: 6px;
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.room-code-row button {
+    flex: 0 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
 /* 강화실 레이아웃 */
 .enhance-container {
     display: flex;

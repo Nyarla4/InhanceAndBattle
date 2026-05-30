@@ -74,9 +74,9 @@ class SocketClient {
     ================================================================= */
 
     /** 1. 대전 모드 입장 및 매칭 요청 발송 */
-    requestMatch(playerId, enhanceLevel) {
+    requestMatch(playerId, enhanceLevel, roomCode = '') {
         // playerId: 유저 식별값, enhanceLevel: localStorage 등에서 불러온 현재 강화 단계
-        this.sendPacket('MATCH_REQUEST', { playerId, enhanceLevel });
+        this.sendPacket('MATCH_REQUEST', { playerId, enhanceLevel, roomCode });
     }
 
     /** 2. 내 유닛 소환 이벤트 상대방에게 동기화 요청 */
