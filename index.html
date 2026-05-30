@@ -115,6 +115,17 @@
     </div>
 
     <div id="stage-screen" class="screen hidden">
+        <div id="battle-field-container">
+            <div id="field">
+                <div id="enemyBase" class="base">
+                    <span id="enemyBaseHp"></span>
+                </div>
+                <div id="playerBase" class="base">
+                    <span id="playerBaseHp"></span>
+                </div>
+            </div>
+        </div>
+
         <div id="forge-panel">
             <div class="forge-header">강화실 & 보관함</div>
 
@@ -128,17 +139,6 @@
 
             <div class="storage-title">보관된 개체 (클릭 시 소환)</div>
             <div id="forge-storage-list"></div>
-        </div>
-
-        <div id="battle-field-container">
-            <div id="field">
-                <div id="enemyBase" class="base">
-                    <span id="enemyBaseHp"></span>
-                </div>
-                <div id="playerBase" class="base">
-                    <span id="playerBaseHp"></span>
-                </div>
-            </div>
         </div>
 
         <div id="battle-result-panel" class="modal hidden">
