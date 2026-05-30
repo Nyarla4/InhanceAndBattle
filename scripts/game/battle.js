@@ -5,7 +5,8 @@ import { createBattleSession } from "../core/state.js";
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import { EVENTS } from "../core/config.js";
 import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
-import { handleStorageSummon, initStageSpawnQueue, updateStageSpawner } from './summon.js';
+import { handleStorageSummon, initStageSpawnQueue, summonOpponentCreature, updateStageSpawner } from './summon.js';
+import { socketClient } from "../network/socketClient.js";
 import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn, pauseModal, pauseBattleBtn, resumeBattleBtn, exitBattleBtn } from "../ui/uiElements.js";
 import { sceneManager } from "../ui/sceneManager.js";
 
@@ -41,7 +42,20 @@ export function startBattle(stageData) {
     // 2. 이벤트 바인딩 (최초 1회만 등록)
     if (!isEventBound) {
         eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, (payload) => {
-            handleStorageSummon(payload, currentStage, isBattleRunning);
+            const summonResult = handleStorageSummon(payload, currentStage, isBattleRunning);
+            if (summonResult && socketClient.isConnected) {
+                socketClient.sendSpawnCreature(summonResult.creatureId, summonResult.level);
+            }
+        });
+        eventBus.on('GAME_OPPONENT_SPAWN', (payload) => {
+            if (!currentStage || !isBattleRunning) return;
+            summonOpponentCreature(payload, currentStage);
+        });
+        eventBus.on('GAME_PLAYER_BASE_DAMAGED', ({ damage }) => {
+            if (!currentStage || !isBattleRunning) return;
+            currentStage.playerHp -= damage;
+            renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
+            checkGameOver();
         });
         resultStageBtn.addEventListener('click', () => {
             sceneManager.showScreen(stageSelectorScreen);
@@ -262,6 +276,9 @@ function attackBase(creature) {
 
     if (creature.isPlayer) {
         currentStage.enemyHp -= damage;
+        if (socketClient.isConnected) {
+            socketClient.sendBaseDamage(damage);
+        }
         console.log(`💥 아군 -> 적 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.enemyHp})`);
     } else {
         currentStage.playerHp -= damage;

@@ -196,14 +196,108 @@ function renderStorageUI() {
 export function initForgeView() {
     if (!UI.forgeGroupList || !UI.forgeBtnContainer) return;
 
+    // 1. 좌측 패널 상단 그룹 탭 버튼 목록 빌드
     UI.forgeGroupList.innerHTML = '';
+    Object.keys(ENHANCE_GROUPS).forEach(groupKey => {
+        const tabBtn = document.createElement('button');
+        tabBtn.className = 'forge-group-tab';
+        tabBtn.textContent = ENHANCE_GROUPS[groupKey].name;
+        tabBtn.style.padding = '6px 12px';
+        tabBtn.style.fontSize = '12px';
+        tabBtn.style.cursor = 'pointer';
+        tabBtn.dataset.group = groupKey;
+
+        tabBtn.addEventListener('click', () => {
+            changeGroup(groupKey);
+            renderForgeUI();
+        });
+        UI.forgeGroupList.appendChild(tabBtn);
+    });
+
+    // 2. 좌측 패널 중앙 컨트롤러 액션 버튼 동적 배치
     UI.forgeBtnContainer.innerHTML = '';
-    forgeUpBtn = null;
+
+    const forgeUpgradeBtn = document.createElement('button');
+    forgeUpgradeBtn.id = 'forge-action-upgrade-btn';
+    forgeUpgradeBtn.textContent = '실시간 강화';
+    forgeUpgradeBtn.style.cssText = 'padding:8px; font-size:13px; font-weight:bold; background:#2ecc71; border:none; color:#fff; cursor:pointer; border-radius:4px;';
+    forgeUpgradeBtn.addEventListener('click', () => {
+        const groupKey = enhanceState.currentGroup;
+        const result = tryUpgrade(groupKey);
+        console.log(result.message);
+        renderForgeUI();
+    });
+    forgeUpBtn = forgeUpgradeBtn;
+
+    const forgeStoreBtn = document.createElement('button');
+    forgeStoreBtn.id = 'forge-action-store-btn';
+    forgeStoreBtn.textContent = '보관하기';
+    forgeStoreBtn.style.cssText = 'padding:8px; font-size:13px; font-weight:bold; background:#9b59b6; border:none; color:#fff; cursor:pointer; border-radius:4px;';
+    forgeStoreBtn.addEventListener('click', () => {
+        const groupKey = enhanceState.currentGroup;
+        const result = storeCurrentCreature(groupKey);
+        console.log(result.message);
+        renderForgeUI();
+    });
+
+    UI.forgeBtnContainer.appendChild(forgeUpgradeBtn);
+    UI.forgeBtnContainer.appendChild(forgeStoreBtn);
+
     renderForgeUI();
 }
 
 /** 인게임 실시간 강화실 패널 스크린 데이터 바인딩 및 갱신 */
 export function renderForgeUI() {
+    if (!UI.forgeGroupList) return;
+
+    const groupKey = enhanceState.currentGroup;
+    const currentIdx = enhanceState.levels[groupKey];
+
+    const groupData = ENHANCE_GROUPS[groupKey];
+    const currentItem = groupData.items[currentIdx];
+    const totalLevels = groupData.items.length;
+
+    const tabs = UI.forgeGroupList.querySelectorAll('.forge-group-tab');
+    tabs.forEach(btn => {
+        if (btn.dataset.group === groupKey) {
+            btn.style.background = '#f1c40f';
+            btn.style.color = '#000';
+        } else {
+            btn.style.background = '#34495e';
+            btn.style.color = '#fff';
+        }
+    });
+
+    if (!currentItem) {
+        if (UI.forgeDisplay instanceof HTMLImageElement) {
+            UI.forgeDisplay.src = '';
+            UI.forgeDisplay.alt = '비었음';
+        }
+        if (UI.forgeName) UI.forgeName.textContent = '비었음';
+        if (UI.forgeLevel) UI.forgeLevel.textContent = '-';
+
+        if (forgeUpBtn instanceof HTMLButtonElement) {
+            forgeUpBtn.disabled = true;
+            forgeUpBtn.style.opacity = "0.5";
+        }
+        renderForgeStorageUI();
+        return;
+    }
+
+    if (UI.forgeDisplay instanceof HTMLImageElement) {
+        UI.forgeDisplay.src = currentItem.img;
+        UI.forgeDisplay.alt = currentItem.name;
+    }
+    if (UI.forgeName) UI.forgeName.textContent = currentItem.name;
+
+    const currentGrade = totalLevels - currentIdx;
+    if (UI.forgeLevel) UI.forgeLevel.textContent = `${currentGrade}강 (${currentIdx + 1}위)`;
+
+    if (forgeUpBtn instanceof HTMLButtonElement) {
+        forgeUpBtn.disabled = (currentIdx === 0);
+        forgeUpBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
+    }
+
     renderForgeStorageUI();
 }
 

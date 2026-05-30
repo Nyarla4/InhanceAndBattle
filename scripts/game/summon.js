@@ -46,6 +46,30 @@ export function handleStorageSummon({ itemId }, gameState, isBattleRunning) {
     renderCreature(newCreature, gameState.playerCreatures);
 
     eventBus.emit(EVENTS.STORAGE_STATE_CHANGED, {});
+    return { creatureId, level: storageItem.levelIdx };
+}
+
+/** 네트워크로 수신한 상대 소환을 적군 개체로 반영 */
+export function summonOpponentCreature({ creatureId }, gameState) {
+    if (!gameState) return false;
+
+    const template = creaturesData[creatureId];
+    if (!template) {
+        console.error("데이터베이스에 해당 상대 개체가 없습니다:", creatureId);
+        return false;
+    }
+
+    const newEnemy = createCreatureInstance({
+        creatureId,
+        template,
+        isPlayer: false,
+        position: gameState.enemySpawnX
+    });
+    newEnemy.isNetworkOpponent = true;
+
+    gameState.enemyCreatures.push(newEnemy);
+    renderCreature(newEnemy, gameState.enemyCreatures);
+    return true;
 }
 
 /** 스테이지 데이터에서 적 소환 처리 */
