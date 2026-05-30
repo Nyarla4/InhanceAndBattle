@@ -253,6 +253,21 @@ function checkGameOver() {
         isBattleRunning = false;
         showBattleResult(false);
     }
+    
+    if(!isBattleRunning) { // 누구의 승리든 끝이 났을때 개체 정리
+        for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {
+            const creature = currentStage.playerCreatures[i];
+            creature.isAlive = false;
+            removeCreatureView(creature); // 뷰에서 제거
+            currentStage.playerCreatures.splice(i, 1); // 상태 배열에서 제거
+        }
+        for (let i = currentStage.enemyCreatures.length - 1; i >= 0; i--) {
+            const creature = currentStage.enemyCreatures[i];
+            creature.isAlive = false;
+            removeCreatureView(creature);
+            currentStage.enemyCreatures.splice(i, 1);
+        }
+    }
 }
 
 /** 데이터 변경 결과를 화면에 동기화 */
