@@ -62,7 +62,7 @@ export function setCreatureAttackView(creature) {
 
     const attackTarget = creature.data.attack;
 
-    if (attackTarget === "invert") {
+    if (!attackTarget || attackTarget === "invert") {
         // 조건이 invert인 경우 색상 반전 필터 적용
         creature.element.style.filter = "invert(100%)";
     } else if (attackTarget) {
@@ -70,7 +70,12 @@ export function setCreatureAttackView(creature) {
         imgEl.src = attackTarget;
 
         imgEl.onerror = () => { // attack 이미지가 없는 경우
-            imgEl.onerror = null; // 반복 방지
+            if(!creature.isPlayer){
+                imgEl.onerror = () => { // idle 이미지도 없는 경우
+                    imgEl.onerror = null; // 무한 루프 최종 방어
+                    imgEl.src = FALLBACK_IMAGE; // 최후의 수단인 대체 이미지로 스왑
+                };
+            }
             imgEl.src = creature.data.idle; // idle 이미지로 처리
             creature.element.style.filter = "invert(100%)"; // idle에 이미지 반전 처리
         }
