@@ -5,7 +5,7 @@ import { consumeStoredCreature, createBattleSession, enhanceState, getGameState 
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
-import { removeCreatureView, renderCreature, updateCreatureView } from '../ui/views/gameView.js';
+import { removeCreatureView, renderCreature, setCreatureAttackView, setCreatureIdleView, updateCreatureView } from '../ui/views/gameView.js';
 import { stageScreen } from "../ui/uiElements.js";
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
@@ -86,6 +86,16 @@ function processCreatures(deltaTime, now) {
     allCreatures.forEach(creature => {
         if (!creature.isAlive) return;
 
+        // [흐름 1] 시각적 공격 연출 유지 시간 체크 및 복구
+        if (creature.isAttackingVisual) {
+            const duration = creature.data.attackDuration || 200; 
+            
+            if (currentTime - creature.lastAttackTime >= duration) {
+                creature.isAttackingVisual = false;
+                setCreatureIdleView(creature); // 뷰 레이어에 idle 상태 복구 요청
+            }
+        }
+
         // 적대 대상
         const opponents = creature.isPlayer?enemies:players;
 
@@ -98,6 +108,9 @@ function processCreatures(deltaTime, now) {
             if (now - creature.lastAttackTime >= creature.data.attackTerm) {
                 attackTarget(creature, target);
                 creature.lastAttackTime = now; // 쿨타임 초기화
+
+                creature.isAttackingVisual = true; // 공격 이미지로 변환 요청
+                setCreatureAttackView(creature); // 뷰 레이어에 attack 상태 전환 요청
             }
         }
         else { // 대상이 없는 경우: 전진
@@ -221,7 +234,8 @@ function handleStorageSummon({ itemId }) {
         position: currentStage.playerSpawnX, // 우측 아군 기지 앞 좌표
         element: document.createElement('div'),
         currentVisualState: 'idle',
-        lastAttackTime: 0
+        lastAttackTime: 0,
+        isAttackingVisual: false
     };
 
     // 스프라이트 경로 동적 할당
@@ -263,6 +277,7 @@ function createDebugEnemySpawnButton() {
             isPlayer: false, // 적측 플래그
             position: currentStage.enemySpawnX, // 적측 시작 좌표
             element: document.createElement('div'), // DOM 개체
+            isAttackingVisual: false
         };
 
         newEnemy.data.id = "enemy_01";

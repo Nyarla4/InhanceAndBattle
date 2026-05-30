@@ -2,93 +2,91 @@
     "nezming_0": {
         "name": "미도미도 마요", "cost": 777,
         "maxHp": 777,
-        "attackDamage": 77,
-        "attackRange": 700,
-        "attackTerm": 70,
+        "attackDamage": 77, "attackRange": 700, "attackTerm": 70, "attackDuration": 27,
         "moveSpeed": 70,
         "canAttackMultipleTargets": true
     },
     "nezming_1": {
         "name": "바오밥나무 네즈밍", "cost": 300,
         "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000,
+        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "nezming_2": {
         "name": "볼드의 대형 해머 네즈밍", "cost": 100,
         "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000,
+        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "nezming_3": {
         "name": "처형자의 대검 네즈밍", "cost": 100,
         "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000,
+        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "nezming_4": {
         "name": "클레이모어 네즈밍", "cost": 100,
         "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000,
+        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "nezming_5": {
         "name": "바스타드 소드 네즈밍", "cost": 100,
         "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000,
+        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "nezming_6": {
         "name": "야구빠따 네즈밍", "cost": 100,
         "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000,
+        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "nezming_7": {
         "name": "커터칼 네즈밍", "cost": 100,
         "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000,
+        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "nezming_8": {
         "name": "눈썹칼 네즈밍", "cost": 100,
         "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000,
+        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "nezming_9": {
         "name": "이쑤시개 네즈밍", "cost": 100,
         "maxHp": 100,
-        "attackDamage": 10, "attackRange": 100, "attackTerm": 1200,
+        "attackDamage": 10, "attackRange": 100, "attackTerm": 1200, "attackDuration": 600,
         "moveSpeed": 40,
         "canAttackMultipleTargets": false
     },
     "enemy_01": {
         "name": "임시 적1",
         "maxHp": 150,
-        "attackDamage": 8, "attackRange": 60, "attackTerm": 1500,
+        "attackDamage": 8, "attackRange": 60, "attackTerm": 1500, "attackDuration": 750,
         "moveSpeed": 30,
         "canAttackMultipleTargets": false
     },
     "enemy_02": {
         "name": "임시 적2",
         "maxHp": 400,
-        "attackDamage": 20, "attackRange": 80, "attackTerm": 2000,
+        "attackDamage": 20, "attackRange": 80, "attackTerm": 2000, "attackDuration": 1000,
         "moveSpeed": 20,
         "canAttackMultipleTargets": true
     },
     "enemy_03": {
         "name": "임시 적3",
         "maxHp": 80,
-        "attackDamage": 5, "attackRange": 50, "attackTerm": 1000,
+        "attackDamage": 5, "attackRange": 50, "attackTerm": 1000, "attackDuration": 500,
         "moveSpeed": 50,
         "canAttackMultipleTargets": false
     }

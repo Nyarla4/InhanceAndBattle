@@ -43,3 +43,31 @@ export function removeCreatureView(creature) {
         creature.element.parentNode.removeChild(creature.element);
     }
 }
+
+/** 개체를 공격 연출 이미지 또는 필터 상태로 변경 */
+export function setCreatureAttackView(creature) {
+    if (!creature.element) return;
+    const imgEl = creature.element.querySelector("img");
+    if (!imgEl) return;
+
+    const attackTarget = creature.data.attack;
+
+    if (attackTarget === "invert") {
+        // 조건이 invert인 경우 색상 반전 필터 적용
+        creature.element.style.filter = "invert(100%)";
+    } else if (attackTarget) {
+        // 일반 주소인 경우 이미지 경로 변경
+        imgEl.src = attackTarget;
+    }
+}
+
+/** 개체를 기본 대기(idle) 상태로 복구 */
+export function setCreatureIdleView(creature) {
+    if (!creature.element) return;
+    const imgEl = creature.element.querySelector("img");
+    if (!imgEl) return;
+
+    // 공격 시 적용되었던 필터와 이미지를 모두 원래대로 원복
+    creature.element.style.filter = "none";
+    imgEl.src = creature.data.idle;
+}
