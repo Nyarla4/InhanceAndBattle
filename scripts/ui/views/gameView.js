@@ -1,5 +1,6 @@
 // scripts/ui/views/gameView.js
 
+import { getGameState } from '../../core/state.js';
 import { enemyBaseHp, field, playerBaseHp, battleResultPanel, battleResultMessage } from '../uiElements.js';
 
 const ENEMY_FALLBACK_IMAGE = './img/default_enemy.png';
@@ -32,8 +33,15 @@ export function renderCreature(creature, sameSideCreatures) {
 /** 적군 이미지 좌우 반전 처리 */
 export function setCreatureImageDirection(creature) {
     const creatureImg = creature.element.querySelector("img");
-    if (creatureImg instanceof HTMLImageElement && !creature.isPlayer) {
-        creatureImg.style.transform = "scaleX(-1)";
+    if (creatureImg instanceof HTMLImageElement) {
+        var isFlip = false;
+        if(getGameState()) {
+            isFlip = getGameState().playerDirection === 1;
+        }
+        isFlip = isFlip && !creature.isPlayer;
+        if(isFlip) {
+            creatureImg.style.transform = "scaleX(-1)";
+        }
     }
 }
 
