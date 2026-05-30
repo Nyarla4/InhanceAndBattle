@@ -5,8 +5,8 @@ import { consumeStoredCreature, createBattleSession, enhanceState, getGameState 
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
-import { removeCreatureView, renderCreature, setCreatureAttackView, setCreatureIdleView, updateCreatureView } from '../ui/views/gameView.js';
-import { stageScreen } from "../ui/uiElements.js";
+import { removeCreatureView, renderBaseHp, renderCreature, setCreatureAttackView, setCreatureIdleView, updateCreatureView } from '../ui/views/gameView.js';
+import { field, playerBase, enemyBase, stageScreen, playerBaseHp, enemyBaseHp } from "../ui/uiElements.js";
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
 let isBattleRunning = false;
@@ -18,9 +18,9 @@ let animationFrameId = null;
 /** 전투 초기화 및 시작 인터페이스 (스테이지 선택 시 호출됨) */
 export function startBattle(stageData) {
     // 1. 뷰 레이어의 치수 수집 및 세션 생성
-    const fieldEl = document.getElementById('field') || { clientWidth: 800 };
-    const pBaseEl = document.getElementById('playerBase') || { clientWidth: 100 };
-    const eBaseEl = document.getElementById('enemyBase') || { clientWidth: 100 };
+    const fieldEl = field || { clientWidth: 800 };
+    const pBaseEl = playerBase || { clientWidth: 100 };
+    const eBaseEl = enemyBase || { clientWidth: 100 };
 
     const dimensions = {
         width: fieldEl.clientWidth,
@@ -43,6 +43,7 @@ export function startBattle(stageData) {
     // enhanceView.js에 정의된 initForgeView를 호출하여 state.js의 storage 데이터를 화면에 그림
     initForgeView();
     renderForgeUI();
+    renderBaseHp(currentStage, stageData);
 
     // 3. 전투 루프 시작    
     startBattleLoop();
@@ -101,14 +102,25 @@ function processCreatures(deltaTime, now) {
 
         // 사거리 내 대상
         const target = findTargetInRange(creature, opponents);
-        
-        if(target.length > 0) { // 대상이 있는 경우: 이동 중지 및 쿨타임 체크
+        const isBaseInRange = checkBaseInRange(creature);
+        const isTargetExist = target.length > 0;
+        if(isTargetExist || isBaseInRange) { // 대상이 있는 경우: 이동 중지 및 쿨타임 체크
             if (!creature.lastAttackTime) creature.lastAttackTime = 0;
 
             if (now - creature.lastAttackTime >= creature.data.attackTerm) {
-                attackTarget(creature, target);
-                creature.lastAttackTime = now; // 쿨타임 초기화
+                
+                if(isTargetExist) { // 대상이 있다면 대상 공격
+                    attackTarget(creature, target);
+                    if(creature.data.canAttackMultipleTargets && isBaseInRange) { // 다중 공격이 가능한 경우 기지도 공격
+                        attackBase(creature);
+                    }
+                }
+                else if(isBaseInRange) { // 대상이 없고 기지가 있다면 기지 공격
+                    attackBase(creature);
+                }
 
+                
+                creature.lastAttackTime = now; // 쿨타임 초기화
                 creature.isAttackingVisual = true; // 공격 이미지로 변환 요청
                 setCreatureAttackView(creature); // 뷰 레이어에 attack 상태 전환 요청
             }
@@ -142,6 +154,31 @@ function findTargetInRange(attacker, opponents) {
         }
     }
     return targets; // 사거리 내에 들어온 모든 대상 반환
+}
+
+/** 기지가 사거리 내에 있는지 확인 */
+function checkBaseInRange(creature) {
+    // 아군의 목표는 적 기지 좌표(enemySpawnX), 적군의 목표는 아군 기지 좌표(playerSpawnX)
+    const targetBasePos = creature.isPlayer ? currentStage.enemySpawnX : currentStage.playerSpawnX;
+    
+    // 절대값으로 거리 연산
+    const distance = Math.abs(creature.position - targetBasePos);
+    
+    return distance <= creature.data.attackRange;
+}
+
+/** 기지 타격 처리 (상태값 변경 및 콘솔 출력) */
+function attackBase(creature) {
+    const damage = creature.data.attackDamage;
+    
+    if (creature.isPlayer) {
+        currentStage.enemyHp -= damage;
+        console.log(`💥 아군 -> 적 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.enemyHp})`);
+    } else {
+        currentStage.playerHp -= damage;
+        console.log(`💥 적군 -> 아군 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.playerHp})`);
+    }
+    renderBaseHp(currentStage, stageData);
 }
 
 /** 공격 연산 처리 및 콘솔 출력 */

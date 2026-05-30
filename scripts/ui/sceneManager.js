@@ -39,8 +39,7 @@ class SceneManager {
         // 매칭 대기 중일 때 로딩창 문구 변경 및 유지
         eventBus.on('MATCH_WAITING', () => {
             UI.networkLoadingModal.classList.remove('hidden');
-            const loadingText = document.getElementById('loading-text');
-            if (loadingText) loadingText.innerHTML = "대기열 진입 완료!<br>상대 플레이어를 매칭하고 있습니다...";
+            if (UI.loadingText) UI.loadingText.innerHTML = "대기열 진입 완료!<br>상대 플레이어를 매칭하고 있습니다...";
         });
 
         // 매칭 성공하면 로딩창 완벽 차단 후 인게임 화면으로 강제 전환

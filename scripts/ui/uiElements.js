@@ -40,6 +40,8 @@ export const inStage = getElement("battle-field-container");
 export const field = getElement("field");
 export const playerBase = getElement("playerBase");
 export const enemyBase = getElement("enemyBase");
+export const playerBaseHp = getElement("playerBaseHp");
+export const enemyBaseHp = getElement("enemyBaseHp");
 export const upgradeBtnContainer = getElement("upgrade-btn-list");
 
 // 강화소 다중 그룹 UI 엘리먼트들
@@ -59,4 +61,5 @@ export const forgeLevel = getElement("forge-level");
 export const forgeBtnContainer = document.getElementById('forge-btn-container');
 export const forgeStorageList = getElement("forge-storage-list");
 
-export const stageListContainer = getElement("stage-list");
+
+export const loadingText = getElement("loading-text");

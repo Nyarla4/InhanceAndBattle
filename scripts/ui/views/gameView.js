@@ -71,3 +71,8 @@ export function setCreatureIdleView(creature) {
     creature.element.style.filter = "none";
     imgEl.src = creature.data.idle;
 }
+
+export function renderBaseHp(currentStage, stageData) {
+    playerBaseHp = `${currentStage.playerHp}/${currentStage.playerMaxHp}`
+    enemyBaseHp = `${currentStage.enemyHp}/${stageData.enemyBaseHp || 1000}`
+}
