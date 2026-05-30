@@ -176,6 +176,7 @@ function handleStorageSummon({ itemId }) {
     };
 
     // 스프라이트 경로 동적 할당
+    newCreature.data.id = creatureId;
     newCreature.data.idle = `./img/battle/${creatureId}_idle.png`;
     newCreature.data.attack = `./img/battle/${creatureId}_battle.png`;
     
