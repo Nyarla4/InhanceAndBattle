@@ -188,7 +188,7 @@ function renderStorageUI() {
 
 
 /* =================================================================
-   3. 🧪 [인게임 전용] 실시간 강화실 (`forge-`) 시스템 (신규 통합)
+   3. [인게임 전용] 실시간 강화실 (`forge-`) 시스템 (신규 통합)
 ================================================================= */
 /** * 인게임(stage) 스크린 전입 직후 최초 1회 실행하는 초기화 함수.
  * 우측 패널의 그룹 탭과 컨트롤러 버튼 이벤트를 개별 바인딩합니다.
@@ -219,7 +219,7 @@ export function initForgeView() {
 
     const forgeUpgradeBtn = document.createElement('button');
     forgeUpgradeBtn.id = 'forge-action-upgrade-btn';
-    forgeUpgradeBtn.textContent = '🧪 실시간 강화';
+    forgeUpgradeBtn.textContent = '실시간 강화';
     forgeUpgradeBtn.style.cssText = 'padding:8px; font-size:13px; font-weight:bold; background:#2ecc71; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     forgeUpgradeBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
