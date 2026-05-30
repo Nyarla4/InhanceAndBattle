@@ -47,7 +47,7 @@ export function startBattle(stageData) {
 function startBattleLoop() {
     function loop(now) {
         if (!isBattleRunning) return;
-        
+        console.log(`전투 루프 테스트${now}`)
         // TODO: updateCreatures 등 전투 로직 흐름 추가 예정
 
         requestAnimationFrame(loop);
