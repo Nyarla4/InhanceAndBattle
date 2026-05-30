@@ -119,6 +119,9 @@ let currentGameState = null;
 
 /** [구조: 세션 생성] 전투 시작 시 새로운 세션 데이터 구조 구축 */
 export function createBattleSession(stageData, fieldDimensions = { width: 800, playerBaseWidth: 100, enemyBaseWidth: 100 }) {
+    const playerSide = stageData.playerSide === 'left' ? 'left' : 'right';
+    const isPlayerLeft = playerSide === 'left';
+
     currentGameState = {
         playerHp: 1000,
         playerMaxHp: 1000,
@@ -127,8 +130,12 @@ export function createBattleSession(stageData, fieldDimensions = { width: 800, p
         enemyCreatures: [],
         stageData: stageData,
         isGameOver: false,
-        playerSpawnX: fieldDimensions.width - fieldDimensions.playerBaseWidth,
-        enemySpawnX: fieldDimensions.enemyBaseWidth,
+        canPlayerSummon: stageData.canPlayerSummon !== false,
+        playerSide,
+        playerDirection: isPlayerLeft ? 1 : -1,
+        enemyDirection: isPlayerLeft ? -1 : 1,
+        playerSpawnX: isPlayerLeft ? fieldDimensions.enemyBaseWidth : fieldDimensions.width - fieldDimensions.playerBaseWidth,
+        enemySpawnX: isPlayerLeft ? fieldDimensions.width - fieldDimensions.playerBaseWidth : fieldDimensions.enemyBaseWidth,
         fieldWidth: fieldDimensions.width,
         playerBaseWidth: fieldDimensions.playerBaseWidth,
         enemyBaseWidth: fieldDimensions.enemyBaseWidth

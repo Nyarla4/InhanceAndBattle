@@ -36,6 +36,7 @@ export function startBattle(stageData) {
     };
 
     currentStage = createBattleSession(stageData, dimensions);
+    applyBaseLayout(currentStage.playerSide);
 
     // 2. 이벤트 바인딩 (최초 1회만 등록)
     if (!isEventBound) {
@@ -200,13 +201,29 @@ function processCreatures(deltaTime, now) {
             // 초당 이동 속도 보정
             const moveDistance = creature.data.moveSpeed * (deltaTime / 1000);
 
-            if (creature.isPlayer) {
-                creature.position -= moveDistance; // 아군은 우측에서 좌측으로 이동 (-)
-            } else {
-                creature.position += moveDistance; // 적군은 좌측에서 우측으로 이동 (+)
-            }
+            const direction = creature.isPlayer ? currentStage.playerDirection : currentStage.enemyDirection;
+            creature.position += moveDistance * direction;
         }
     });
+}
+
+function applyBaseLayout(playerSide) {
+    if (playerSide === 'left') {
+        playerBase.style.left = '0';
+        playerBase.style.right = 'auto';
+        playerBase.style.borderRadius = '0 20px 0 0';
+        enemyBase.style.left = 'auto';
+        enemyBase.style.right = '0';
+        enemyBase.style.borderRadius = '20px 0 0 0';
+        return;
+    }
+
+    playerBase.style.left = 'auto';
+    playerBase.style.right = '0';
+    playerBase.style.borderRadius = '20px 0 0 0';
+    enemyBase.style.left = '0';
+    enemyBase.style.right = 'auto';
+    enemyBase.style.borderRadius = '0 20px 0 0';
 }
 
 /** 사거리 내의 적 탐색 */

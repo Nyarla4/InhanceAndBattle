@@ -1,6 +1,7 @@
 // scripts/ui/views/lobbyView.js
 
 import { eventBus } from '../../core/eventBus.js';
+import { startBattle } from '../../game/battle.js';
 import { socketClient } from '../../network/socketClient.js';
 import { sceneManager } from '../sceneManager.js';
 import * as UI from '../uiElements.js';
@@ -61,6 +62,14 @@ export function initLobbyView() {
     eventBus.on('LOBBY_GAME_START', ({ role }) => {
         console.log(`[로비] ${SLOT_LABELS[role] || '관전'} 역할로 게임을 시작합니다.`);
         sceneManager.showScreen(UI.stageScreen);
+        startBattle({
+            id: 'multi_battle',
+            name: '멀티 대전',
+            playerSide: role === 'left' ? 'left' : 'right',
+            canPlayerSummon: role !== 'spectator',
+            enemyBaseHp: 1000,
+            enemies: []
+        });
     });
 }
 

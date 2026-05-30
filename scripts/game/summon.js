@@ -19,6 +19,7 @@ export function initStageSpawnQueue(enemies = []) {
 /** 보관함 개체 클릭 시 실행되는 아군 소환 로직 */
 export function handleStorageSummon({ itemId }, gameState, isBattleRunning) {
     if (!gameState || !isBattleRunning) return;
+    if (!gameState.canPlayerSummon) return;
 
     const storageItem = enhanceState.storage.find(item => item.id === itemId);
     if (!storageItem) return;
