@@ -46,8 +46,8 @@ export function startBattle(stageData) {
     initForgeView();
     renderForgeUI();
     playerMaxHp = currentStage.playerMaxHp;
-    enemyBaseHp = stageData.enemyBaseHp || 1000;
-    renderBaseHp(currentStage, playerMaxHp, enemyBaseHp);
+    enemyMaxHp = stageData.enemyBaseHp || 1000;
+    renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
 
     // 3. 전투 루프 시작    
     startBattleLoop();
@@ -182,7 +182,7 @@ function attackBase(creature) {
         currentStage.playerHp -= damage;
         console.log(`💥 적군 -> 아군 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.playerHp})`);
     }
-    renderBaseHp(currentStage, playerMaxHp, enemyBaseHp);
+    renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
 }
 
 /** 공격 연산 처리 및 콘솔 출력 */
