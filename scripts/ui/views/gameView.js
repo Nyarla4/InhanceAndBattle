@@ -73,6 +73,6 @@ export function setCreatureIdleView(creature) {
 }
 
 export function renderBaseHp(currentStage, stageData) {
-    playerBaseHp = `${currentStage.playerHp}/${currentStage.playerMaxHp}`
-    enemyBaseHp = `${currentStage.enemyHp}/${stageData.enemyBaseHp || 1000}`
+    playerBaseHp.textContent = `${currentStage.playerHp}/${currentStage.playerMaxHp}`
+    enemyBaseHp.textContent = `${currentStage.enemyHp}/${stageData.enemyBaseHp || 1000}`
 }
