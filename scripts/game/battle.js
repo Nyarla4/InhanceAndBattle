@@ -25,6 +25,8 @@ let isPaused = false; // 일시정지중 여부
 
 /** 전투 초기화 및 시작 인터페이스 (스테이지 선택 시 호출됨) */
 export function startBattle(stageData) {
+    applyLandscapeLock();// 전투에서 가로화면 처리
+
     // 1. 뷰 레이어의 치수 수집 및 세션 생성
     const fieldEl = field || { clientWidth: 800 };
     const pBaseEl = playerBase || { clientWidth: 100 };
@@ -89,6 +91,27 @@ export function startBattle(stageData) {
 
     // 3. 전투 루프 시작    
     startBattleLoop();
+}
+
+function applyLandscapeLock() {
+    const docEl = document.documentElement;
+
+    // 1. 전체화면 요청
+    const requestFullscreen = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.msRequestFullscreen;
+    
+    if (requestFullscreen) {
+        requestFullscreen.call(docEl).then(() => {
+            // 2. 전체화면 진입 성공 후 가로방향 고정 시도
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock("landscape")
+                    .catch((err) => {
+                        console.warn("화면 방향 잠금 실패 (기기 미지원):", err);
+                    });
+            }
+        }).catch((err) => {
+            console.warn("전체화면 진입 실패:", err);
+        });
+    }
 }
 
 /** 메인 전투 루프 */
