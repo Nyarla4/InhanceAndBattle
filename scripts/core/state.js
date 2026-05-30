@@ -138,7 +138,8 @@ export function createBattleSession(stageData, fieldDimensions = { width: 800, p
         enemySpawnX: isPlayerLeft ? fieldDimensions.width - fieldDimensions.playerBaseWidth : fieldDimensions.enemyBaseWidth,
         fieldWidth: fieldDimensions.width,
         playerBaseWidth: fieldDimensions.playerBaseWidth,
-        enemyBaseWidth: fieldDimensions.enemyBaseWidth
+        enemyBaseWidth: fieldDimensions.enemyBaseWidth,
+        isMulti: !!stageData.isMulti
     };
     return currentGameState;
 }

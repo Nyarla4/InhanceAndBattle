@@ -68,7 +68,8 @@ export function initLobbyView() {
             playerSide: role === 'left' ? 'left' : 'right',
             canPlayerSummon: role !== 'spectator',
             enemyBaseHp: 1000,
-            enemies: []
+            enemies: [],
+            isMulti: true
         });
     });
 }

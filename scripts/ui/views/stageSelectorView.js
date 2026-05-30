@@ -14,6 +14,7 @@ export function renderStageList() {
         
         btn.addEventListener('click', () => {
             sceneManager.showScreen(UI.stageScreen); // 배틀 화면 이동
+            stage.isMulti = false;
             startBattle(stage);
         });
         UI.stageList.appendChild(btn);

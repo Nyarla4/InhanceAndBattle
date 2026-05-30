@@ -26,7 +26,10 @@ export const EVENTS = Object.freeze({
     REQUEST_STORAGE_SUMMON: 'REQUEST_STORAGE_SUMMON',
 
     // 상태 변경 및 UI 갱신 관련 (흐름 -> 구조 통지)
-    STORAGE_STATE_CHANGED: 'STORAGE_STATE_CHANGED'
+    STORAGE_STATE_CHANGED: 'STORAGE_STATE_CHANGED',
+
+    // 멀티 중 상대가 떠났을 때
+    MULTIPLAYER_OPPONENT_LEFT: 'MULTIPLAYER_OPPONENT_LEFT'
 });
 
 // 1. 강화 그룹 데이터 정의

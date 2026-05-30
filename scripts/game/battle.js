@@ -7,7 +7,7 @@ import { EVENTS } from "../core/config.js";
 import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
 import { handleStorageSummon, initStageSpawnQueue, summonOpponentCreature, updateStageSpawner } from './summon.js';
 import { socketClient } from "../network/socketClient.js";
-import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn, pauseModal, pauseBattleBtn, resumeBattleBtn, exitBattleBtn } from "../ui/uiElements.js";
+import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn, pauseModal, pauseBattleBtn, resumeBattleBtn, exitBattleBtn, multiLobbyScreen } from "../ui/uiElements.js";
 import { sceneManager } from "../ui/sceneManager.js";
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
@@ -57,10 +57,7 @@ export function startBattle(stageData) {
             renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
             checkGameOver();
         });
-        resultStageBtn.addEventListener('click', () => {
-            sceneManager.showScreen(stageSelectorScreen);
-        });
-        
+
         resultTitleBtn.addEventListener('click', () => {
             sceneManager.showScreen(titleScreen);
         });
@@ -84,6 +81,22 @@ export function startBattle(stageData) {
         isEventBound = true;
     }
 
+    if (currentStage && currentStage.isMulti) {
+        resultStageBtn.textContent = "대기실로 이동";
+
+        eventBus.on(EVENTS.MULTIPLAYER_OPPONENT_LEFT, handleOpponentLeft);
+    }
+    else {
+        resultStageBtn.textContent = "스테이지 선택";
+    }
+    resultStageBtn.addEventListener('click', () => {
+        if (currentStage && currentStage.isMulti) {
+            sceneManager.showScreen(multiLobbyScreen);
+        } else {
+            sceneManager.showScreen(stageSelectorScreen);
+        }
+    }, { once : true });
+
     // 2. 우측 30% 영역(강화/보관함) 뷰 초기화 및 렌더링
     // enhanceView.js에 정의된 initForgeView를 호출하여 state.js의 storage 데이터를 화면에 그림
     initForgeView();
@@ -103,6 +116,19 @@ export function startBattle(stageData) {
 
     // 3. 전투 루프 시작    
     startBattleLoop();
+}
+
+// 탈주 처리
+function handleOpponentLeft() {
+    if(!isBattleRunning) return;
+
+    stopBattleLoop();
+
+    alert("상대방이 게임에서 퇴장했습니다. 당신의 승리입니다!");
+    showBattleResult(true);
+
+    // 등록했던 이벤트 해제 (메모리 누수 방지)
+    eventBus.off("MULTIPLAYER_OPPONENT_LEFT", handleOpponentLeft);
 }
 
 function applyLandscapeLock() {
