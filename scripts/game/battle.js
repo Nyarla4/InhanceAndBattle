@@ -87,20 +87,6 @@ export function startBattle(stageData) {
         pauseModal.classList.add('hidden');
     }
 
-    // 개체 정리
-    for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {
-        const creature = currentStage.playerCreatures[i];
-        creature.isAlive = false;
-        removeCreatureView(creature); // 뷰에서 제거
-        currentStage.playerCreatures.splice(i, 1); // 상태 배열에서 제거
-    }
-    for (let i = currentStage.enemyCreatures.length - 1; i >= 0; i--) {
-        const creature = currentStage.enemyCreatures[i];
-        creature.isAlive = false;
-        removeCreatureView(creature);
-        currentStage.enemyCreatures.splice(i, 1);
-    }
-
     // 3. 전투 루프 시작    
     startBattleLoop();
 }
@@ -309,6 +295,19 @@ function syncView() {
 export function stopBattleLoop() {
     isBattleRunning = false;
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    // 개체 정리
+    for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {
+        const creature = currentStage.playerCreatures[i];
+        creature.isAlive = false;
+        removeCreatureView(creature); // 뷰에서 제거
+        currentStage.playerCreatures.splice(i, 1); // 상태 배열에서 제거
+    }
+    for (let i = currentStage.enemyCreatures.length - 1; i >= 0; i--) {
+        const creature = currentStage.enemyCreatures[i];
+        creature.isAlive = false;
+        removeCreatureView(creature);
+        currentStage.enemyCreatures.splice(i, 1);
+    }
 }
 
 /** 보관함 개체 클릭 시 실행되는 소환 로직 
