@@ -13,6 +13,7 @@ function getElement(id) {
 export const titleScreen = getElement("title-screen");
 export const modeSelectorScreen = getElement("modeSelector-screen");
 export const multiRoomScreen = getElement("multiRoom-screen");
+export const multiLobbyScreen = getElement("multiLobby-screen");
 export const stageSelectorScreen = getElement("stageSelector-screen");
 export const stageScreen = getElement("stage-screen"); // 인게임 전체 화면
 export const upgradeScreen = getElement("upgrade-screen");
@@ -29,6 +30,7 @@ export const closeSettingsBtn = getElement("close-settings");
 export const backBtn = getElement("back-btn");         // 강화실 -> 타이틀 공통 백버튼
 export const modeBackBtn = getElement("mode-back-btn"); // 모드선택 -> 타이틀 백버튼
 export const multiRoomBackBtn = getElement("multi-room-back-btn"); // 멀티방 -> 모드선택 백버튼
+export const lobbyBackBtn = getElement("lobby-back-btn"); // 로비 -> 방 생성/진입 백버튼
 export const stageBackBtn = getElement("stage-back-btn"); // 스테이지선택 -> 모드선택 백버튼
 export const dictionaryBackBtn = getElement("dictionary-back-btn"); // 도감 -> 모드선택 백버튼
 
@@ -38,6 +40,19 @@ export const multiModeBtn = getElement("multi-mode-btn");
 export const createRoomBtn = getElement("create-room-btn");
 export const roomCodeInput = getElement("room-code-input");
 export const joinRoomBtn = getElement("join-room-btn");
+export const moveLeftSlotBtn = getElement("move-left-slot-btn");
+export const moveRightSlotBtn = getElement("move-right-slot-btn");
+export const moveSpectatorSlotBtn = getElement("move-spectator-slot-btn");
+export const leftPlayerDisplay = getElement("left-player-display");
+export const rightPlayerDisplay = getElement("right-player-display");
+export const spectatorPlayerDisplay = getElement("spectator-player-display");
+export const lobbyLogDisplay = getElement("lobby-log-display");
+export const lobbyRoomCodeDisplay = getElement("lobby-room-code-display");
+export const lobbyMyRoleDisplay = getElement("lobby-my-role-display");
+export const lobbyNameInput = getElement("lobby-name-input");
+export const lobbyNameChangeBtn = getElement("lobby-name-change-btn");
+export const lobbyCountdownDisplay = getElement("lobby-countdown-display");
+export const lobbyReadyBtn = getElement("lobby-ready-btn");
 export const stageList = getElement("stage-list");
 
 // 4. 인게임(전투) 내부 UI 구성요소

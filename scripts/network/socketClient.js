@@ -12,6 +12,9 @@ class SocketClient {
         this.serverUrl = isLocal ? 'ws://localhost:3000' : 'wss://inhanceandbattle.onrender.com';
         this.socket = null;
         this.isConnected = false;
+        this.myPlayerId = localStorage.getItem('battle_player_id') || `User_${crypto.randomUUID().slice(0, 8)}`;
+        this.myNickname = localStorage.getItem('battle_player_name') || this.myPlayerId;
+        localStorage.setItem('battle_player_id', this.myPlayerId);
     }
 
     /** 웹소켓 서버 연결 시작 */
@@ -69,6 +72,14 @@ class SocketClient {
         this.socket.send(JSON.stringify(packet));
     }
 
+    disconnect() {
+        if (this.socket) {
+            this.socket.close();
+            this.socket = null;
+        }
+        this.isConnected = false;
+    }
+
     /* =================================================================
        [클라이언트 -> 서버] 이벤트 발송 메서드 인터페이스
     ================================================================= */
@@ -77,6 +88,44 @@ class SocketClient {
     requestMatch(playerId, enhanceLevel, roomCode = '') {
         // playerId: 유저 식별값, enhanceLevel: localStorage 등에서 불러온 현재 강화 단계
         this.sendPacket('MATCH_REQUEST', { playerId, enhanceLevel, roomCode });
+    }
+
+    createRoom(playerName, enhanceLevel) {
+        this.setNickname(playerName);
+        this.sendPacket('CREATE_ROOM', {
+            playerId: this.myPlayerId,
+            nickname: this.myNickname,
+            enhanceLevel
+        });
+    }
+
+    joinRoom(roomCode, playerName, enhanceLevel) {
+        this.setNickname(playerName);
+        this.sendPacket('JOIN_ROOM', {
+            roomCode,
+            playerId: this.myPlayerId,
+            nickname: this.myNickname,
+            enhanceLevel
+        });
+    }
+
+    changeLobbySlot(slot) {
+        this.sendPacket('CHANGE_LOBBY_SLOT', { slot });
+    }
+
+    updateLobbyPlayer(data = {}) {
+        if (typeof data.nickname === 'string') {
+            this.setNickname(data.nickname);
+        }
+        this.sendPacket('UPDATE_LOBBY_PLAYER', data);
+    }
+
+    setNickname(nickname) {
+        const nextName = String(nickname || '').trim();
+        if (!nextName) return;
+
+        this.myNickname = nextName.slice(0, 12);
+        localStorage.setItem('battle_player_name', this.myNickname);
     }
 
     /** 2. 내 유닛 소환 이벤트 상대방에게 동기화 요청 */
@@ -107,6 +156,40 @@ class SocketClient {
                     roomId: packet.roomId,
                     isHost: packet.isHost,
                     opponent: packet.opponent // { id: "User_abc", level: 5 }
+                });
+                break;
+
+            case 'ROOM_CREATED':
+            case 'ROOM_JOINED':
+                eventBus.emit('LOBBY_ENTERED', {
+                    roomCode: packet.roomCode,
+                    role: packet.role,
+                    lobby: packet.lobby
+                });
+                break;
+
+            case 'ROOM_JOIN_FAILED':
+                eventBus.emit('LOBBY_JOIN_FAILED', {
+                    roomCode: packet.roomCode,
+                    reason: packet.reason
+                });
+                break;
+
+            case 'LOBBY_SYNC':
+                eventBus.emit('LOBBY_SYNC', packet.lobby);
+                break;
+
+            case 'LOBBY_ACTION_FAILED':
+                eventBus.emit('LOBBY_ACTION_FAILED', {
+                    reason: packet.reason,
+                    slot: packet.slot
+                });
+                break;
+
+            case 'LOBBY_GAME_START':
+                eventBus.emit('LOBBY_GAME_START', {
+                    roomCode: packet.roomCode,
+                    role: packet.role
                 });
                 break;
 

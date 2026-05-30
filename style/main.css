@@ -124,6 +124,85 @@ h2 {
     padding-right: 16px;
 }
 
+.lobby-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.9fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 850px;
+    align-items: stretch;
+}
+
+.lobby-left-panel,
+.lobby-right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lobby-slot-buttons {
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr) minmax(0, 1fr) 90px;
+    gap: 8px;
+}
+
+.lobby-slot-buttons:last-child {
+    grid-template-columns: 90px minmax(0, 1fr);
+}
+
+.lobby-layout input,
+.lobby-layout textarea {
+    border: 2px solid #34495e;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.lobby-layout input[readonly],
+.lobby-layout textarea[readonly] {
+    background-color: #95a5a6;
+    color: #1a1a1a;
+}
+
+.lobby-layout input:not([readonly]) {
+    background-color: #ecf0f1;
+}
+
+#lobby-log-display {
+    min-height: 130px;
+    resize: none;
+    line-height: 1.5;
+}
+
+.lobby-name-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 95px;
+    gap: 8px;
+}
+
+.lobby-name-row button {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 13px;
+}
+
+#lobby-countdown-display {
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f1c40f;
+    font-size: 54px;
+    font-weight: bold;
+}
+
+#lobby-ready-btn {
+    min-height: 86px;
+    font-size: 28px;
+}
+
 /* 강화실 레이아웃 */
 .enhance-container {
     display: flex;

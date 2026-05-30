@@ -3,7 +3,15 @@
 
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
-import { handleMatchRequest, handleDisconnect, broadcastToOpponent } from './roomManager.js';
+import {
+    handleChangeLobbySlot,
+    handleCreateRoom,
+    handleDisconnect,
+    handleJoinRoom,
+    handleMatchRequest,
+    handleUpdateLobbyPlayer,
+    broadcastToOpponent
+} from './roomManager.js';
 
 const PORT = process.env.PORT || 3000;
 
@@ -37,6 +45,18 @@ wss.on('connection', (ws) => {
             const packet = JSON.parse(message);
             
             switch (packet.type) {
+                case 'CREATE_ROOM':
+                    handleCreateRoom(ws, packet);
+                    break;
+                case 'JOIN_ROOM':
+                    handleJoinRoom(ws, packet);
+                    break;
+                case 'CHANGE_LOBBY_SLOT':
+                    handleChangeLobbySlot(ws, packet);
+                    break;
+                case 'UPDATE_LOBBY_PLAYER':
+                    handleUpdateLobbyPlayer(ws, packet);
+                    break;
                 case 'MATCH_REQUEST':
                     handleMatchRequest(ws, packet);
                     break;

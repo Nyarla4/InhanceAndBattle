@@ -18,7 +18,7 @@ export function initModeView() {
     });
 
     UI.createRoomBtn.addEventListener('click', () => {
-        requestMultiMatch();
+        requestCreateRoom();
     });
 
     UI.joinRoomBtn.addEventListener('click', () => {
@@ -27,7 +27,7 @@ export function initModeView() {
             UI.roomCodeInput.focus();
             return;
         }
-        requestMultiMatch(roomCode);
+        requestJoinRoom(roomCode);
     });
 
     UI.multiRoomBackBtn.addEventListener('click', () => {
@@ -35,23 +35,27 @@ export function initModeView() {
     });
 }
 
-function requestMultiMatch(roomCode = '') {
-    // 임시 플레이어 정보 및 강화 수치 로컬스토리지 등에서 파싱하여 전달 예정
-    const tempPlayerId = `User_${Math.random().toString(36).substr(2, 4)}`;
-    const currentEnhanceLevel = Number(localStorage.getItem('nezming_level')) || 0;
+function requestCreateRoom() {
+    requestLobbyAction(() => {
+        socketClient.createRoom(socketClient.myNickname, getCurrentEnhanceLevel());
+    });
+}
 
-    if (roomCode) {
-        console.log(`[네트워크] 방 코드 진입 요청: ${roomCode}`);
-    }
+function requestJoinRoom(roomCode) {
+    requestLobbyAction(() => {
+        socketClient.joinRoom(roomCode, socketClient.myNickname, getCurrentEnhanceLevel());
+    });
+}
 
-    const sendMatchRequest = () => {
-        socketClient.requestMatch(tempPlayerId, currentEnhanceLevel, roomCode);
-    };
-
+function requestLobbyAction(action) {
     if (socketClient.isConnected) {
-        sendMatchRequest();
+        action();
     } else {
-        eventBus.once('SOCKET_CONNECTED', sendMatchRequest);
+        eventBus.once('SOCKET_CONNECTED', action);
         socketClient.connect();
     }
+}
+
+function getCurrentEnhanceLevel() {
+    return Number(localStorage.getItem('enhance_cur_nezming')) || 0;
 }

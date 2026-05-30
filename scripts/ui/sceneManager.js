@@ -9,6 +9,7 @@ class SceneManager {
             UI.titleScreen,
             UI.modeSelectorScreen,
             UI.multiRoomScreen,
+            UI.multiLobbyScreen,
             UI.stageSelectorScreen,
             UI.upgradeScreen,
             UI.stageScreen,
