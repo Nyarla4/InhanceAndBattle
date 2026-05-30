@@ -71,31 +71,38 @@ export function startBattle(stageData) {
             isPaused = false;
             pauseModal.classList.add('hidden');
         });
+        
+        isEventBound = true;
+    }
+
+    if (currentStage && currentStage.isMulti) {
+        resultStageBtn.textContent = "대기실로 이동";
+        resultStageBtn.addEventListener('click', () => {
+            sceneManager.showScreen(multiLobbyScreen);
+        }, { once: true });
+
+        exitBattleBtn.addEventListener('click', () => {
+            isPaused = false;
+            pauseModal.classList.add('hidden');
+            stopBattleLoop();
+            sceneManager.showScreen(multiLobbyScreen);
+        }, {once : true});
+
+        eventBus.on(EVENTS.MULTIPLAYER_OPPONENT_LEFT, handleOpponentLeft);
+    }
+    else {
+        resultStageBtn.textContent = "스테이지 선택";
+        resultStageBtn.addEventListener('click', () => {
+            sceneManager.showScreen(stageSelectorScreen);
+        }, { once: true });
 
         exitBattleBtn.addEventListener('click', () => {
             isPaused = false;
             pauseModal.classList.add('hidden');
             stopBattleLoop();
             sceneManager.showScreen(stageSelectorScreen);
-        });
-        isEventBound = true;
+        }, {once : true});
     }
-
-    if (currentStage && currentStage.isMulti) {
-        resultStageBtn.textContent = "대기실로 이동";
-
-        eventBus.on(EVENTS.MULTIPLAYER_OPPONENT_LEFT, handleOpponentLeft);
-    }
-    else {
-        resultStageBtn.textContent = "스테이지 선택";
-    }
-    resultStageBtn.addEventListener('click', () => {
-        if (currentStage && currentStage.isMulti) {
-            sceneManager.showScreen(multiLobbyScreen);
-        } else {
-            sceneManager.showScreen(stageSelectorScreen);
-        }
-    }, { once : true });
 
     // 2. 우측 30% 영역(강화/보관함) 뷰 초기화 및 렌더링
     // enhanceView.js에 정의된 initForgeView를 호출하여 state.js의 storage 데이터를 화면에 그림
