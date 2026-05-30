@@ -116,3 +116,11 @@ export function showBattleResult(isVictory) {
     // 패널 노출
     battleResultPanel.classList.remove('hidden');
 }
+
+/** 전투 결과창 초기화 */
+export function initBattleResult() {
+    if (!battleResultPanel) return;
+    if(battleResultPanel.classList.contains('hidden')) return;
+
+    battleResultPanel.classList.add('hidden');
+}

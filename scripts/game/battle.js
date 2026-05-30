@@ -5,7 +5,7 @@ import { consumeStoredCreature, createBattleSession, enhanceState, getGameState 
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
-import { removeCreatureView, renderBaseHp, renderCreature, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
+import { initBattleResult, removeCreatureView, renderBaseHp, renderCreature, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
 import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn } from "../ui/uiElements.js";
 import { sceneManager } from "../ui/sceneManager.js";
 
@@ -60,6 +60,8 @@ export function startBattle(stageData) {
     playerMaxHp = currentStage.playerMaxHp;
     enemyMaxHp = stageData.enemyBaseHp || 1000;
     renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
+
+    initBattleResult();
 
     spawnQueue = [...stageData.enemies];
 
