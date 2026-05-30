@@ -135,7 +135,8 @@ function findTargetInRange(attacker, opponents) {
 /** 공격 연산 처리 및 콘솔 출력 */
 function attackTarget(attacker, targets) {
     const damage = attacker.data.attackDamage;
-    for (const target in targets) {
+    for (let idx = 0; idx < targets.length; idx++) {
+        const target = targets[idx]
         target.hp -= damage;
 
         const attackerName = `[${attacker.isPlayer ? '아군' : '적군'}] ${attacker.data.name}`;
