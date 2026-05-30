@@ -62,10 +62,9 @@ export function setCreatureAttackView(creature) {
 
     const attackTarget = creature.data.attack;
 
-    if (!attackTarget || attackTarget === "invert") {
-        // 조건이 invert인 경우 색상 반전 필터 적용
+    if (!attackTarget) {
         creature.element.style.filter = "invert(100%)";
-    } else if (attackTarget) {
+    } else {
         // 일반 주소인 경우 이미지 경로 변경
         imgEl.src = attackTarget;
 

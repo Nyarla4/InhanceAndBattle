@@ -137,14 +137,17 @@ h2 {
     position: relative;
     background-color: #87ceeb; /* 임시 필드 배경색 */
     height: 100%;
+
+    overflow-x: auto; 
+    overflow-y: hidden;
 }
 
 /* ⚔️ 핵심: 디펜스 라인 필드 */
 #field {
-    flex: 1;
+    flex-shrink: 0; /* 필드가 좁아지지 않도록 고정 */
+    width: 660px; /* 너비 고정 */
     background-color: #34495e;
     background-image: linear-gradient(#7b94ad 70%, #2c3e50 70%); /* 하늘과 땅 분할 연출 */
-    width: 100%;
     height: 100%;
     position: relative;
     overflow: hidden; /* 필드 밖으로 나가는 유닛 숨김 */
