@@ -8,58 +8,58 @@
     },
     "nezming_1": {
         "name": "바오밥나무 네즈밍",
-        "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 40,
+        "maxHp": 700,
+        "attackDamage": 70, "attackRange": 630, "attackTerm": 190, "attackDuration": 90,
+        "moveSpeed": 67,
         "canAttackMultipleTargets": false
     },
     "nezming_2": {
         "name": "볼드의 대형 해머 네즈밍",
-        "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 40,
+        "maxHp": 625,
+        "attackDamage": 62, "attackRange": 560, "attackTerm": 320, "attackDuration": 150,
+        "moveSpeed": 63,
         "canAttackMultipleTargets": false
     },
     "nezming_3": {
         "name": "처형자의 대검 네즈밍",
-        "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 40,
+        "maxHp": 550,
+        "attackDamage": 55, "attackRange": 500, "attackTerm": 450, "attackDuration": 220,
+        "moveSpeed": 60,
         "canAttackMultipleTargets": false
     },
     "nezming_4": {
         "name": "클레이모어 네즈밍",
-        "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 40,
+        "maxHp": 475,
+        "attackDamage": 47, "attackRange": 430, "attackTerm": 570, "attackDuration": 280,
+        "moveSpeed": 57,
         "canAttackMultipleTargets": false
     },
     "nezming_5": {
         "name": "바스타드 소드 네즈밍",
-        "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 40,
+        "maxHp": 400,
+        "attackDamage": 40, "attackRange": 360, "attackTerm": 700, "attackDuration": 350,
+        "moveSpeed": 53,
         "canAttackMultipleTargets": false
     },
     "nezming_6": {
         "name": "야구빠따 네즈밍",
-        "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 40,
+        "maxHp": 325,
+        "attackDamage": 32, "attackRange": 300, "attackTerm": 820, "attackDuration": 410,
+        "moveSpeed": 50,
         "canAttackMultipleTargets": false
     },
     "nezming_7": {
         "name": "커터칼 네즈밍",
-        "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 40,
+        "maxHp": 250,
+        "attackDamage": 25, "attackRange": 230, "attackTerm": 950, "attackDuration": 470,
+        "moveSpeed": 47,
         "canAttackMultipleTargets": false
     },
     "nezming_8": {
         "name": "눈썹칼 네즈밍",
-        "maxHp": 300,
-        "attackDamage": 35, "attackRange": 100, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 40,
+        "maxHp": 175,
+        "attackDamage": 17, "attackRange": 160, "attackTerm": 1070, "attackDuration": 540,
+        "moveSpeed": 43,
         "canAttackMultipleTargets": false
     },
     "nezming_9": {
