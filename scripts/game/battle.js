@@ -94,18 +94,19 @@ export function startBattle(stageData) {
 }
 
 function applyLandscapeLock() {
-    const docEl = document.documentElement;
+    const isMobile = window.matchMedia('(pointer: coarse)').matches;
+    if (!isMobile) return;
 
-    // 1. 전체화면 요청
+    const docEl = document.documentElement;
     const requestFullscreen = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.msRequestFullscreen;
     
     if (requestFullscreen) {
         requestFullscreen.call(docEl).then(() => {
-            // 2. 전체화면 진입 성공 후 가로방향 고정 시도
+            // 전체화면 진입 후 가로방향 고정 시도
             if (screen.orientation && screen.orientation.lock) {
                 screen.orientation.lock("landscape")
                     .catch((err) => {
-                        console.warn("화면 방향 잠금 실패 (기기 미지원):", err);
+                        console.warn("화면 방향 잠금 실패:", err);
                     });
             }
         }).catch((err) => {
