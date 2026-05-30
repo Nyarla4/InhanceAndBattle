@@ -16,13 +16,14 @@ export function renderCreature(creature, sameSideCreatures) {
     // Y축 랜덤 오버랩 방지 (구조적 수치가 아닌 단순 시각적 렌더링 흐름)
     creature.element.style.bottom = (Math.floor(Math.random() * 3) * 10) + "px";
     
-    creature.element.innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}"`;
-    if(!creature.isPlayer) {
-        creature.element.innerHTML += ` onerror="this.onerror=null; this.src='${ENEMY_FALLBACK_IMAGE}';">`;
+    var innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}"`;
+    if(creature.isPlayer) {
+        innerHTML += ">";
     }
     else {
-        creature.element.innerHTML += ">";
+        innerHTML += ` onerror="this.onerror=null; this.src='${ENEMY_FALLBACK_IMAGE}';">`;
     }
+    creature.element.innerHTML = innerHTML;
 
     setCreatureImageDirection(creature);
     field.appendChild(creature.element);
