@@ -2,6 +2,8 @@
 
 import { enemyBaseHp, field, playerBaseHp } from '../uiElements.js';
 
+const ENEMY_FALLBACK_IMAGE = '../../../img/default_enemy.png';
+
 /** 개체(아군/적군)를 필드 DOM에 추가 */
 export function renderCreature(creature, sameSideCreatures) {
     const count = sameSideCreatures.filter((target) => target.data.id === creature.data.id).length;
@@ -13,7 +15,11 @@ export function renderCreature(creature, sameSideCreatures) {
 
     // Y축 랜덤 오버랩 방지 (구조적 수치가 아닌 단순 시각적 렌더링 흐름)
     creature.element.style.bottom = (Math.floor(Math.random() * 3) * 10) + "px";
+    
     creature.element.innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}">`;
+    if(!creature.isPlayer) {
+        creature.element.innerHTML.replace(">",` onerror="this.onerror=null; this.src='${ENEMY_FALLBACK_IMAGE}';">`);
+    }
 
     setCreatureImageDirection(creature);
     field.appendChild(creature.element);
@@ -58,6 +64,12 @@ export function setCreatureAttackView(creature) {
     } else if (attackTarget) {
         // 일반 주소인 경우 이미지 경로 변경
         imgEl.src = attackTarget;
+
+        imgEl.onerror = () => { // attack 이미지가 없는 경우
+            imgEl.onerror = null; // 반복 방지
+            imgEl.src = creature.data.idle; // idle 이미지로 처리
+            creature.element.style.filter = "invert(100%)"; // idle에 이미지 반전 처리
+        }
     }
 }
 
@@ -70,6 +82,13 @@ export function setCreatureIdleView(creature) {
     // 공격 시 적용되었던 필터와 이미지를 모두 원래대로 원복
     creature.element.style.filter = "none";
     imgEl.src = creature.data.idle;
+
+    if(!creature.isPlayer) { // enemy가
+        imgEl.onerror = () => { // idle 이미지가 없는 경우
+            imgEl.onerror = null;
+            imgEl.src = ENEMY_FALLBACK_IMAGE; // 임시 이미지 처리
+        };
+    }
 }
 
 export function renderBaseHp(currentStage, playerMaxHp, enemyMaxHp) {
