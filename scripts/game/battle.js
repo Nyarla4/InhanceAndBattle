@@ -6,7 +6,7 @@ import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { EVENTS } from "../core/config.js";
 import { initBattleResult, removeCreatureView, renderBaseHp, renderCreature, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
-import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn } from "../ui/uiElements.js";
+import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn, pauseModal, pauseBattleBtn, resumeBattleBtn, exitBattleBtn } from "../ui/uiElements.js";
 import { sceneManager } from "../ui/sceneManager.js";
 
 // 내부 타이머 및 큐 상태 (구조적 캡슐화)
@@ -20,6 +20,8 @@ let enemyMaxHp = 0;
 
 let stageTimer = 0; // 스폰 타이머
 let spawnQueue = []; // 스폰 큐
+
+let isPaused = false; // 일시정지중 여부
 
 /** 전투 초기화 및 시작 인터페이스 (스테이지 선택 시 호출됨) */
 export function startBattle(stageData) {
@@ -46,6 +48,23 @@ export function startBattle(stageData) {
         resultTitleBtn.addEventListener('click', () => {
             sceneManager.showScreen(titleScreen);
         });
+
+        pauseBattleBtn.addEventListener('click', () => {
+            isPaused = true;
+            UI.pauseModal.classList.remove('hidden');
+        });
+
+        resumeBattleBtn.addEventListener('click', () => {
+            isPaused = false;
+            UI.pauseModal.classList.add('hidden');
+        });
+
+        exitBattleBtn.addEventListener('click', () => {
+            isPaused = false;
+            UI.pauseModal.classList.add('hidden');
+            stopBattleLoop();
+            sceneManager.showScreen(stageSelectorScreen);
+        });
         isEventBound = true;
     }
 
@@ -63,6 +82,25 @@ export function startBattle(stageData) {
     spawnQueue = [];
     spawnQueue = [...stageData.enemies];
 
+    isPaused = false;
+    if (!pauseModal.classList.contains('hidden')) {
+        pauseModal.classList.add('hidden');
+    }
+
+    // 개체 정리
+    for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {
+        const creature = currentStage.playerCreatures[i];
+        creature.isAlive = false;
+        removeCreatureView(creature); // 뷰에서 제거
+        currentStage.playerCreatures.splice(i, 1); // 상태 배열에서 제거
+    }
+    for (let i = currentStage.enemyCreatures.length - 1; i >= 0; i--) {
+        const creature = currentStage.enemyCreatures[i];
+        creature.isAlive = false;
+        removeCreatureView(creature);
+        currentStage.enemyCreatures.splice(i, 1);
+    }
+
     // 3. 전투 루프 시작    
     startBattleLoop();
 }
@@ -74,6 +112,12 @@ function startBattleLoop() {
 
     function loop(now) {
         if (!isBattleRunning || !currentStage) return;
+
+        if (isPaused) { // 일시정지 중 연산 차단 및 시간 동기화
+            lastFrameTime = now; // 델타타임 누적 차단
+            animationFrameId = requestAnimationFrame(loop);
+            return;
+        }
 
         // 델타타임
         const deltaTime = now - lastFrameTime;
@@ -243,28 +287,13 @@ function cleanupDeadCreatures() {
 function checkGameOver() {
     if (currentStage.enemyHp <= 0) {
         // 플레이어 승리
-        isBattleRunning = false;
+        stopBattleLoop();
         showBattleResult(true);
     }
     else if (currentStage.playerHp <= 0) {
         // 적 승리
-        isBattleRunning = false;
+        stopBattleLoop();
         showBattleResult(false);
-    }
-    
-    if(!isBattleRunning) { // 누구의 승리든 끝이 났을때 개체 정리
-        for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {
-            const creature = currentStage.playerCreatures[i];
-            creature.isAlive = false;
-            removeCreatureView(creature); // 뷰에서 제거
-            currentStage.playerCreatures.splice(i, 1); // 상태 배열에서 제거
-        }
-        for (let i = currentStage.enemyCreatures.length - 1; i >= 0; i--) {
-            const creature = currentStage.enemyCreatures[i];
-            creature.isAlive = false;
-            removeCreatureView(creature);
-            currentStage.enemyCreatures.splice(i, 1);
-        }
     }
 }
 

@@ -64,8 +64,14 @@ export const forgeStorageList = getElement("forge-storage-list");
 
 export const loadingText = getElement("loading-text");
 
-// 결과창 엘리멘트
+// 결과창 엘리먼트
 export const battleResultPanel = document.getElementById('battle-result-panel');
 export const battleResultMessage = document.getElementById('battle-result-message');
 export const resultStageBtn = document.getElementById('result-stage-btn');
 export const resultTitleBtn = document.getElementById('result-title-btn');
+
+// 일시정지 엘리먼트
+export const pauseBattleBtn = document.getElementById('pause-battle-btn');
+export const pauseModal = document.getElementById('pause-modal');
+export const resumeBattleBtn = document.getElementById('resume-battle-btn');
+export const exitBattleBtn = document.getElementById('exit-battle-btn');
