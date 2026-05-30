@@ -33,15 +33,19 @@ export function renderCreature(creature, sameSideCreatures) {
 /** 적군 이미지 좌우 반전 처리 */
 export function setCreatureImageDirection(creature) {
     const creatureImg = creature.element.querySelector("img");
-    if (creatureImg instanceof HTMLImageElement) {
-        var isFlip = false;
-        if(getGameState()) {
-            isFlip = getGameState().playerDirection === 1;
-        }
-        isFlip = isFlip && !creature.isPlayer;
-        if(isFlip) {
-            creatureImg.style.transform = "scaleX(-1)";
-        }
+    if (!(creatureImg instanceof HTMLImageElement)) return;
+
+    const gameState = getGameState();
+    if (!gameState) return;
+
+    // 해당 개체의 실제 전진 방향 (1: 우측 전진, -1: 좌측 전진)
+    const direction = creature.isPlayer ? gameState.playerDirection : gameState.enemyDirection;
+
+    // 기본 에셋이 [좌측]을 보므로, 우측(1)으로 전진할 때만 이미지를 반전
+    if (direction === 1) {
+        creatureImg.style.transform = "scaleX(-1)"; // 우측 전진 시 반전 (우측 바라봄)
+    } else {
+        creatureImg.style.transform = "scaleX(1)";  // 좌측 전진 시 원본 (좌측 바라봄)
     }
 }
 
