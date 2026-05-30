@@ -235,9 +235,11 @@ function cleanupDeadCreatures() {
 function checkGameOver() {
     if (currentStage.enemyHp <= 0) {
         // 플레이어 승리
+        isBattleRunning = false;
     }
     else if (currentStage.playerHp <= 0) {
         // 적 승리
+        isBattleRunning = false;
     }
 }
 

@@ -10,7 +10,7 @@ export function renderStageList() {
     stageData.stages.forEach((stage) => {
         const btn = document.createElement('button');
         btn.className = 'stage-select-btn';
-        btn.innerHTML = `<strong>${stage.name}</strong> (HP: ${stage.enemyBaseHp})`;
+        btn.innerHTML = `<strong>${stage.name}</strong>`;
         
         btn.addEventListener('click', () => {
             sceneManager.showScreen(UI.stageScreen); // 배틀 화면 이동
