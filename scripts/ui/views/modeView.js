@@ -4,6 +4,7 @@ import { sceneManager } from '../sceneManager.js';
 import { socketClient } from '../../network/socketClient.js';
 import { eventBus } from '../../core/eventBus.js';
 import { renderStageList } from './stageSelectorView.js';
+import { EVENTS } from '../../core/config.js';
 
 export function initModeView() {
     // 솔로 모드 선택 시 -> 스테이지 선택창 오픈
