@@ -247,7 +247,7 @@ export function initForgeView() {
 }
 
 /** 인게임 실시간 강화실 패널 스크린 데이터 바인딩 및 갱신 */
-export function renderForgeUI() {
+function renderForgeUI() {
     if (!UI.forgeGroupList) return;
 
     const groupKey = enhanceState.currentGroup;

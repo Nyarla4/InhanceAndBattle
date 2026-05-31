@@ -2,7 +2,7 @@
 
 import { eventBus } from "../core/eventBus.js";
 import { createBattleSession, clearBattleSession, getGameState, setPlayerHp, setEnemyHp, setPlayerCreature, setEnemyCreature } from "../core/state.js";
-import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
+import { initForgeView } from "../ui/views/enhanceView.js";
 import { EVENTS } from "../core/config.js";
 import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
 import { initStageSpawnQueue, updateStageSpawner } from './summon.js';
@@ -29,7 +29,7 @@ let isPaused = false; // 일시정지중 여부
 export function startBattle(stageData) {
     applyLandscapeLock(); // 가로화면 처리
 
-    // 1. 뷰 레이어의 치수 수집 및 세션 생성
+    // 뷰 레이어의 치수 수집
     const fieldEl = field || { clientWidth: 800 };
     const pBaseEl = playerBase || { clientWidth: 100 };
     const eBaseEl = enemyBase || { clientWidth: 100 };
@@ -40,8 +40,11 @@ export function startBattle(stageData) {
         enemyBaseWidth: eBaseEl.clientWidth
     };
 
+    // 수집한 치수를 바탕으로 gameState 신규 생성
     createBattleSession(stageData, dimensions);
     isMulti = getGameState().isMulti;
+
+    // 기지 레이아웃 설정
     applyBaseLayout(getGameState().playerSide);
 
     // 2. 이벤트 바인딩 (최초 1회 등록)
@@ -98,18 +101,18 @@ export function startBattle(stageData) {
         }, { once: true });
     }
 
-    // 강화/보관함 뷰 초기화 및 렌더링
-    // enhanceView.js에 정의된 initForgeView를 호출하여 state.js의 storage 데이터를 화면에 그림
+    // enhanceView 초기화
     initForgeView();
-    renderForgeUI();
-    
+    // gameView 초기화
+    initBattleResult();
+    // summon 초기화
+    initStageSpawnQueue(stageData.enemies);
+
     playerMaxHp = getGameState().playerMaxHp;
     enemyMaxHp = stageData.enemyBaseHp || 1000;
     renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
 
-    initBattleResult();
-    initStageSpawnQueue(stageData.enemies);
-
+    // 일시정지 해제(초기화)
     pause(false);
 
     // 3. 전투 루프 시작    
@@ -117,10 +120,11 @@ export function startBattle(stageData) {
 }
 
 /** 일시정지 처리
- * @param {boolean} value - 정지여부(true: 일시정지, false: 일시정지해제)
+ * isPaused 및 모달 처리
+ * @param {boolean} isPause - 정지여부(true: 일시정지, false: 일시정지해제)
  */
-function pause(value) {
-    if(value) {
+function pause(isPause) {
+    if(isPause) {
         isPaused = true;
         if (pauseModal.classList.contains('hidden')) {
             pauseModal.classList.remove('hidden');
