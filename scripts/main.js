@@ -5,40 +5,38 @@ import * as UI from './ui/uiElements.js';
 import { sceneManager } from './ui/sceneManager.js';
 import { initModeView } from './ui/views/modeView.js';
 import { initLobbyView } from './ui/views/lobbyView.js';
-import { initEnhancement } from './core/state.js';
+import { initEnhancement, initPersonalEnhancement } from './core/state.js';
 import { initBattleStorageListener, initEnhanceView } from './ui/views/enhanceView.js';
+import { initSummonListener } from './game/summon.js';
 
 /** 게임 전체 시스템 초기화 및 시동 */
 function initGame() {
     console.log("[시스템] 구동 완료.");
 
-    // 저장소 세팅 로드
+    // localStorage 기반 로드
     initEnhancement();
+    initPersonalEnhancement();
 
     // 1. 하위 뷰 모듈 초기화 (솔로/멀티 모드 버튼 이벤트 바인딩)
     initModeView();
     initLobbyView();
 
     // 리스너 등록
+    initSummonListener();
     initBattleStorageListener();
     
-    /* =================================================================
-       2. 타이틀 화면 메인 버튼 이벤트 리스너
-    ================================================================= */
-
     // [출전하기] 버튼 클릭 -> 모드 선택 화면으로 이동
-    UI.stageBtn.addEventListener('click', () => {
-        sceneManager.showScreen(UI.modeSelectorScreen);
+    setButtonToScreen(UI.stageBtn, UI.modeSelectorScreen);
+
+    // [강화실] 버튼 클릭 -> 강화 화면으로 이동
+    setButtonToScreen(UI.upgradeBtn, UI.upgradeScreen);
+    UI.upgradeBtn.addEventListener('click', () => {
+        initEnhanceView(); // 강화실 진입 시 활성화된 그룹(기본값 nezming) 상태로 화면 갱신
     });
 
-    // [네즈밍 강화실] 버튼 클릭 -> 강화 화면으로 이동
-    UI.upgradeBtn.addEventListener('click', () => {
-        sceneManager.showScreen(UI.upgradeScreen);
-        initEnhanceView(); // 🔥 매번 강화실 진입 시 활성화된 그룹(기본값 nezming) 상태로 화면 갱신
-    });
-    UI.dictionaryBtn.addEventListener('click', () => {
-        sceneManager.showScreen(UI.dictionaryScreen);
-    });
+    // 도감 화면 이동
+    setButtonToScreen(UI.dictionaryBtn, UI.dictionaryScreen);
+
     // [설정] 버튼 클릭 -> 설정 모달 팝업 열기
     UI.settingBtn.addEventListener('click', () => {
         UI.settingsModal.classList.remove('hidden');
@@ -49,39 +47,32 @@ function initGame() {
         UI.settingsModal.classList.add('hidden');
     });
 
-
-    /* =================================================================
-       3. 각 화면별 뒤로가기(백버튼) 이벤트 리스너
-    ================================================================= */
-
     // 모드 선택 창 -> 타이틀 화면으로 돌아가기
-    UI.modeBackBtn.addEventListener('click', () => {
-        sceneManager.showScreen(UI.titleScreen);
-    });
+    setButtonToScreen(UI.modeBackBtn, UI.titleScreen);
 
     // 강화실 화면 -> 타이틀 화면으로 돌아가기
-    UI.backBtn.addEventListener('click', () => {
-        sceneManager.showScreen(UI.titleScreen);
-    });
+    setButtonToScreen(UI.backBtn, UI.titleScreen);
 
     // 스테이지 선택 창 -> 모드 선택 화면으로 돌아가기
-    if (UI.stageBackBtn) {
-        UI.stageBackBtn.addEventListener('click', () => {
-            sceneManager.showScreen(UI.modeSelectorScreen);
-        });
-    }
+    setButtonToScreen(UI.stageBackBtn, UI.modeSelectorScreen);
 
-    if (UI.dictionaryBackBtn) {
-        UI.dictionaryBackBtn.addEventListener('click', () => {
-            sceneManager.showScreen(UI.titleScreen);
-        });
-    }
+    // 도감 -> 타이틀
+    setButtonToScreen(UI.dictionaryBackBtn, UI.titleScreen);
 
-    /* =================================================================
-       4. 초기 진입 화면 설정
-    ================================================================= */
-    // 첫 실행 시 모든 화면을 숨기고 '타이틀 화면'만 기본으로 노출합니다.
+    // 전투 종료 -> 타이틀
+    setButtonToScreen(UI.resultTitleBtn, UI.titleScreen);
+
+    // 타이틀 스크린만 보이도록 초기화
     sceneManager.showScreen(UI.titleScreen);
+}
+
+// 버튼으로 이동할 화면 등록 처리
+function setButtonToScreen(btn, screen) {
+    if (btn) { // 해당 버튼이 있을 경우
+        btn.addEventListener('click', () => {
+            sceneManager.showScreen(screen);
+        });
+    }
 }
 
 // 브라우저의 DOM 구조가 완전히 로드되면 게임 초기화 프로세스 시작

@@ -12,6 +12,7 @@ import {
     handleUpdateLobbyPlayer,
     broadcastToOpponent
 } from './roomManager.js';
+import { EVENTS } from '../scripts/core/config.js';
 
 const PORT = process.env.PORT || 3000;
 
@@ -60,17 +61,17 @@ wss.on('connection', (ws) => {
                 case 'MATCH_REQUEST':
                     handleMatchRequest(ws, packet);
                     break;
-                case 'SPAWN_CREATURE':
+                case EVENTS.C2S_SUMMON:
                     broadcastToOpponent(ws, {
-                        type: 'OPPONENT_SPAWN',
+                        type: EVENTS.S2C_SUMMON,
                         creatureId: packet.creatureId,
                         level: packet.level,
                         syncId: packet.syncId
                     });
                     break;
-                case 'BASE_DAMAGE':
+                case EVENTS.C2S_BASE_DAMAGE:
                     broadcastToOpponent(ws, {
-                        type: 'OPPONENT_BASE_DAMAGE',
+                        type: EVENTS.S2C_BASE_DAMAGE,
                         damage: packet.damage
                     });
                     break;

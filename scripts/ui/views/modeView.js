@@ -51,7 +51,7 @@ function requestLobbyAction(action) {
     if (socketClient.isConnected) {
         action();
     } else {
-        eventBus.once('SOCKET_CONNECTED', action);
+        eventBus.once(EVENTS.SOCKET_CONNECTED, action);
         socketClient.connect();
     }
 }

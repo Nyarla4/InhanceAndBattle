@@ -18,6 +18,7 @@ export const stageSelectorScreen = getElement("stageSelector-screen");
 export const stageScreen = getElement("stage-screen"); // 인게임 전체 화면
 export const upgradeScreen = getElement("upgrade-screen");
 export const dictionaryScreen = getElement("dictionary-screen");
+
 export const settingsModal = getElement("settings-modal");
 export const networkLoadingModal = getElement("network-loading");
 
@@ -27,7 +28,7 @@ export const upgradeBtn = getElement("upgrade-btn");   // 타이틀 -> 강화실
 export const dictionaryBtn = getElement("dictionary-btn");   // 타이틀 -> 도감 이동 버튼
 export const settingBtn = getElement("setting-btn");   // 설정 창 오픈 버튼
 export const closeSettingsBtn = getElement("close-settings");
-export const backBtn = getElement("back-btn");         // 강화실 -> 타이틀 공통 백버튼
+export const backBtn = getElement("back-btn");         // 강화실 -> 타이틀 백버튼
 export const modeBackBtn = getElement("mode-back-btn"); // 모드선택 -> 타이틀 백버튼
 export const multiRoomBackBtn = getElement("multi-room-back-btn"); // 멀티방 -> 모드선택 백버튼
 export const lobbyBackBtn = getElement("lobby-back-btn"); // 로비 -> 방 생성/진입 백버튼
@@ -95,3 +96,15 @@ export const pauseBattleBtn = document.getElementById('pause-battle-btn');
 export const pauseModal = document.getElementById('pause-modal');
 export const resumeBattleBtn = document.getElementById('resume-battle-btn');
 export const exitBattleBtn = document.getElementById('exit-battle-btn');
+
+/** 화면(screen)들 */
+export const screens = [
+    titleScreen,
+    modeSelectorScreen,
+    multiRoomScreen,
+    multiLobbyScreen,
+    stageSelectorScreen,
+    stageScreen,
+    upgradeScreen,
+    dictionaryScreen
+];

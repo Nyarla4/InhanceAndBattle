@@ -1,26 +1,16 @@
-// Title ↔ Room ↔ InGame ↔ Result 화면 전환 제어
+// 화면 전환 제어
 // scripts/ui/sceneManager.js
 import * as UI from './uiElements.js';
 import { eventBus } from '../core/eventBus.js';
 
 class SceneManager {
     constructor() {
-        this.screens = [
-            UI.titleScreen,
-            UI.modeSelectorScreen,
-            UI.multiRoomScreen,
-            UI.multiLobbyScreen,
-            UI.stageSelectorScreen,
-            UI.upgradeScreen,
-            UI.stageScreen,
-            UI.dictionaryScreen
-        ];
         this.initNetworkEvents();
     }
 
     /** 모든 화면을 숨기고 타겟 화면 하나만 활성화 */
     showScreen(targetScreen) {
-        this.screens.forEach(screen => {
+        UI.screens.forEach(screen => {
             screen.classList.add('hidden');
         });
         targetScreen.classList.remove('hidden');
@@ -29,26 +19,13 @@ class SceneManager {
     /** 소켓 이벤트 버스를 구독하여 네트워크 로딩 레이어 제어 */
     initNetworkEvents() {
         // 서버 연결 시작할 때 로딩 모달 팝업 오픈
-        eventBus.on('SOCKET_CONNECTING', () => {
+        eventBus.on(EVENTS.SOCKET_CONNECTING, () => {
             UI.networkLoadingModal.classList.remove('hidden');
         });
 
         // 연결 완료되면 로딩창 닫기
-        eventBus.on('SOCKET_CONNECTED', () => {
+        eventBus.on(EVENTS.SOCKET_CONNECTED, () => {
             UI.networkLoadingModal.classList.add('hidden');
-        });
-
-        // 매칭 대기 중일 때 로딩창 문구 변경 및 유지
-        eventBus.on('MATCH_WAITING', () => {
-            UI.networkLoadingModal.classList.remove('hidden');
-            if (UI.loadingText) UI.loadingText.innerHTML = "대기열 진입 완료!<br>상대 플레이어를 매칭하고 있습니다...";
-        });
-
-        // 매칭 성공하면 로딩창 완벽 차단 후 인게임 화면으로 강제 전환
-        eventBus.on('MATCH_SUCCESS', (gameData) => {
-            UI.networkLoadingModal.classList.add('hidden');
-            this.showScreen(UI.stageScreen);
-            console.log(`[시작] 멀티플레이 대전 진입 완료`, gameData);
         });
 
         // 네트워크 에러나 끊김 시 로딩 감춤

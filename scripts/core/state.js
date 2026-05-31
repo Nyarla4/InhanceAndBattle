@@ -1,29 +1,31 @@
-// playerState 메모리 객체 관리 및 localStorage 연동
+// localStorage 연동
 // scripts/core/state.js
 
 import { ENHANCE_GROUPS } from "./config.js";
 
-// 전역 상태 관리 객체 (싱글톤)
+// 강화 상태(싱글톤 처리)
 export const enhanceState = {
     currentGroup: 'nezming',
     levels: {},        // 그룹별 현재 강화 단계 (인덱스)
     storage: []        // 공유 보관함
 };
 
-/** 초기화: 로컬스토리지에서 데이터를 불러옵니다. */
+/** 초기화: localStorage 기반 기존 데이터 확인 및 불러오기 */
 export function initEnhancement() {
-    Object.keys(ENHANCE_GROUPS).forEach(key => {
+    Object.keys(ENHANCE_GROUPS).forEach(key => {// 각 그룹별 현재 강화단계 확인
         const savedLevel = localStorage.getItem(`enhance_cur_${key}`);
+        // 저장된 강화단계가 없는 경우 가장 낮은 단계로 처리
         enhanceState.levels[key] = savedLevel ? parseInt(savedLevel) : ENHANCE_GROUPS[key].items.length - 1;
     });
 
+    // 보관함 불러오기
     const savedStorage = localStorage.getItem("enhance_storage");
     enhanceState.storage = savedStorage ? JSON.parse(savedStorage) : [];
 }
 
 /** 그룹 전환 */
 export function changeGroup(groupKey) {
-    if (ENHANCE_GROUPS[groupKey]) {
+    if (ENHANCE_GROUPS[groupKey]) {// 해당 그룹이 있다면
         enhanceState.currentGroup = groupKey;
     }
 }
@@ -35,14 +37,14 @@ export function storeCurrentCreature(groupKey) {
     const item = groupData.items[currentIdx];
 
     const storageItem = {
-        id: Date.now(), // 고유 ID 부여
-        groupKey: groupKey,
-        name: item.name,
-        img: item.img,
-        levelIdx: currentIdx
+        id: Date.now(), // 고유 ID 부여(보관-꺼내기-보관 하면 ID 달라짐)
+        groupKey: groupKey, // 해당 개체의 그룹
+        name: item.name, // 개체 이름
+        img: item.img, // 개체 이미지
+        levelIdx: currentIdx // 개체 강화 단계
     };
 
-    enhanceState.storage.push(storageItem);
+    enhanceState.storage.push(storageItem); // 보관함에 개체 추가
     resetGroupProgress(groupKey); // 강화실 초기화
     
     localStorage.setItem("enhance_storage", JSON.stringify(enhanceState.storage));
@@ -50,7 +52,7 @@ export function storeCurrentCreature(groupKey) {
 }
 
 /** 창고에서 꺼내기 (강화실로 복귀) */
-export function withdrawCreature(storageId) {
+export function withdrawCreature(storageId) { // 보관할때 부여한 고유ID로 조회
     const findIdx = enhanceState.storage.findIndex(item => item.id === storageId);
     if (findIdx === -1) return { success: false, message: "아이템 없음" };
 
@@ -80,14 +82,14 @@ export function withdrawCreature(storageId) {
 }
 
 /** 인게임 소환 시 영구 소모 함수 */
-export function consumeStoredCreature(storageId) {
+export function consumeStoredCreature(storageId) { // 해당 고유 ID의 개체를 보관함에서 제거
     const findIdx = enhanceState.storage.findIndex(item => item.id === storageId);
-    if (findIdx === -1) return false;
+    if (findIdx === -1) return false; // 해당 ID가 없으면 return
 
-    // 배열에서 완전히 삭제
+    // 배열에서 삭제
     enhanceState.storage.splice(findIdx, 1);
     
-    // 즉시 동기화
+    // localStorage 처리
     localStorage.setItem("enhance_storage", JSON.stringify(enhanceState.storage));
     return true;
 }
@@ -95,11 +97,11 @@ export function consumeStoredCreature(storageId) {
 /** 강화실 초기화 */
 export function resetGroupProgress(groupKey) {
     const maxIdx = ENHANCE_GROUPS[groupKey].items.length - 1;
-    enhanceState.levels[groupKey] = maxIdx;
+    enhanceState.levels[groupKey] = maxIdx; // 가장 낮은 단계로 처리
     localStorage.setItem(`enhance_cur_${groupKey}`, maxIdx);
 }
 
-/** 강화 등급 하락 (페널티 처리) */
+/** 강화 등급 하락 */
 export function downgradeGroupProgress(groupKey, maxIdx) {
     const currentIdx = enhanceState.levels[groupKey];
     
@@ -114,24 +116,24 @@ export function downgradeGroupProgress(groupKey, maxIdx) {
     return true;
 }
 
-// [구조: 데이터 저장소] 외부에서 직접 수정할 수 없도록 내부(캡슐화) 변수로 관리
+// 외부에서 직접 수정할 수 없도록 내부(캡슐화) 변수로 관리
 let currentGameState = null;
 
-/** [구조: 세션 생성] 전투 시작 시 새로운 세션 데이터 구조 구축 */
+/** 전투 시작 시 새로운 세션 데이터 구조 생성 */
 export function createBattleSession(stageData, fieldDimensions = { width: 800, playerBaseWidth: 100, enemyBaseWidth: 100 }) {
     const playerSide = stageData.playerSide === 'left' ? 'left' : 'right';
     const isPlayerLeft = playerSide === 'left';
 
     currentGameState = {
-        playerHp: 1000,
-        playerMaxHp: 1000,
+        playerHp: personalEnhanceState.playerMaxHp,
+        playerMaxHp: personalEnhanceState.playerMaxHp,
         enemyHp: stageData.enemyBaseHp || 1000,
         playerCreatures: [],
         enemyCreatures: [],
         stageData: stageData,
         isGameOver: false,
         canPlayerSummon: stageData.canPlayerSummon !== false,
-        playerSide,
+        playerSide: playerSide,
         playerDirection: isPlayerLeft ? 1 : -1,
         enemyDirection: isPlayerLeft ? -1 : 1,
         playerSpawnX: isPlayerLeft ? fieldDimensions.enemyBaseWidth : fieldDimensions.width - fieldDimensions.playerBaseWidth,
@@ -144,12 +146,50 @@ export function createBattleSession(stageData, fieldDimensions = { width: 800, p
     return currentGameState;
 }
 
-/** [구조: 데이터 제공] 안전한 조회를 위한 Getter */
+/** 게임 상태 Getter */
 export function getGameState() {
     return currentGameState;
 }
 
-/** [구조: 세션 종료] 전투 종료 시 메모리 해제 및 구조 초기화 */
+/** 전투 종료 시 메모리 해제 및 구조 초기화 */
 export function clearBattleSession() {
     currentGameState = null;
+}
+
+// 개인 강화 상태(싱글톤 처리)
+export const personalEnhanceState = {
+    gold: 0, // 재화
+    playerMaxHp: 1000 // 최대 체력
+};
+
+/** 초기화: localStorage 기반 기존 데이터 확인 및 불러오기 */
+export function initPersonalEnhancement() {
+    // 재화 불러오기
+    const savedGold = localStorage.getItem("gold");
+    personalEnhanceState.gold = savedGold ? parseInt(savedGold) : 0;
+
+    // 최대 체력 불러오기
+    const savedMaxhp = localStorage.getItem("playerMaxHp");
+    personalEnhanceState.playerMaxHp = savedMaxhp ? parseInt(savedMaxhp) : 1000;
+}
+
+/** 재화 획득 */
+export function getGold(value) {
+    personalEnhanceState.gold += value;
+    localStorage.setItem("gold", personalEnhanceState.gold);
+}
+
+/** 재화 소모 */
+export function useGold(value) {
+    if(personalEnhanceState.gold < value)
+        return false;
+    personalEnhanceState.gold -= value;
+    localStorage.setItem("gold", personalEnhanceState.gold);
+    return true;
+}
+
+/** 최대 체력 증가 */
+export function increaseMaxHp(value) {
+    personalEnhanceState.playerMaxHp += value;
+    localStorage.setItem("playerMaxHp", personalEnhanceState.playerMaxHp);
 }

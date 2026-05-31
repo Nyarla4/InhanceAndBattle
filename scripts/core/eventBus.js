@@ -9,7 +9,7 @@ class EventBus {
 
     /**
      * 특정 이벤트의 구독(Listen)을 시작합니다.
-     * @param {string} event - 이벤트 이름 (예: 'MATCH_SUCCESS')
+     * @param {string} event - 이벤트 이름
      * @param {Function} callback - 이벤트 발생 시 실행할 함수
      * @returns {Function} 구독을 해제할 수 있는 일회성 함수 반환
      */
@@ -37,7 +37,7 @@ class EventBus {
 
     /**
      * 이벤트를 발생(Publish/Emit)시키고 필요한 데이터를 전송합니다.
-     * @param {string} event - 이벤트 이름 (예: 'SOCKET_CONNECTING')
+     * @param {string} event - 이벤트 이름
      * @param {any} data - 전달할 패킷 데이터나 수치 객체
      */
     emit(event, data) {

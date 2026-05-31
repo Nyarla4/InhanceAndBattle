@@ -333,7 +333,7 @@ function renderForgeStorageUI() {
 
         // 🔥 [핵심 기획 반영] 인게임 보관함 개체 클릭 -> 소환 및 소모 처리
         card.addEventListener('click', () => {
-            eventBus.emit(EVENTS.REQUEST_STORAGE_SUMMON,{itemId:item.id});
+            eventBus.emit(EVENTS.REQ_SUMMON,{itemId:item.id});
         });
 
         UI.forgeStorageList.appendChild(card);

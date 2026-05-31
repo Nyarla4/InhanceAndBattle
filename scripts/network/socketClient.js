@@ -1,6 +1,7 @@
 // WSS 연결, 자동 재연결(지수 백오프), 핑퐁 처리
 // scripts/network/socketClient.js
 
+import { EVENTS } from '../core/config.js';
 import { eventBus } from '../core/eventBus.js';
 
 class SocketClient {
@@ -27,7 +28,7 @@ class SocketClient {
         console.log(`[네트워크] 서버 연결 시도 중: ${this.serverUrl}`);
         
         // UI 모듈에게 "연결 로딩 바"를 띄우라고 알림 (Render 휴면 상태 감안)
-        eventBus.emit('SOCKET_CONNECTING');
+        eventBus.emit(EVENTS.SOCKET_CONNECTING);
 
         this.socket = new WebSocket(this.serverUrl);
 
@@ -35,7 +36,7 @@ class SocketClient {
         this.socket.onopen = () => {
             this.isConnected = true;
             console.log('[네트워크] 소켓 서버와 연결이 수립되었습니다.');
-            eventBus.emit('SOCKET_CONNECTED');
+            eventBus.emit(EVENTS.SOCKET_CONNECTED);
         };
 
         // ② 서버로부터 메시지 수신 시
@@ -130,12 +131,12 @@ class SocketClient {
 
     /** 2. 내 유닛 소환 이벤트 상대방에게 동기화 요청 */
     sendSpawnCreature(creatureId, level, syncId) {
-        this.sendPacket('SPAWN_CREATURE', { creatureId, level, syncId });
+        this.sendPacket(EVENTS.C2S_SUMMON, { creatureId, level, syncId });
     }
 
     /** 3. 상대방 기지 타격(데미지 판정) 동기화 요청 */
     sendBaseDamage(damage) {
-        this.sendPacket('BASE_DAMAGE', { damage });
+        this.sendPacket(EVENTS.C2S_BASE_DAMAGE, { damage });
     }
 
 
@@ -144,23 +145,8 @@ class SocketClient {
     ================================================================= */
     handlePacket(packet) {
         switch (packet.type) {
-            case 'WAITING_FOR_OPPONENT':
-                console.log('[네트워크] 대기열 입장: 상대를 찾고 있습니다...');
-                eventBus.emit('MATCH_WAITING');
-                break;
-
-            case 'MATCH_FOUND':
-                console.log('[네트워크] 매칭 성공! 게임을 시작합니다.', packet.roomId);
-                // sceneManager 및 인게임 뷰에게 매칭 성공 알림
-                eventBus.emit('MATCH_SUCCESS', {
-                    roomId: packet.roomId,
-                    isHost: packet.isHost,
-                    opponent: packet.opponent // { id: "User_abc", level: 5 }
-                });
-                break;
-
-            case 'ROOM_CREATED':
-            case 'ROOM_JOINED':
+            case EVENTS.LOBBY_CREATED:
+            case EVENTS.LOBBY_JOINED:
                 eventBus.emit('LOBBY_ENTERED', {
                     roomCode: packet.roomCode,
                     role: packet.role,
@@ -193,20 +179,20 @@ class SocketClient {
                 });
                 break;
 
-            case 'OPPONENT_SPAWN':
+            case EVENTS.S2C_SUMMON:
                 console.log('[네트워크] 상대방이 유닛을 소환했습니다.');
                 // game/battle.js 또는 ui/views/gameView.js 등에서 구독하여 필드에 생성
-                eventBus.emit('GAME_OPPONENT_SPAWN', {
+                eventBus.emit(EVENTS.RES_SUMMON, {
                     creatureId: packet.creatureId,
                     level: packet.level,
                     syncId: packet.syncId
                 });
                 break;
 
-            case 'OPPONENT_BASE_DAMAGE':
+            case EVENTS.S2C_BASE_DAMAGE:
                 console.log('[네트워크] 내 기지가 데미지를 입었습니다.');
                 // 내 체력 차감 로직 연동
-                eventBus.emit('GAME_PLAYER_BASE_DAMAGED', { damage: packet.damage });
+                eventBus.emit(EVENTS.RES_BASE_DAMAGE, { damage: packet.damage });
                 break;
 
             case 'OPPONENT_DISCONNECTED':

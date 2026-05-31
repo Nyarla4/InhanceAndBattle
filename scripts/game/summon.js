@@ -6,9 +6,24 @@ import { EVENTS } from "../core/config.js";
 import { consumeStoredCreature, enhanceState } from "../core/state.js";
 import { renderCreature } from '../ui/views/gameView.js';
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
+import { socketClient } from "../network/socketClient.js";
 
 let stageTimer = 0;
 let spawnQueue = [];
+
+/** 소환 처리 등록 */
+export function initSummonListener() {
+    eventBus.on(EVENTS.REQ_SUMMON, (payload) => { // 자신의 "소환" 요청
+        const summonResult = handleStorageSummon(payload, currentStage, isBattleRunning);
+        if (summonResult && socketClient.isConnected) {
+            socketClient.sendSpawnCreature(summonResult.creatureId, summonResult.level, summonResult.syncId);
+        }
+    });
+    eventBus.on(EVENTS.RES_SUMMON, (payload) => { // 상대의 "소환" 요청의 반응
+        if (!currentStage || !isBattleRunning) return;
+        summonOpponentCreature(payload, currentStage);
+    });
+}
 
 /** 스테이지 시작 시 적 소환 스케줄을 초기화합니다. */
 export function initStageSpawnQueue(enemies = []) {

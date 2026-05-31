@@ -1,38 +1,44 @@
-// 유닛 스탯 데이터 및 게임 세션 설정 구조
+// 게임 세션 설정 구조
 // scripts/core/config.js
 
-/** json 플레이어 데이터 로드 */
-async function fetchPlayerData() {
-    const response = await fetch("./json/playerData.json");
-    if (!response.ok) {
-        throw new Error("Failed to load player data: playerData.json");
-    }
-    return await response.json();
-}
-/** json 개체 데이터 로드 */
-async function fetchCreatureData() {
-    const response = await fetch("./json/creatures.json");
-    if (!response.ok) {
-        throw new Error("Failed to load creature data: creatures.json");
-    }
-    return await response.json();
-}
-
+/** eventBus에 사용할 콜백함수 정의 */
 export const EVENTS = Object.freeze({
-    // 시스템 및 네트워크 관련
+    /** 소켓 연결중 */
+    SOCKET_CONNECTING: 'SOCKET_CONNECTING',
+    /** 소켓 연결 완료 */
     SOCKET_CONNECTED: 'SOCKET_CONNECTED',
 
-    // 전투 및 소환 관련 (구조 -> 흐름 요청)
-    REQUEST_STORAGE_SUMMON: 'REQUEST_STORAGE_SUMMON',
+    /** 로비 생성 */
+    LOBBY_CREATED: 'LOBBY_CREATED',
+    /** 로비 참가 */
+    LOBBY_JOINED: 'LOBBY_JOINED',
 
-    // 상태 변경 및 UI 갱신 관련 (흐름 -> 구조 통지)
+    /** 보관함 상태 변경 알림 */
     STORAGE_STATE_CHANGED: 'STORAGE_STATE_CHANGED',
+
+    /** 플레이어의 소환 이벤트 */
+    REQ_SUMMON: 'REQ_SUMMON',
+    /** 소환 패킷(플레이어가 소환>상대가 받음) */
+    C2S_SUMMON: 'C2S_SUMMON',
+    /** 소환 패킷(상대가 소환>플레이어가 받음) */
+    S2C_SUMMON: 'S2C_SUMMON',
+    /** 상대의 소환 동기화 */
+    RES_SUMMON: 'RES_SUMMON',
+
+    /** 플레이어의 "기지 공격" */
+    REQ_BASE_DAMAGE: 'REQ_BASE_DAMAGE',
+    /** 공격 패킷(플레이어가 공격>상대 기지 피해) */
+    C2S_BASE_DAMAGE: 'C2S_BASE_DAMAGE',
+    /** 공격 패킷(상대가 공격>플레이어 기지 피해) */
+    S2C_BASE_DAMAGE: 'S2C_BASE_DAMAGE',
+    /** 상대의 "기지 공격" 동기화 */
+    RES_BASE_DAMAGE: 'RES_BASE_DAMAGE',
 
     // 멀티 중 상대가 떠났을 때
     MULTIPLAYER_OPPONENT_LEFT: 'MULTIPLAYER_OPPONENT_LEFT'
 });
 
-// 1. 강화 그룹 데이터 정의
+// 강화 그룹 데이터 정의
 export const ENHANCE_GROUPS = {
     nezming: {
         name: "네즈밍",

@@ -1,0 +1,63 @@
+InhancementAndBattle
+└img(이미지 폴더)
+└json(json 데이터 폴더)
+└scripts
+│└core
+││└config.js : eventBus에서 사용할 EVENTS 정의, 강화 그룹 데이터 정의
+││└eventBus.js : on, off, emit, once 등으로 콜백 처리
+││└state.js : 강화관련상태(localStorage) 및 전투상태 관리(일부 enhancement로 이동 필요)
+│└game
+││└battle.js : 전투 시작, 전투 루프, 전투 종료 처리
+││└enhancement.js
+││└summon.js
+│└network
+││└socketClient.js
+│└ui
+││└views
+│││└enhanceView.js
+│││└gameView.js
+│││└lobbyView.j
+│││└modeView.js
+│││└stageSelectorView.js
+││└sceneManager.js : screen 요소들에 대해 단일 screen만 보이도록 처리, 서버 연결 여부에 따라 로딩 모달 여닫기 처리
+││└ui.Elements.js : html의 요소를 js변수화
+│└main.js : 초기화, 리스너 및 버튼 기능 등록
+└server
+│└package.json
+│└roomManager.js
+│└server.js
+└style
+│└main.css
+└index.html : 핵심 html
+    메인 메뉴: 타이틀과 전투, 강화, 도감, 설정 4개 버튼 존재
+    title-screen
+    └전투: 싱글, 멀티, 뒤로 3개 버튼 존재
+     modeSelector-screen
+    │└싱글: 각 스테이지 버튼 및 뒤로 버튼 존재
+      stageSelector-screen
+    │└멀티: 방 생성, 방 코드 입력, 뒤로 3개 기능 존재, server 접속(onRender 사용: 미접속이 오래될 경우 최대 1분 대기시간 존재)
+      multiRoom-screen
+    *접속 대기중 모달(network-loading) 존재
+    │ └로비: 좌측, 우측, 관전 중 1가지로 위치. 이름 변경 가능. 관전이 아닌 경우 준비 버튼 사용 가능. 양측 준비시 전투로 진입(확인 후 수정 예정)
+       multiLobby-screen
+    └강화: 강화 화면(현재 상태, 강화 확률, 강화/보관 버튼), 보관 화면(보관/꺼내기 가능), 뒤로 기능
+     upgrade-screen
+    └도감(기능 미구현)
+     dictionary-screen
+    └설정(모달 처리, 기능 없음)
+     settings-modal
+    전투: 스테이지 선택 혹은 멀티에서 양측 준비시 진입
+    stage-screen
+    └전투 컨테이너: 전투 관련 내용 컨테이너. 너비 600px 고정.
+     battle-field-container
+    │└필드: 개체가 소환되는 곳. 내부에 적측 기지와 아군 기지가 존재
+      field
+    └강화 패널: 강화 및 보관함 패널. 강화 화면과 유사한 구성이나 id에 forge-가 포함됨.
+     forge-panel
+    └결과 패널: 전투 종료 후 메시지 표시. 스테이지(혹은 대기실)버튼과 타이틀 버튼 존재.
+     battle-result-panel
+    └일시정지 버튼: pause-battle-btn
+    └일시정지 모달: 재개/나가기 버튼 존재
+     pause-modal
+    모바일 접속 시 표시될 화면: 세로인 경우 가로로 돌려달라는 화면
+    orientation-badge

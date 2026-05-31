@@ -1,29 +1,33 @@
 // scripts/game/battle.js
 
 import { eventBus } from "../core/eventBus.js";
-import { createBattleSession } from "../core/state.js";
+import { createBattleSession, clearBattleSession } from "../core/state.js";
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import { EVENTS } from "../core/config.js";
 import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
-import { handleStorageSummon, initStageSpawnQueue, summonOpponentCreature, updateStageSpawner } from './summon.js';
+import { initStageSpawnQueue, updateStageSpawner } from './summon.js';
 import { socketClient } from "../network/socketClient.js";
 import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn, pauseModal, pauseBattleBtn, resumeBattleBtn, exitBattleBtn, multiLobbyScreen } from "../ui/uiElements.js";
 import { sceneManager } from "../ui/sceneManager.js";
 
-// 내부 타이머 및 큐 상태 (구조적 캡슐화)
+/** 전투 중 여부 */
 let isBattleRunning = false;
+/** 현재 세션 */
 let currentStage = null;
-let isEventBound = false; // 이벤트 중복 등록 방지용 플래그
+/** 이벤트 중복 등록 방지용 플래그 */
+let isEventBound = false;
+/** deltaTime 계산용 */
 let lastFrameTime = 0;
-let animationFrameId = null;
-let playerMaxHp = 0;
-let enemyMaxHp = 0;
+
+let animationFrameId = null; // 루프 프레임 ID
+let playerMaxHp = 0; // 플레이어 기지 HP
+let enemyMaxHp = 0; // 적대측 기지 HP
 
 let isPaused = false; // 일시정지중 여부
 
-/** 전투 초기화 및 시작 인터페이스 (스테이지 선택 시 호출됨) */
+/** 전투 초기화 및 시작 인터페이스 (스테이지 선택 및 멀티에서 양측 준비시 호출) */
 export function startBattle(stageData) {
-    applyLandscapeLock();// 전투에서 가로화면 처리
+    applyLandscapeLock(); // 가로화면 처리
 
     // 1. 뷰 레이어의 치수 수집 및 세션 생성
     const fieldEl = field || { clientWidth: 800 };
@@ -39,72 +43,61 @@ export function startBattle(stageData) {
     currentStage = createBattleSession(stageData, dimensions);
     applyBaseLayout(currentStage.playerSide);
 
-    // 2. 이벤트 바인딩 (최초 1회만 등록)
+    // 2. 이벤트 바인딩 (최초 1회 등록)
     if (!isEventBound) {
-        eventBus.on(EVENTS.REQUEST_STORAGE_SUMMON, (payload) => {
-            const summonResult = handleStorageSummon(payload, currentStage, isBattleRunning);
-            if (summonResult && socketClient.isConnected) {
-                socketClient.sendSpawnCreature(summonResult.creatureId, summonResult.level, summonResult.syncId);
+        // 멀티 처리        
+        eventBus.on(EVENTS.REQ_BASE_DAMAGE, ({ damage }) => { // 자신의 "기지 공격" 요청
+            if (socketClient.isConnected) { // 멀티인 경우
+                socketClient.sendBaseDamage(damage);
             }
         });
-        eventBus.on('GAME_OPPONENT_SPAWN', (payload) => {
-            if (!currentStage || !isBattleRunning) return;
-            summonOpponentCreature(payload, currentStage);
-        });
-        eventBus.on('GAME_PLAYER_BASE_DAMAGED', ({ damage }) => {
+        eventBus.on(EVENTS.RES_BASE_DAMAGE, ({ damage }) => { // 상대의 "기지 공격" 요청의 반응
             if (!currentStage || !isBattleRunning) return;
             currentStage.playerHp -= damage;
             renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
             checkGameOver();
         });
 
-        resultTitleBtn.addEventListener('click', () => {
-            sceneManager.showScreen(titleScreen);
-        });
-
+        // 일시정지 버튼 처리
         pauseBattleBtn.addEventListener('click', () => {
-            isPaused = true;
-            pauseModal.classList.remove('hidden');
+            pause(true);
         });
-
         resumeBattleBtn.addEventListener('click', () => {
-            isPaused = false;
-            pauseModal.classList.add('hidden');
+            pause(false);
         });
         
         isEventBound = true;
     }
 
-    if (currentStage && currentStage.isMulti) {
+    // 결과창 버튼 처리
+    if (currentStage && currentStage.isMulti) { // 멀티인 경우
         resultStageBtn.textContent = "대기실로 이동";
         resultStageBtn.addEventListener('click', () => {
             sceneManager.showScreen(multiLobbyScreen);
         }, { once: true });
 
         exitBattleBtn.addEventListener('click', () => {
-            isPaused = false;
-            pauseModal.classList.add('hidden');
+            pause(false);
             stopBattleLoop();
             sceneManager.showScreen(multiLobbyScreen);
-        }, {once : true});
+        }, { once: true });
 
         eventBus.on(EVENTS.MULTIPLAYER_OPPONENT_LEFT, handleOpponentLeft);
     }
-    else {
+    else { // 싱글인 경우
         resultStageBtn.textContent = "스테이지 선택";
         resultStageBtn.addEventListener('click', () => {
             sceneManager.showScreen(stageSelectorScreen);
         }, { once: true });
 
         exitBattleBtn.addEventListener('click', () => {
-            isPaused = false;
-            pauseModal.classList.add('hidden');
+            pause(false);
             stopBattleLoop();
             sceneManager.showScreen(stageSelectorScreen);
-        }, {once : true});
+        }, { once: true });
     }
 
-    // 2. 우측 30% 영역(강화/보관함) 뷰 초기화 및 렌더링
+    // 강화/보관함 뷰 초기화 및 렌더링
     // enhanceView.js에 정의된 initForgeView를 호출하여 state.js의 storage 데이터를 화면에 그림
     initForgeView();
     renderForgeUI();
@@ -116,13 +109,28 @@ export function startBattle(stageData) {
     initBattleResult();
     initStageSpawnQueue(stageData.enemies);
 
-    isPaused = false;
-    if (!pauseModal.classList.contains('hidden')) {
-        pauseModal.classList.add('hidden');
-    }
+    pause(false);
 
     // 3. 전투 루프 시작    
     startBattleLoop();
+}
+
+/** 일시정지 처리
+ * @param {boolean} value - 정지여부(true: 일시정지, false: 일시정지해제)
+ */
+function pause(value) {
+    if(value) {
+        isPaused = true;
+        if (pauseModal.classList.contains('hidden')) {
+            pauseModal.classList.remove('hidden');
+        }
+    }
+    else {
+        isPaused = false;
+        if (!pauseModal.classList.contains('hidden')) {
+            pauseModal.classList.add('hidden');
+        }
+    }
 }
 
 // 탈주 처리
@@ -138,7 +146,7 @@ function handleOpponentLeft() {
     eventBus.off("MULTIPLAYER_OPPONENT_LEFT", handleOpponentLeft);
 }
 
-// 전체화면 가로 처리
+/** 모바일에서 전체화면 가로 처리 */
 function applyLandscapeLock() {
     const isMobile = window.matchMedia('(pointer: coarse)').matches;
     if (!isMobile) return;
@@ -310,15 +318,11 @@ function attackBase(creature) {
 
     if (creature.isPlayer) {
         currentStage.enemyHp -= damage;
-        if (socketClient.isConnected) {
-            socketClient.sendBaseDamage(damage);
-        }
-        console.log(`💥 아군 -> 적 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.enemyHp})`);
+        eventBus.emit(EVENTS.REQ_BASE_DAMAGE, { damage: damage });
     } else {
-        if (!socketClient.isConnected) {
+        if (!socketClient.isConnected) { // 멀티가 아닌 경우
             currentStage.playerHp -= damage;
         }
-        console.log(`💥 적군 -> 아군 기지 타격! (피해량: ${damage}, 남은 HP: ${currentStage.playerHp})`);
     }
     renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
 }
@@ -385,6 +389,7 @@ function syncView() {
 
 export function stopBattleLoop() {
     isBattleRunning = false;
+    clearBattleSession();
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
     // 개체 정리
     for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {

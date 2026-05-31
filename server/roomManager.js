@@ -1,6 +1,8 @@
 // 방 생성, 코드 입장, 로비 상태 관리 (구조)
 // server/roomManager.js
 
+import { EVENTS } from "../scripts/core/config";
+
 export const waitingQueue = [];
 export const rooms = new Map();
 
@@ -166,7 +168,7 @@ export function handleCreateRoom(ws, packet) {
     attachPlayerToRoom(room, createPlayer(ws, packet, 'right'));
 
     send(ws, {
-        type: 'ROOM_CREATED',
+        type: EVENTS.LOBBY_CREATED,
         roomCode,
         role: 'right',
         lobby: serializeLobby(room)
@@ -186,7 +188,7 @@ export function handleJoinRoom(ws, packet) {
     const existing = room.players.find(player => player.ws === ws || player.id === packet.playerId);
     if (existing) {
         send(ws, {
-            type: 'ROOM_JOINED',
+            type: EVENTS.LOBBY_JOINED,
             roomCode,
             role: existing.slot,
             lobby: serializeLobby(room)
@@ -198,7 +200,7 @@ export function handleJoinRoom(ws, packet) {
     attachPlayerToRoom(room, createPlayer(ws, packet, slot));
 
     send(ws, {
-        type: 'ROOM_JOINED',
+        type: EVENTS.LOBBY_JOINED,
         roomCode,
         role: slot,
         lobby: serializeLobby(room)
