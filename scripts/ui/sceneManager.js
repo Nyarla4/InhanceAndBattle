@@ -2,6 +2,7 @@
 // scripts/ui/sceneManager.js
 import * as UI from './uiElements.js';
 import { eventBus } from '../core/eventBus.js';
+import { EVENTS } from '../core/config.js';
 
 class SceneManager {
     constructor() {
