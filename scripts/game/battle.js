@@ -392,7 +392,6 @@ function syncView() {
 
 export function stopBattleLoop() {
     isBattleRunning = false;
-    clearBattleSession();
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
     // 개체 정리
     var playerCreatures = [...getGameState().playerCreatures];
@@ -411,4 +410,5 @@ export function stopBattleLoop() {
         enemyCreatures.splice(i, 1);
     }
     setEnemyCreature(enemyCreatures);
+    clearBattleSession();
 }
