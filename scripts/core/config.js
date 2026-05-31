@@ -1,6 +1,7 @@
 // 게임 세션 설정 구조
 // scripts/core/config.js
 
+// EVENTS 수정 시 server의 roomManager에서도 수정할 것
 /** eventBus에 사용할 콜백함수 정의 */
 export const EVENTS = Object.freeze({
     /** 소켓 연결중 */

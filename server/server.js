@@ -12,7 +12,7 @@ import {
     handleUpdateLobbyPlayer,
     broadcastToOpponent
 } from './roomManager.js';
-import { EVENTS } from '../scripts/core/config.js';
+import { EVENTS } from './roomManager.js';
 
 const PORT = process.env.PORT || 3000;
 
