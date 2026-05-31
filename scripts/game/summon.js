@@ -3,7 +3,7 @@
 
 import { eventBus } from "../core/eventBus.js";
 import { EVENTS } from "../core/config.js";
-import { consumeStoredCreature, enhanceState, setEnemyCreature, setPlayerCreature } from "../core/state.js";
+import { consumeStoredCreature, enhanceState, getGameState, setEnemyCreature, setPlayerCreature } from "../core/state.js";
 import { renderCreature } from '../ui/views/gameView.js';
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { socketClient } from "../network/socketClient.js";
