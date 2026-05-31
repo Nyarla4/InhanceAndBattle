@@ -19,6 +19,7 @@ let isEventBound = false;
 let lastFrameTime = 0;
 
 let animationFrameId = null; // 루프 프레임 ID
+let isMulti = false; // 멀티 여부
 let playerMaxHp = 0; // 플레이어 기지 HP
 let enemyMaxHp = 0; // 적대측 기지 HP
 
@@ -40,6 +41,7 @@ export function startBattle(stageData) {
     };
 
     createBattleSession(stageData, dimensions);
+    isMulti = getGameState().isMulti;
     applyBaseLayout(getGameState().playerSide);
 
     // 2. 이벤트 바인딩 (최초 1회 등록)
@@ -69,7 +71,7 @@ export function startBattle(stageData) {
     }
 
     // 결과창 버튼 처리
-    if (getGameState() && getGameState().isMulti) { // 멀티인 경우
+    if (getGameState() && isMulti) { // 멀티인 경우
         resultStageBtn.textContent = "대기실로 이동";
         resultStageBtn.addEventListener('click', () => {
             sceneManager.showScreen(multiLobbyScreen);
@@ -319,7 +321,7 @@ function attackBase(creature) {
         setEnemyHp(getGameState().enemyHp - damage);
         eventBus.emit(EVENTS.REQ_BASE_DAMAGE, { damage: damage });
     } else {
-        if (!socketClient.isConnected) { // 멀티가 아닌 경우
+        if (!isMulti) { // 멀티가 아닌 경우
             setPlayerHp(getGameState().playerHp - damage);
         }
     }
@@ -332,6 +334,7 @@ function attackTarget(attacker, targets) {
     for (let idx = 0; idx < targets.length; idx++) {
         const target = targets[idx]
         target.hp -= damage;
+        // 멀티의 경우 이것도 기지 타격처럼 eventBus로 처리해야 양측에서 개체 처리 동기화가 잘 될듯
 
         const attackerName = `[${attacker.isPlayer ? '아군' : '적군'}] ${attacker.data.name}`;
         const targetName = `[${target.isPlayer ? '아군' : '적군'}] ${target.data.name}`;
@@ -372,12 +375,12 @@ function checkGameOver() {
     if (getGameState().enemyHp <= 0) {
         // 플레이어 승리
         stopBattleLoop();
-        showBattleResult(true, getGameState().isMulti);
+        showBattleResult(true, isMulti);
     }
     else if (getGameState().playerHp <= 0) {
         // 적 승리
         stopBattleLoop();
-        showBattleResult(false, getGameState().isMulti);
+        showBattleResult(false, isMulti);
     }
 }
 
