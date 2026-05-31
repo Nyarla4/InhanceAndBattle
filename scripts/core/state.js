@@ -151,6 +151,26 @@ export function getGameState() {
     return currentGameState;
 }
 
+/** 플레이어 체력 Setter */
+export function setPlayerHp(value) {
+    currentGameState.playerHp = value;
+}
+
+/** 상대 체력 Setter */
+export function setEnemyHp(value) {
+    currentGameState.enemyHp = value;
+}
+
+/** 플레이어 개체 Setter */
+export function setPlayerCreature(value) {
+    currentGameState.playerCreatures = value;
+}
+
+/** 상대 개체 Setter */
+export function setEnemyCreature(value) {
+    currentGameState.enemyCreatures = value;
+}
+
 /** 전투 종료 시 메모리 해제 및 구조 초기화 */
 export function clearBattleSession() {
     currentGameState = null;

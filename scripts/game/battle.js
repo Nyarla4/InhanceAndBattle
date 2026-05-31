@@ -1,7 +1,7 @@
 // scripts/game/battle.js
 
 import { eventBus } from "../core/eventBus.js";
-import { createBattleSession, clearBattleSession } from "../core/state.js";
+import { createBattleSession, clearBattleSession, getGameState, setPlayerHp, setEnemyHp, setPlayerCreature, setEnemyCreature } from "../core/state.js";
 import { initForgeView, renderForgeUI } from "../ui/views/enhanceView.js";
 import { EVENTS } from "../core/config.js";
 import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
@@ -12,8 +12,7 @@ import { sceneManager } from "../ui/sceneManager.js";
 
 /** 전투 중 여부 */
 let isBattleRunning = false;
-/** 현재 세션 */
-let currentStage = null;
+export function IsBattleRunning() { return isBattleRunning; }
 /** 이벤트 중복 등록 방지용 플래그 */
 let isEventBound = false;
 /** deltaTime 계산용 */
@@ -40,21 +39,21 @@ export function startBattle(stageData) {
         enemyBaseWidth: eBaseEl.clientWidth
     };
 
-    currentStage = createBattleSession(stageData, dimensions);
-    applyBaseLayout(currentStage.playerSide);
+    createBattleSession(stageData, dimensions);
+    applyBaseLayout(getGameState().playerSide);
 
     // 2. 이벤트 바인딩 (최초 1회 등록)
     if (!isEventBound) {
-        // 멀티 처리        
+        // 멀티 처리
         eventBus.on(EVENTS.REQ_BASE_DAMAGE, ({ damage }) => { // 자신의 "기지 공격" 요청
             if (socketClient.isConnected) { // 멀티인 경우
                 socketClient.sendBaseDamage(damage);
             }
         });
         eventBus.on(EVENTS.RES_BASE_DAMAGE, ({ damage }) => { // 상대의 "기지 공격" 요청의 반응
-            if (!currentStage || !isBattleRunning) return;
-            currentStage.playerHp -= damage;
-            renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
+            if (!getGameState() || !isBattleRunning) return;
+            setPlayerHp(getGameState().playerHp - damage);
+            renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
             checkGameOver();
         });
 
@@ -70,7 +69,7 @@ export function startBattle(stageData) {
     }
 
     // 결과창 버튼 처리
-    if (currentStage && currentStage.isMulti) { // 멀티인 경우
+    if (getGameState() && getGameState().isMulti) { // 멀티인 경우
         resultStageBtn.textContent = "대기실로 이동";
         resultStageBtn.addEventListener('click', () => {
             sceneManager.showScreen(multiLobbyScreen);
@@ -102,9 +101,9 @@ export function startBattle(stageData) {
     initForgeView();
     renderForgeUI();
     
-    playerMaxHp = currentStage.playerMaxHp;
+    playerMaxHp = getGameState().playerMaxHp;
     enemyMaxHp = stageData.enemyBaseHp || 1000;
-    renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
+    renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
 
     initBattleResult();
     initStageSpawnQueue(stageData.enemies);
@@ -175,7 +174,7 @@ function startBattleLoop() {
     lastFrameTime = performance.now();
 
     function loop(now) {
-        if (!isBattleRunning || !currentStage) return;
+        if (!isBattleRunning || !getGameState()) return;
 
         if (isPaused) { // 일시정지 중 연산 차단 및 시간 동기화
             lastFrameTime = now; // 델타타임 누적 차단
@@ -188,7 +187,7 @@ function startBattleLoop() {
         lastFrameTime = now;
 
         // 2. 적군 스폰 스케줄 처리 (흐름: 데이터 상태 갱신)
-        updateStageSpawner(deltaTime, currentStage);
+        updateStageSpawner(deltaTime, getGameState());
 
         // 이동 및 전투
         processCreatures(deltaTime, now);
@@ -209,9 +208,9 @@ function startBattleLoop() {
 
 /** 개체별 이동 및 공격 처리 */
 function processCreatures(deltaTime, now) {
-    const players = currentStage.playerCreatures;
-    const enemies = currentStage.enemyCreatures;
-    const allCreatures = [...currentStage.playerCreatures, ...currentStage.enemyCreatures];
+    const players = getGameState().playerCreatures;
+    const enemies = getGameState().enemyCreatures;
+    const allCreatures = [...players, ...enemies];
 
     allCreatures.forEach(creature => {
         if (!creature.isAlive) return;
@@ -257,7 +256,7 @@ function processCreatures(deltaTime, now) {
             // 초당 이동 속도 보정
             const moveDistance = creature.data.moveSpeed * (deltaTime / 1000);
 
-            const direction = creature.isPlayer ? currentStage.playerDirection : currentStage.enemyDirection;
+            const direction = creature.isPlayer ? getGameState().playerDirection : getGameState().enemyDirection;
             creature.position += moveDistance * direction;
         }
     });
@@ -304,7 +303,7 @@ function findTargetInRange(attacker, opponents) {
 /** 기지가 사거리 내에 있는지 확인 */
 function checkBaseInRange(creature) {
     // 아군의 목표는 적 기지 좌표(enemySpawnX), 적군의 목표는 아군 기지 좌표(playerSpawnX)
-    const targetBasePos = creature.isPlayer ? currentStage.enemySpawnX : currentStage.playerSpawnX;
+    const targetBasePos = creature.isPlayer ? getGameState().enemySpawnX : getGameState().playerSpawnX;
 
     // 절대값으로 거리 연산
     const distance = Math.abs(creature.position - targetBasePos);
@@ -317,14 +316,14 @@ function attackBase(creature) {
     const damage = creature.data.attackDamage;
 
     if (creature.isPlayer) {
-        currentStage.enemyHp -= damage;
+        setEnemyHp(getGameState().enemyHp - damage);
         eventBus.emit(EVENTS.REQ_BASE_DAMAGE, { damage: damage });
     } else {
         if (!socketClient.isConnected) { // 멀티가 아닌 경우
-            currentStage.playerHp -= damage;
+            setPlayerHp(getGameState().playerHp - damage);
         }
     }
-    renderBaseHp(currentStage, playerMaxHp, enemyMaxHp);
+    renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
 }
 
 /** 공격 연산 처리 및 콘솔 출력 */
@@ -343,44 +342,48 @@ function attackTarget(attacker, targets) {
 
 /** 체력이 0 이하인 개체 처리 */
 function cleanupDeadCreatures() {
+    var playerCreatures = [...getGameState().playerCreatures];
     // 아군 정리
-    for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {
-        const creature = currentStage.playerCreatures[i];
+    for (let i = playerCreatures.length - 1; i >= 0; i--) {
+        const creature = playerCreatures[i];
         if (creature.hp <= 0) {
             creature.isAlive = false;
             removeCreatureView(creature); // 뷰에서 제거
-            currentStage.playerCreatures.splice(i, 1); // 상태 배열에서 제거
+            playerCreatures.splice(i, 1); // 상태 배열에서 제거
         }
     }
+    setPlayerCreature(playerCreatures);
 
+    var enemyCreatures = [...getGameState().enemyCreatures];
     // 적군 정리 (동일 로직)
-    for (let i = currentStage.enemyCreatures.length - 1; i >= 0; i--) {
-        const creature = currentStage.enemyCreatures[i];
+    for (let i = enemyCreatures.length - 1; i >= 0; i--) {
+        const creature = enemyCreatures[i];
         if (creature.hp <= 0) {
             creature.isAlive = false;
             removeCreatureView(creature);
-            currentStage.enemyCreatures.splice(i, 1);
+            enemyCreatures.splice(i, 1);
         }
     }
+    setEnemyCreature(enemyCreatures);
 }
 
 /** 승패 판정 */
 function checkGameOver() {
-    if (currentStage.enemyHp <= 0) {
+    if (getGameState().enemyHp <= 0) {
         // 플레이어 승리
         stopBattleLoop();
-        showBattleResult(true, currentStage.isMulti);
+        showBattleResult(true, getGameState().isMulti);
     }
-    else if (currentStage.playerHp <= 0) {
+    else if (getGameState().playerHp <= 0) {
         // 적 승리
         stopBattleLoop();
-        showBattleResult(false, currentStage.isMulti);
+        showBattleResult(false, getGameState().isMulti);
     }
 }
 
 /** 데이터 변경 결과를 화면에 동기화 */
 function syncView() {
-    const allCreatures = [...currentStage.playerCreatures, ...currentStage.enemyCreatures];
+    const allCreatures = [...getGameState().playerCreatures, ...getGameState().enemyCreatures];
     allCreatures.forEach(creature => {
         // gameView.js의 함수를 호출하여 화면 갱신
         updateCreatureView(creature);
@@ -392,16 +395,20 @@ export function stopBattleLoop() {
     clearBattleSession();
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
     // 개체 정리
-    for (let i = currentStage.playerCreatures.length - 1; i >= 0; i--) {
-        const creature = currentStage.playerCreatures[i];
+    var playerCreatures = [...getGameState().playerCreatures];
+    for (let i = playerCreatures.length - 1; i >= 0; i--) {
+        const creature = playerCreatures[i];
         creature.isAlive = false;
         removeCreatureView(creature); // 뷰에서 제거
-        currentStage.playerCreatures.splice(i, 1); // 상태 배열에서 제거
+        playerCreatures.splice(i, 1); // 상태 배열에서 제거
     }
-    for (let i = currentStage.enemyCreatures.length - 1; i >= 0; i--) {
-        const creature = currentStage.enemyCreatures[i];
+    setPlayerCreature(playerCreatures);
+    var enemyCreatures = [...getGameState().enemyCreatures];
+    for (let i = enemyCreatures.length - 1; i >= 0; i--) {
+        const creature = enemyCreatures[i];
         creature.isAlive = false;
         removeCreatureView(creature);
-        currentStage.enemyCreatures.splice(i, 1);
+        enemyCreatures.splice(i, 1);
     }
+    setEnemyCreature(enemyCreatures);
 }

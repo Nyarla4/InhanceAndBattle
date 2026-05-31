@@ -3,10 +3,11 @@
 
 import { eventBus } from "../core/eventBus.js";
 import { EVENTS } from "../core/config.js";
-import { consumeStoredCreature, enhanceState } from "../core/state.js";
+import { consumeStoredCreature, enhanceState, setEnemyCreature, setPlayerCreature } from "../core/state.js";
 import { renderCreature } from '../ui/views/gameView.js';
 import creaturesData from '../../json/creatures.json' with { type: 'json' };
 import { socketClient } from "../network/socketClient.js";
+import { IsBattleRunning } from "./battle.js";
 
 let stageTimer = 0;
 let spawnQueue = [];
@@ -14,14 +15,14 @@ let spawnQueue = [];
 /** 소환 처리 등록 */
 export function initSummonListener() {
     eventBus.on(EVENTS.REQ_SUMMON, (payload) => { // 자신의 "소환" 요청
-        const summonResult = handleStorageSummon(payload, currentStage, isBattleRunning);
+        const summonResult = handleStorageSummon(payload, getGameState(), IsBattleRunning());
         if (summonResult && socketClient.isConnected) {
             socketClient.sendSpawnCreature(summonResult.creatureId, summonResult.level, summonResult.syncId);
         }
     });
     eventBus.on(EVENTS.RES_SUMMON, (payload) => { // 상대의 "소환" 요청의 반응
-        if (!currentStage || !isBattleRunning) return;
-        summonOpponentCreature(payload, currentStage);
+        if (!getGameState() || !IsBattleRunning()) return;
+        summonOpponentCreature(payload, getGameState());
     });
 }
 
@@ -57,8 +58,10 @@ export function handleStorageSummon({ itemId }, gameState, isBattleRunning) {
         position: gameState.playerSpawnX
     });
 
-    gameState.playerCreatures.push(newCreature);
-    renderCreature(newCreature, gameState.playerCreatures);
+    var playerCreatures = [...gameState.playerCreatures];
+    playerCreatures.push(newCreature);
+    setPlayerCreature(playerCreatures);
+    renderCreature(newCreature, playerCreatures);
 
     eventBus.emit(EVENTS.STORAGE_STATE_CHANGED, {});
     return { creatureId, level: storageItem.levelIdx, syncId: newCreature.id };
@@ -83,8 +86,10 @@ export function summonOpponentCreature({ creatureId, level, syncId }, gameState)
     });
     newEnemy.isNetworkOpponent = true;
 
-    gameState.enemyCreatures.push(newEnemy);
-    renderCreature(newEnemy, gameState.enemyCreatures);
+    var enemyCreatures = [...gameState.enemyCreatures];
+    enemyCreatures.push(newEnemy);
+    setEnemyCreature(enemyCreatures);
+    renderCreature(newEnemy, enemyCreatures);
     return true;
 }
 
@@ -114,8 +119,10 @@ function summonEnemy(creatureId, gameState) {
         position: gameState.enemySpawnX
     });
 
-    gameState.enemyCreatures.push(newEnemy);
-    renderCreature(newEnemy, gameState.enemyCreatures);
+    var enemyCreatures = [...gameState.enemyCreatures];
+    enemyCreatures.push(newEnemy);
+    setEnemyCreature(enemyCreatures);
+    renderCreature(newEnemy, enemyCreatures);
 }
 
 function createCreatureInstance({ creatureId, template, isPlayer, position, syncId = null }) {
