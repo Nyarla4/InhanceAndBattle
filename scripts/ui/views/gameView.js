@@ -117,11 +117,11 @@ export function renderBaseHp(currentStage, playerMaxHp, enemyMaxHp) {
 }
 
 /** 전투 결과창 출력 */
-export function showBattleResult(isVictory) {
+export function showBattleResult(isVictory, isMulti) {
    if (!battleResultPanel) return;
     
     // 텍스트 흐름 변경
-    battleResultMessage.textContent = isVictory ? "STAGE CLEAR!" : "GAME OVER...";
+    battleResultMessage.textContent = isVictory ? (isMulti ? "WIN" : "STAGE CLEAR!") : (isMulti ? "LOSE" : "GAME OVER...");
     battleResultMessage.style.color = isVictory ? "#2ecc71" : "#e74c3c";
 
     // 패널 노출

@@ -132,7 +132,7 @@ function handleOpponentLeft() {
     stopBattleLoop();
 
     alert("상대방이 게임에서 퇴장했습니다. 당신의 승리입니다!");
-    showBattleResult(true);
+    showBattleResult(true, true);
 
     // 등록했던 이벤트 해제 (메모리 누수 방지)
     eventBus.off("MULTIPLAYER_OPPONENT_LEFT", handleOpponentLeft);
@@ -365,12 +365,12 @@ function checkGameOver() {
     if (currentStage.enemyHp <= 0) {
         // 플레이어 승리
         stopBattleLoop();
-        showBattleResult(true);
+        showBattleResult(true, currentStage.isMulti);
     }
     else if (currentStage.playerHp <= 0) {
         // 적 승리
         stopBattleLoop();
-        showBattleResult(false);
+        showBattleResult(false, currentStage.isMulti);
     }
 }
 
