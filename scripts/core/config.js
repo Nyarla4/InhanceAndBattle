@@ -36,7 +36,7 @@ export const EVENTS = Object.freeze({
     RES_BASE_DAMAGE: 'RES_BASE_DAMAGE',
 
     // 멀티 중 상대가 떠났을 때
-    MULTIPLAYER_OPPONENT_LEFT: 'MULTIPLAYER_OPPONENT_LEFT'
+    OPPONENT_LEFT: 'OPPONENT_LEFT'
 });
 
 // 강화 그룹 데이터 정의
