@@ -3,57 +3,83 @@
     {
       "id": "stage_01",
       "name": "평화로운 언덕",
-      "enemyBaseHp": 1000,
+      "description": "튜토리얼 단계. 기본적인 전투 흐름과 9번 이쑤시개 네즈밍의 물량 소환을 가볍게 테스트하는 곳.",
+      "enemyBaseHp": 3000,
       "enemies": [
-        {
-          "id": "enemy_01",
-          "spawnTime": 5000
-        },
-        {
-          "id": "enemy_01",
-          "spawnTime": 7000
-        },
-        {
-          "id": "enemy_01",
-          "spawnTime": 9000
-        },
-        {
-          "id": "enemy_02",
-          "spawnTime": 11000
-        }
+        { "id": "enemy_01", "spawnTime": 5000 },
+        { "id": "enemy_01", "spawnTime": 10000 },
+        { "id": "enemy_01", "spawnTime": 15000 }
       ],
       "rewards": {
-        "exp": 100,
+        "gold": 100,
         "items": []
       }
     },
     {
       "id": "stage_02",
-      "name": "불타는 강화실",
-      "enemyBaseHp": 3000,
+      "name": "바람 부는 길목",
+      "description": "기동성 대처 학습. 빠른 적이 처음 등장하므로 아군의 배치 속도나 저지력이 조금씩 중요해집니다.",
+      "enemyBaseHp": 5500,
       "enemies": [
-        {
-          "id": "enemy_01",
-          "spawnTime": 5000
-        },
-        {
-          "id": "enemy_01",
-          "spawnTime": 7000
-        },
-        {
-          "id": "enemy_02",
-          "spawnTime": 9000
-        },
-        {
-          "id": "enemy_03",
-          "spawnTime": 11000
-        }
+        { "id": "enemy_01", "spawnTime": 4000 },
+        { "id": "enemy_03", "spawnTime": 8000 },
+        { "id": "enemy_01", "spawnTime": 12000 },
+        { "id": "enemy_03", "spawnTime": 16000 }
       ],
       "rewards": {
-        "exp": 500,
-        "items": [
-          "rare_scroll"
-        ]
+        "gold": 150,
+        "items": []
+      }
+    },
+    {
+      "id": "stage_03",
+      "name": "어두운 숲속 대치",
+      "description": "물량과 기동성의 조화. 적들의 스폰 간격이 짧아지며 전선 유지력을 시험합니다.",
+      "enemyBaseHp": 8500,
+      "enemies": [
+        { "id": "enemy_01", "spawnTime": 4000 },
+        { "id": "enemy_01", "spawnTime": 5000 },
+        { "id": "enemy_03", "spawnTime": 9000 },
+        { "id": "enemy_01", "spawnTime": 13000 },
+        { "id": "enemy_03", "spawnTime": 14000 }
+      ],
+      "rewards": {
+        "gold": 220,
+        "items": []
+      }
+    },
+    {
+      "id": "stage_04",
+      "name": "철광산 입구",
+      "description": "중장갑 유닛의 첫 등장 예고. 강력한 적(enemy_02)이 후반에 1마리 등장하므로 고위 네즈밍 장전이 필요합니다.",
+      "enemyBaseHp": 12000,
+      "enemies": [
+        { "id": "enemy_01", "spawnTime": 4000 },
+        { "id": "enemy_03", "spawnTime": 8000 },
+        { "id": "enemy_01", "spawnTime": 12000 },
+        { "id": "enemy_02", "spawnTime": 18000 }
+      ],
+      "rewards": {
+        "gold": 320,
+        "items": []
+      }
+    },
+    {
+      "id": "stage_05",
+      "name": "불타는 강화실",
+      "description": "종합 전술 스테이지. 초반 기습을 막아내고, 후반에 몰려오는 돌격대장과 보병 연합군을 격파해야 합니다.",
+      "enemyBaseHp": 16500,
+      "enemies": [
+        { "id": "enemy_03", "spawnTime": 3000 },
+        { "id": "enemy_01", "spawnTime": 6000 },
+        { "id": "enemy_03", "spawnTime": 9000 },
+        { "id": "enemy_01", "spawnTime": 12000 },
+        { "id": "enemy_02", "spawnTime": 18000 },
+        { "id": "enemy_01", "spawnTime": 19000 }
+      ],
+      "rewards": {
+        "gold": 450,
+        "items": []
       }
     }
   ]

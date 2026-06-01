@@ -18,7 +18,8 @@ let isEventBound = false;
 /** deltaTime 계산용 */
 let lastFrameTime = 0;
 
-let animationFrameId = null; // 루프 프레임 ID
+/** 현재 프레임 ID(루프) */
+let animationFrameId = null;
 let isMulti = false; // 멀티 여부
 let playerMaxHp = 0; // 플레이어 기지 HP
 let enemyMaxHp = 0; // 적대측 기지 HP
@@ -61,6 +62,7 @@ export function startBattle(stageData) {
             renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
             checkGameOver();
         });
+        eventBus.on(EVENTS.OPPONENT_LEFT, handleOpponentLeft);
 
         // 일시정지 버튼 처리
         pauseBattleBtn.addEventListener('click', () => {
@@ -85,8 +87,6 @@ export function startBattle(stageData) {
             stopBattleLoop();
             sceneManager.showScreen(multiLobbyScreen);
         }, { once: true });
-
-        eventBus.on(EVENTS.MULTIPLAYER_OPPONENT_LEFT, handleOpponentLeft);
     }
     else { // 싱글인 경우
         resultStageBtn.textContent = "스테이지 선택";
@@ -138,7 +138,7 @@ function pause(isPause) {
     }
 }
 
-// 탈주 처리
+/** 상대 탈주 처리(승리 처리) */
 function handleOpponentLeft() {
     if(!isBattleRunning) return;
 
@@ -146,9 +146,6 @@ function handleOpponentLeft() {
 
     alert("상대방이 게임에서 퇴장했습니다. 당신의 승리입니다!");
     showBattleResult(true, true);
-
-    // 등록했던 이벤트 해제 (메모리 누수 방지)
-    eventBus.off("MULTIPLAYER_OPPONENT_LEFT", handleOpponentLeft);
 }
 
 /** 모바일에서 전체화면 가로 처리 */
@@ -182,18 +179,19 @@ function startBattleLoop() {
     function loop(now) {
         if (!isBattleRunning || !getGameState()) return;
 
-        if (isPaused) { // 일시정지 중 연산 차단 및 시간 동기화
+        if (isPaused && !isMulti) { // 일시정지 중 연산 차단 및 시간 동기화(싱글에서만)
             lastFrameTime = now; // 델타타임 누적 차단
             animationFrameId = requestAnimationFrame(loop);
             return;
-        }
+        } // 멀티에서는 일시정지를 눌러도 modal만 나오고 정지되지 않음
 
-        // 델타타임
+        // 델타타임 처리
         const deltaTime = now - lastFrameTime;
         lastFrameTime = now;
 
-        // 2. 적군 스폰 스케줄 처리 (흐름: 데이터 상태 갱신)
-        updateStageSpawner(deltaTime, getGameState());
+        if(!isMulti) // 싱글 플레이
+            // 적군 스폰 스케줄 처리
+            updateStageSpawner(deltaTime, getGameState());
 
         // 이동 및 전투
         processCreatures(deltaTime, now);
@@ -214,12 +212,14 @@ function startBattleLoop() {
 
 /** 개체별 이동 및 공격 처리 */
 function processCreatures(deltaTime, now) {
-    const players = getGameState().playerCreatures;
-    const enemies = getGameState().enemyCreatures;
+    // 현재 세션의 개체들
+    const players = [...getGameState().playerCreatures];
+    const enemies = [...getGameState().enemyCreatures];
     const allCreatures = [...players, ...enemies];
 
+    // 각 개체에 대한 처리
     allCreatures.forEach(creature => {
-        if (!creature.isAlive) return;
+        if (!creature.isAlive) return; // 죽었으면 행동 없음
 
         // [흐름 1] 시각적 공격 연출 유지 시간 체크 및 복구
         if (creature.isAttackingVisual) {
@@ -253,7 +253,6 @@ function processCreatures(deltaTime, now) {
                     attackBase(creature);
                 }
 
-
                 creature.lastAttackTime = now; // 쿨타임 초기화
                 creature.isAttackingVisual = true; // 공격 이미지로 변환 요청
                 setCreatureAttackView(creature); // 뷰 레이어에 attack 상태 전환 요청
@@ -266,6 +265,10 @@ function processCreatures(deltaTime, now) {
             creature.position += moveDistance * direction;
         }
     });
+
+    // 처리된 내용 세션에 적용
+    setPlayerCreature(players);
+    setEnemyCreature(enemies);
 }
 
 function applyBaseLayout(playerSide) {

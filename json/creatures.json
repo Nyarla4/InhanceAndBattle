@@ -1,6 +1,7 @@
 {
     "nezming_0": {
         "name": "미도미도 마요",
+        "description": "대장",
         "maxHp": 777,
         "attackDamage": 77, "attackRange": 170, "attackTerm": 70, "attackDuration": 27,
         "moveSpeed": 70,
@@ -8,86 +9,99 @@
     },
     "nezming_1": {
         "name": "바오밥나무 네즈밍",
-        "maxHp": 700,
-        "attackDamage": 70, "attackRange": 150, "attackTerm": 190, "attackDuration": 90,
-        "moveSpeed": 67,
+        "description": "최고위 보스 / 초헤비 탱커",
+        "maxHp": 3500,
+        "attackDamage": 180, "attackRange": 160, "attackTerm": 220, "attackDuration": 110,
+        "moveSpeed": 45,
         "canAttackMultipleTargets": false
     },
     "nezming_2": {
         "name": "볼드의 대형 해머 네즈밍",
-        "maxHp": 625,
-        "attackDamage": 62, "attackRange": 110, "attackTerm": 320, "attackDuration": 150,
-        "moveSpeed": 63,
-        "canAttackMultipleTargets": false
+        "description": "고위 파괴자 / 저속 광역 딜러",
+        "maxHp": 1800,
+        "attackDamage": 350, "attackRange": 140, "attackTerm": 420, "attackDuration": 180,
+        "moveSpeed": 48,
+        "canAttackMultipleTargets": true
     },
     "nezming_3": {
         "name": "처형자의 대검 네즈밍",
-        "maxHp": 550,
-        "attackDamage": 55, "attackRange": 110, "attackTerm": 450, "attackDuration": 220,
-        "moveSpeed": 60,
-        "canAttackMultipleTargets": false
+        "description": "고위 전사 / 광역 딜러 (해머보다 빠름)",
+        "maxHp": 1500,
+        "attackDamage": 260, "attackRange": 150, "attackTerm": 350, "attackDuration": 150,
+        "moveSpeed": 52,
+        "canAttackMultipleTargets": true
     },
     "nezming_4": {
         "name": "클레이모어 네즈밍",
-        "maxHp": 475,
-        "attackDamage": 47, "attackRange": 90, "attackTerm": 570, "attackDuration": 280,
-        "moveSpeed": 57,
+        "description": "중위 정예 / 상급 통상형",
+        "maxHp": 1100,
+        "attackDamage": 120, "attackRange": 110, "attackTerm": 260, "attackDuration": 130,
+        "moveSpeed": 58,
         "canAttackMultipleTargets": false
     },
     "nezming_5": {
         "name": "바스타드 소드 네즈밍",
-        "maxHp": 400,
-        "attackDamage": 40, "attackRange": 90, "attackTerm": 700, "attackDuration": 350,
-        "moveSpeed": 53,
+        "description": "중위 보병 / 표준 통상형 (밸런스 기준점)",
+        "maxHp": 850,
+        "attackDamage": 90, "attackRange": 90, "attackTerm": 240, "attackDuration": 120,
+        "moveSpeed": 60,
         "canAttackMultipleTargets": false
     },
     "nezming_6": {
         "name": "야구빠따 네즈밍",
-        "maxHp": 325,
-        "attackDamage": 32, "attackRange": 70, "attackTerm": 820, "attackDuration": 410,
-        "moveSpeed": 50,
+        "description": "하위 보병 / 하급 통상형",
+        "maxHp": 600,
+        "attackDamage": 65, "attackRange": 80, "attackTerm": 220, "attackDuration": 110,
+        "moveSpeed": 62,
         "canAttackMultipleTargets": false
     },
     "nezming_7": {
         "name": "커터칼 네즈밍",
-        "maxHp": 250,
-        "attackDamage": 25, "attackRange": 50, "attackTerm": 950, "attackDuration": 470,
-        "moveSpeed": 47,
+        "description": "하위 기습병 / 경량 암살자",
+        "maxHp": 400,
+        "attackDamage": 45, "attackRange": 60, "attackTerm": 140, "attackDuration": 70,
+        "moveSpeed": 75,
         "canAttackMultipleTargets": false
     },
     "nezming_8": {
         "name": "눈썹칼 네즈밍",
-        "maxHp": 175,
-        "attackDamage": 17, "attackRange": 40, "attackTerm": 1070, "attackDuration": 540,
-        "moveSpeed": 43,
+        "description": "최하위 암살자 / 초경량 고속 딜러",
+        "maxHp": 250,
+        "attackDamage": 30, "attackRange": 50, "attackTerm": 100, "attackDuration": 50,
+        "moveSpeed": 85,
         "canAttackMultipleTargets": false
     },
     "nezming_9": {
         "name": "이쑤시개 네즈밍",
-        "maxHp": 100,
-        "attackDamage": 10, "attackRange": 30, "attackTerm": 1200, "attackDuration": 600,
-        "moveSpeed": 40,
+        "description": "최하위 물량 유닛 / 대량 소환 및 교란용",
+        "maxHp": 120,
+        "attackDamage": 15, "attackRange": 40, "attackTerm": 80, "attackDuration": 40,
+        "moveSpeed": 95,
         "canAttackMultipleTargets": false
     },
+    
     "enemy_01": {
-        "name": "임시 적1",
-        "maxHp": 150,
-        "attackDamage": 8, "attackRange": 60, "attackTerm": 1500, "attackDuration": 750,
-        "moveSpeed": 30,
+        "name": "일반 경비병 (임시 적1)",
+        "description": "가장 표준적인 적 보병. 중위 네즈밍(4~6번)과 호각으로 싸우는 기준점.",
+        "maxHp": 700,
+        "attackDamage": 60, "attackRange": 70, "attackTerm": 230, "attackDuration": 115,
+        "moveSpeed": 55,
         "canAttackMultipleTargets": false
     },
     "enemy_02": {
-        "name": "임시 적2",
-        "maxHp": 400,
-        "attackDamage": 20, "attackRange": 80, "attackTerm": 2000, "attackDuration": 1000,
-        "moveSpeed": 20,
+        "name": "거구의 돌격대장 (임시 적2)",
+        "description": "높은 체력과 광역 공격을 가진 중장갑 유닛. 9번 물량 소환을 카운터치는 천적.",
+        "maxHp": 2500,
+        "attackDamage": 130, "attackRange": 100, "attackTerm": 380, "attackDuration": 190,
+        "moveSpeed": 35,
         "canAttackMultipleTargets": true
     },
     "enemy_03": {
-        "name": "임시 적3",
-        "maxHp": 80,
-        "attackDamage": 5, "attackRange": 50, "attackTerm": 1000, "attackDuration": 500,
-        "moveSpeed": 50,
+        "name": "날쌘 정찰병 (임시 적3)",
+        "description": "체력은 낮지만 빠른 속도로 후방을 노리는 유닛. 7~8번 암살자 네즈밍과의 속도전 유도.",
+        "maxHp": 300,
+        "attackDamage": 35, "attackRange": 50, "attackTerm": 120, "attackDuration": 60,
+        "moveSpeed": 85,
         "canAttackMultipleTargets": false
     }
 }

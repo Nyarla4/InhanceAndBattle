@@ -4,6 +4,7 @@ gameView.js
 멀티
     기지 타격 중 종종 기지 체력 동기화 미스 발생
     대기실로 돌아갔을 때 먹통 상태
+    일시정지 했을때 대상 머리(기지)위에 "일시정지" 추가
 
 코드 리뷰 및 리팩토링(수제) 2차
     structure.txt 참조하여 battle.js의 handleOpponentLeft 부터 진행
