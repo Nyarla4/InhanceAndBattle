@@ -80,6 +80,8 @@ button:disabled {
     bottom: 20px;
     left: 20px;
     background-color: #7f8c8d;
+    margin: 0; /* 불필요한 마진 제거 */
+    padding: 10px 20px;
 }
 .back-btn:hover { background-color: #95a5a6; }
 
@@ -135,10 +137,10 @@ h2 {
 ================================================================= */
 .lobby-layout {
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr; /* 좌 / 중 / 우 3분할 */
+    grid-template-columns: 1fr 1.3fr 1fr; /* 좌 / 중 / 우 3분할 비율 최적화 */
     gap: 16px;
     width: 100%;
-    max-width: 900px;
+    max-width: 950px;
     align-items: stretch;
     margin-bottom: 12px;
 }
@@ -147,19 +149,32 @@ h2 {
 .lobby-slot-box {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 10px;
+    justify-content: space-between; /* 위아래로 요소 밀착 */
     background: #34495e;
-    padding: 15px;
+    padding: 16px;
     border-radius: 8px;
-    border: 2px solid #7f8c8d;
+    border: 2px solid #5d6d7e;
     text-align: center;
+    min-height: 200px;
 }
 
 .lobby-slot-box button {
-    margin: 0;
+    margin: 0 0 10px 0; /* 하단 갭 확보 */
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+}
+
+.lobby-slot-box input {
     width: 100%;
     padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: 1px solid #2c3e50;
+    text-align: center;
+    background-color: #ffffff;
+    color: #2c3e50;
 }
 
 /* 중앙 제어 패널 */
@@ -167,30 +182,36 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 6px;
+    gap: 10px;
     background: #1a252f;
-    padding: 12px;
+    padding: 16px;
     border-radius: 8px;
     border: 2px solid #34495e;
 }
 
+/* 일반 로비 행 정렬 */
 .lobby-info-row {
     display: flex;
     align-items: center;
     gap: 8px;
+    width: 100%;
 }
 
 .lobby-info-row .label {
-    width: 60px;
+    width: 55px; /* 라벨 가로 너비 */
     font-size: 13px;
     color: #f1c40f;
     font-weight: bold;
     text-align: left;
+    flex-shrink: 0;
 }
 
+/* 공통 읽기전용 텍스트 필드 */
 .lobby-info-row input {
     flex: 1;
-    padding: 6px;
+    min-width: 0;
+    height: 36px;
+    padding: 0 8px;
     font-size: 14px;
     font-weight: bold;
     border-radius: 4px;
@@ -200,15 +221,41 @@ h2 {
     color: #2c3e50;
 }
 
+/* 🎯 방 코드 4자리 전용 레이아웃 최적화 */
+#lobby-room-code-display {
+    flex: 0 0 85px !important; /* 4자리 영문/숫자에 완벽히 특화된 고정 가로폭 */
+    width: 85px !important;
+    text-align: center;
+    letter-spacing: 1px;
+    background-color: #ffffff; /* 가독성을 위해 흰 배경 지정 */
+}
+
+/* 방 코드 복사 / 방 주소 복사 버튼 컴팩트화 */
+#copy-room-code, #copy-room-address {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 12px;
+    height: 36px;
+    flex: 1; /* 남는 공간을 복사 버튼 2개가 균등 분할 */
+    border-radius: 4px;
+    background-color: #e67e22; /* 복사 전용 웜 오렌지 컬러로 변별력 제공 */
+    white-space: nowrap;
+}
+#copy-room-code:hover, #copy-room-address:hover {
+    background-color: #f39c12;
+}
+
+/* 닉네임 입력 줄 */
 .lobby-name-row {
-    display: grid;
-    grid-template-columns: 1fr 65px;
+    display: flex;
     gap: 6px;
-    margin-top: 2px;
+    width: 100%;
 }
 
 .lobby-name-row input {
-    padding: 6px;
+    flex: 1;
+    height: 36px;
+    padding: 0 10px;
     font-size: 13px;
     border-radius: 4px;
     border: 1px solid #34495e;
@@ -219,35 +266,40 @@ h2 {
 
 .lobby-name-row button {
     margin: 0;
-    padding: 6px;
-    font-size: 12px;
+    padding: 0 16px;
+    height: 36px;
+    font-size: 13px;
     background-color: #2980b9;
+    border-radius: 4px;
+    flex-shrink: 0;
 }
 .lobby-name-row button:hover { background-color: #3498db; }
 
+/* 카운트다운 숫자 크기 및 정렬 */
 #lobby-countdown-display {
-    min-height: 40px;
+    min-height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #f1c40f;
-    font-size: 36px;
+    font-size: 28px;
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
+/* 준비 버튼 */
 #lobby-ready-btn {
-    min-height: 45px;
+    min-height: 42px;
     font-size: 18px;
     margin: 0;
     background-color: #27ae60;
 }
 #lobby-ready-btn:hover { background-color: #2ecc71; }
 
-/* 하단 패널 (관전자 및 로그) */
+/* 하단 패널 (관전자 및 로그 전체 배치 최적화) */
 .lobby-bottom-panel {
     width: 100%;
-    max-width: 900px;
+    max-width: 950px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -255,6 +307,7 @@ h2 {
     padding: 12px;
     border-radius: 8px;
     border: 2px solid #2c3e50;
+    margin-bottom: 20px; /* 뒤로가기 버튼과 겹침을 미연에 차단하기 위한 하단 마진 확보 */
 }
 
 .spectator-row {
@@ -273,6 +326,7 @@ h2 {
 .spectator-row button:hover { background-color: #95a5a6; }
 
 .spectator-row input {
+    width: 100%;
     padding: 8px;
     font-size: 14px;
     font-weight: bold;
