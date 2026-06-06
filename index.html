@@ -48,31 +48,44 @@
     <div id="multiLobby-screen" class="screen hidden">
         <h2>멀티 로비</h2>
         <div class="lobby-layout">
-            <div class="lobby-left-panel">
-                <div class="lobby-slot-buttons">
-                    <button id="move-left-slot-btn">좌측</button>
-                    <input id="left-player-display" type="text" value="비어 있음" readonly>
-                    <input id="right-player-display" type="text" value="비어 있음" readonly>
-                    <button id="move-right-slot-btn">우측</button>
-                </div>
-                <textarea id="lobby-log-display" readonly></textarea>
-                <div class="lobby-slot-buttons">
-                    <button id="move-spectator-slot-btn">관전</button>
-                    <input id="spectator-player-display" type="text" value="관전자 없음" readonly>
-                </div>
+    
+            <div class="lobby-slot-box left-slot">
+                <button id="move-left-slot-btn">좌측 참여</button>
+                <input id="left-player-display" type="text" value="비어 있음" readonly>
             </div>
-
-            <div class="lobby-right-panel">
-                <input id="lobby-room-code-display" type="text" value="----" readonly>
-                <input id="lobby-my-role-display" type="text" value="관전" readonly>
+    
+            <div class="lobby-center-panel">
+                <div class="lobby-info-row">
+                    <span class="label">방 코드:</span>
+                    <input id="lobby-room-code-display" type="text" value="----" readonly>
+                </div>
+                <div class="lobby-info-row">
+                    <span class="label">내 역할:</span>
+                    <input id="lobby-my-role-display" type="text" value="관전" readonly>
+                </div>
                 <div class="lobby-name-row">
-                    <input id="lobby-name-input" type="text" maxlength="12" autocomplete="off">
-                    <button id="lobby-name-change-btn">이름 변경</button>
+                    <input id="lobby-name-input" type="text" placeholder="닉네임 입력" maxlength="12" autocomplete="off">
+                    <button id="lobby-name-change-btn">변경</button>
                 </div>
                 <div id="lobby-countdown-display">-</div>
                 <button id="lobby-ready-btn">준비</button>
             </div>
+    
+            <div class="lobby-slot-box right-slot">
+                <input id="right-player-display" type="text" value="비어 있음" readonly>
+                <button id="move-right-slot-btn">우측 참여</button>
+            </div>
+    
         </div>
+    
+        <div class="lobby-bottom-panel">
+            <div class="spectator-row">
+                <button id="move-spectator-slot-btn">관전하기</button>
+                <input id="spectator-player-display" type="text" value="관전자 없음" readonly>
+            </div>
+            <textarea id="lobby-log-display" placeholder="로비 상태 로그" readonly></textarea>
+        </div>
+    
         <button id="lobby-back-btn" class="back-btn">뒤로가기</button>
     </div>
 

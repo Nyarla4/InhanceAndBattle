@@ -56,7 +56,6 @@ button {
     border-radius: 6px;
     cursor: pointer;
     transition: transform 0.1s, background-color 0.2s;
-    /* box-shadow: 0 4px 0 #c0392b; */
 }
 
 button:hover {
@@ -68,12 +67,19 @@ button:active {
     box-shadow: none;
 }
 
+/* 버튼 비활성화 상태 스타일 정의 */
+button:disabled {
+    background-color: #7f8c8d !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none !important;
+}
+
 .back-btn {
     position: absolute;
     bottom: 20px;
     left: 20px;
     background-color: #7f8c8d;
-    box-shadow: 0 4px 0 #95a5a6;
 }
 .back-btn:hover { background-color: #95a5a6; }
 
@@ -124,86 +130,176 @@ h2 {
     padding-right: 16px;
 }
 
+/* =================================================================
+   멀티 로비 통합 디자인
+================================================================= */
 .lobby-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.9fr);
-    gap: 24px;
+    grid-template-columns: 1fr 1.2fr 1fr; /* 좌 / 중 / 우 3분할 */
+    gap: 16px;
     width: 100%;
-    max-width: 850px;
+    max-width: 900px;
     align-items: stretch;
+    margin-bottom: 12px;
 }
 
-.lobby-left-panel,
-.lobby-right-panel {
+/* 슬롯 박스 */
+.lobby-slot-box {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    justify-content: center;
+    gap: 10px;
+    background: #34495e;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #7f8c8d;
+    text-align: center;
 }
 
-.lobby-slot-buttons {
-    display: grid;
-    grid-template-columns: 90px minmax(0, 1fr) minmax(0, 1fr) 90px;
+.lobby-slot-box button {
+    margin: 0;
+    width: 100%;
+    padding: 10px;
+}
+
+/* 중앙 제어 패널 */
+.lobby-center-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px;
+    background: #1a252f;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #34495e;
+}
+
+.lobby-info-row {
+    display: flex;
+    align-items: center;
     gap: 8px;
 }
 
-.lobby-slot-buttons:last-child {
-    grid-template-columns: 90px minmax(0, 1fr);
-}
-
-.lobby-layout input,
-.lobby-layout textarea {
-    border: 2px solid #34495e;
-    border-radius: 6px;
-    padding: 12px;
-    font-size: 16px;
+.lobby-info-row .label {
+    width: 60px;
+    font-size: 13px;
+    color: #f1c40f;
     font-weight: bold;
-    color: #2c3e50;
+    text-align: left;
 }
 
-.lobby-layout input[readonly],
-.lobby-layout textarea[readonly] {
-    background-color: #95a5a6;
-    color: #1a1a1a;
-}
-
-.lobby-layout input:not([readonly]) {
+.lobby-info-row input {
+    flex: 1;
+    padding: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 1px solid #34495e;
+    text-align: center;
     background-color: #ecf0f1;
-}
-
-#lobby-log-display {
-    min-height: 130px;
-    resize: none;
-    line-height: 1.5;
+    color: #2c3e50;
 }
 
 .lobby-name-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 95px;
-    gap: 8px;
+    grid-template-columns: 1fr 65px;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.lobby-name-row input {
+    padding: 6px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #34495e;
+    background-color: #ffffff;
+    color: #2c3e50;
+    text-align: center;
 }
 
 .lobby-name-row button {
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 13px;
+    margin: 0;
+    padding: 6px;
+    font-size: 12px;
+    background-color: #2980b9;
 }
+.lobby-name-row button:hover { background-color: #3498db; }
 
 #lobby-countdown-display {
-    min-height: 80px;
+    min-height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #f1c40f;
-    font-size: 54px;
+    font-size: 36px;
     font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 #lobby-ready-btn {
-    min-height: 86px;
-    font-size: 28px;
+    min-height: 45px;
+    font-size: 18px;
+    margin: 0;
+    background-color: #27ae60;
+}
+#lobby-ready-btn:hover { background-color: #2ecc71; }
+
+/* 하단 패널 (관전자 및 로그) */
+.lobby-bottom-panel {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #34495e;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #2c3e50;
 }
 
-/* 강화실 레이아웃 */
+.spectator-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.spectator-row button {
+    margin: 0;
+    padding: 8px;
+    font-size: 13px;
+    background-color: #7f8c8d;
+}
+.spectator-row button:hover { background-color: #95a5a6; }
+
+.spectator-row input {
+    padding: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 1px solid #2c3e50;
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    text-align: center;
+}
+
+#lobby-log-display {
+    width: 100%;
+    min-height: 55px;
+    max-height: 70px;
+    padding: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    resize: none;
+    border-radius: 4px;
+    background-color: #1a1a1a !important;
+    color: #2ecc71 !important;
+    border: 1px solid #2c3e50;
+}
+
+/* =================================================================
+   강화실 레이아웃
+================================================================= */
 .enhance-container {
     display: flex;
     gap: 40px;
