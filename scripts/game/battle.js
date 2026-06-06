@@ -419,6 +419,7 @@ function checkGameOver() {
 
 /** 데이터 변경 결과를 화면에 동기화 */
 function syncView() {
+    if(getGameState() == null) return;
     const allCreatures = [...getGameState().playerCreatures, ...getGameState().enemyCreatures];
     allCreatures.forEach(creature => {
         // gameView.js의 함수를 호출하여 화면 갱신

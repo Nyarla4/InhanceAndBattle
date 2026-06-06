@@ -44,7 +44,15 @@ export function initLobbyView() {
             socketClient.disconnect();
             currentLobby = null;
         }
-    })
+    });
+
+    UI.copyRoomCodeBtn.addEventListener('click', () => {
+        window.navigator.clipboard.writeText(UI.lobbyRoomCodeDisplay.value);
+    });
+
+    UI.copyRoomAddressBtn.addEventListener('click', () => {
+        alert("기능 미구현");
+    });
 
     eventBus.on('LOBBY_ENTERED', ({ lobby }) => {
         currentLobby = lobby;

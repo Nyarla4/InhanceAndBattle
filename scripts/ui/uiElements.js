@@ -47,6 +47,9 @@ export const moveSpectatorSlotBtn = getElement("move-spectator-slot-btn");
 export const leftPlayerDisplay = getElement("left-player-display");
 export const rightPlayerDisplay = getElement("right-player-display");
 export const spectatorPlayerDisplay = getElement("spectator-player-display");
+export const stageList = getElement("stage-list");
+
+// 로비 요소
 export const lobbyLogDisplay = getElement("lobby-log-display");
 export const lobbyRoomCodeDisplay = getElement("lobby-room-code-display");
 export const lobbyMyRoleDisplay = getElement("lobby-my-role-display");
@@ -54,7 +57,8 @@ export const lobbyNameInput = getElement("lobby-name-input");
 export const lobbyNameChangeBtn = getElement("lobby-name-change-btn");
 export const lobbyCountdownDisplay = getElement("lobby-countdown-display");
 export const lobbyReadyBtn = getElement("lobby-ready-btn");
-export const stageList = getElement("stage-list");
+export const copyRoomCodeBtn = getElement("copy-room-code");
+export const copyRoomAddressBtn = getElement("copy-room-address");
 
 // 4. 인게임(전투) 내부 UI 구성요소
 export const inStage = getElement("battle-field-container");
