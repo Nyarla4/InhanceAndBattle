@@ -374,11 +374,6 @@ function attackTarget(attacker, targets) {
             }
         }
     }
-
-    // 디버그용
-    const attackerName = `[${attacker.isPlayer ? '아군' : '적군'}] ${attacker.data.name}`;
-    const targetName = `[${target.isPlayer ? '아군' : '적군'}] ${target.data.name}`;
-    console.log(`⚔️ ${attackerName} -> ${targetName} 공격! (피해량: ${damage}, 남은 HP: ${Math.max(0, target.hp)})`);
 }
 
 /** 체력이 0 이하인 개체 처리 */
