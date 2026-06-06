@@ -4,7 +4,55 @@
    0. 상수
 ================================================================= */
 :root {
-  --background-color: #2c3e50;
+  /* --- 배경 계열 --- */
+  --color-bg-root:       #1a1a1a; /* body 최하단 / 로그 배경 */
+  --color-bg-base:       #2c3e50; /* 게임 기본 배경 */
+  --color-bg-panel-dark: #1a252f; /* 로비 중앙 패널 */
+  --color-bg-surface:    #34495e; /* 카드·박스·필드 등 표면 */
+
+  /* --- 텍스트 / 입력 계열 --- */
+  --color-text-white:    #ffffff; /* 흰 글자·흰 배경 입력 */
+  --color-text-light:    #ecf0f1; /* 밝은 회색 텍스트·입력 배경 */
+
+  /* --- 포인트 컬러 --- */
+  --color-accent-yellow: #f1c40f; /* 강조 헤더·레이블·테두리 */
+
+  /* --- 버튼 – 주요 (Primary) --- */
+  --color-btn-primary:       #e74c3c;
+  --color-btn-primary-hover: #ff6b6b;
+
+  /* --- 버튼 – 복사 (Copy / Warm-Orange) --- */
+  --color-btn-copy:       #e67e22;
+  --color-btn-copy-hover: #f39c12;
+
+  /* --- 버튼 – 보조 (Secondary / Gray) --- */
+  --color-btn-secondary:       #7f8c8d;
+  --color-btn-secondary-hover: #95a5a6;
+
+  /* --- 버튼 – 블루 (Blue) --- */
+  --color-btn-blue:       #2980b9;
+  --color-btn-blue-hover: #3498db;
+
+  /* --- 버튼 – 성공 (Success / Green) --- */
+  --color-btn-success:       #27ae60;
+  --color-btn-success-hover: #2ecc71; /* 로그 텍스트 컬러와 공유 */
+
+  /* --- 버튼 – 위험 (Danger / Red) --- */
+  --color-btn-danger: #c0392b;
+
+  /* --- 테두리 --- */
+  --color-border:       #34495e; /* 공통 테두리 (bg-surface와 동일 값) */
+  --color-border-slot:  #5d6d7e; /* 로비 슬롯 전용 테두리 */
+  --color-border-light: #f3f3f3; /* 스피너 트랙 */
+
+  /* --- 필드 (인게임 배경) --- */
+  --color-field-sky:    #7b94ad; /* 필드 하늘 그라디언트 */
+  --color-field-sky-bg: #87ceeb; /* 전투 필드 컨테이너 배경 */
+
+  /* --- 그림자 / 오버레이 --- */
+  --color-shadow:        rgba(0, 0, 0, 0.5);
+  --color-shadow-heavy:  rgba(0, 0, 0, 0.6);
+  --color-overlay:       rgba(0, 0, 0, 0.75);
 }
 
 /* =================================================================
@@ -19,8 +67,8 @@
 }
 
 body {
-    background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: var(--color-bg-root);
+    color: var(--color-text-white);
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -35,15 +83,15 @@ body {
     max-width: 1024px;
     height: 100%;
     max-height: 576px;
-    background-color: var(--background-color);
+    background-color: var(--color-bg-base);
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 4px solid #34495e;
+    border: 4px solid var(--color-border);
     border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px var(--color-shadow);
     padding: 20px;
 }
 
@@ -54,8 +102,8 @@ body {
 
 /* 공통 버튼 디자인 */
 button {
-    background-color: #e74c3c;
-    color: white;
+    background-color: var(--color-btn-primary);
+    color: var(--color-text-white);
     border: none;
     padding: 12px;
     margin: 12px;
@@ -67,7 +115,7 @@ button {
 }
 
 button:hover {
-    background-color: #ff6b6b;
+    background-color: var(--color-btn-primary-hover);
 }
 
 button:active {
@@ -77,7 +125,7 @@ button:active {
 
 /* 버튼 비활성화 상태 스타일 정의 */
 button:disabled {
-    background-color: #7f8c8d !important;
+    background-color: var(--color-btn-secondary) !important;
     cursor: not-allowed;
     opacity: 0.6;
     transform: none !important;
@@ -87,11 +135,11 @@ button:disabled {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    background-color: #7f8c8d;
+    background-color: var(--color-btn-secondary);
     margin: 0; /* 불필요한 마진 제거 */
     padding: 10px 20px;
 }
-.back-btn:hover { background-color: #95a5a6; }
+.back-btn:hover { background-color: var(--color-btn-secondary-hover); }
 
 /* =================================================================
    2. 각 화면별 레이아웃 (Title, Mode, Stage, Upgrade)
@@ -99,8 +147,8 @@ button:disabled {
 h1 {
     font-size: 36px;
     margin-bottom: 40px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-    color: #f1c40f;
+    text-shadow: 2px 2px 4px var(--color-shadow-heavy);
+    color: var(--color-accent-yellow);
 }
 
 h2 {
@@ -125,10 +173,10 @@ h2 {
     min-width: 0;
     flex: 1;
     padding: 12px;
-    border: 2px solid #34495e;
+    border: 2px solid var(--color-border);
     border-radius: 6px;
-    background-color: #ecf0f1;
-    color: var(--background-color);
+    background-color: var(--color-text-light);
+    color: var(--color-bg-base);
     font-size: 16px;
     font-weight: bold;
     text-align: center;
@@ -158,10 +206,10 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* 위아래로 요소 밀착 */
-    background: #34495e;
+    background: var(--color-bg-surface);
     padding: 16px;
     border-radius: 8px;
-    border: 2px solid #5d6d7e;
+    border: 2px solid var(--color-border-slot);
     text-align: center;
     min-height: 200px;
 }
@@ -179,10 +227,10 @@ h2 {
     font-size: 14px;
     font-weight: bold;
     border-radius: 6px;
-    border: 1px solid var(--background-color);
+    border: 1px solid var(--color-bg-base);
     text-align: center;
-    background-color: #ffffff;
-    color: var(--background-color);
+    background-color: var(--color-text-white);
+    color: var(--color-bg-base);
 }
 
 /* 중앙 제어 패널 */
@@ -191,10 +239,10 @@ h2 {
     flex-direction: column;
     justify-content: space-between;
     gap: 10px;
-    background: #1a252f;
+    background: var(--color-bg-panel-dark);
     padding: 16px;
     border-radius: 8px;
-    border: 2px solid #34495e;
+    border: 2px solid var(--color-border);
 }
 
 /* 일반 로비 행 정렬 */
@@ -208,7 +256,7 @@ h2 {
 .lobby-info-row .label {
     width: 55px; /* 라벨 가로 너비 */
     font-size: 13px;
-    color: #f1c40f;
+    color: var(--color-accent-yellow);
     font-weight: bold;
     text-align: left;
     flex-shrink: 0;
@@ -223,10 +271,10 @@ h2 {
     font-size: 14px;
     font-weight: bold;
     border-radius: 4px;
-    border: 1px solid #34495e;
+    border: 1px solid var(--color-border);
     text-align: center;
-    background-color: #ecf0f1;
-    color: var(--background-color);
+    background-color: var(--color-text-light);
+    color: var(--color-bg-base);
 }
 
 /* 🎯 방 코드 4자리 전용 레이아웃 최적화 */
@@ -235,7 +283,7 @@ h2 {
     width: 85px !important;
     text-align: center;
     letter-spacing: 1px;
-    background-color: #ffffff; /* 가독성을 위해 흰 배경 지정 */
+    background-color: var(--color-text-white); /* 가독성을 위해 흰 배경 지정 */
 }
 
 /* 방 코드 복사 / 방 주소 복사 버튼 컴팩트화 */
@@ -246,11 +294,11 @@ h2 {
     height: 36px;
     flex: 1; /* 남는 공간을 복사 버튼 2개가 균등 분할 */
     border-radius: 4px;
-    background-color: #e67e22; /* 복사 전용 웜 오렌지 컬러로 변별력 제공 */
+    background-color: var(--color-btn-copy); /* 복사 전용 웜 오렌지 컬러로 변별력 제공 */
     white-space: nowrap;
 }
 #copy-room-code:hover, #copy-room-address:hover {
-    background-color: #f39c12;
+    background-color: var(--color-btn-copy-hover);
 }
 
 /* 닉네임 입력 줄 */
@@ -266,9 +314,9 @@ h2 {
     padding: 0 10px;
     font-size: 13px;
     border-radius: 4px;
-    border: 1px solid #34495e;
-    background-color: #ffffff;
-    color: var(--background-color);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-text-white);
+    color: var(--color-bg-base);
     text-align: center;
 }
 
@@ -277,11 +325,11 @@ h2 {
     padding: 0 16px;
     height: 36px;
     font-size: 13px;
-    background-color: #2980b9;
+    background-color: var(--color-btn-blue);
     border-radius: 4px;
     flex-shrink: 0;
 }
-.lobby-name-row button:hover { background-color: #3498db; }
+.lobby-name-row button:hover { background-color: var(--color-btn-blue-hover); }
 
 /* 카운트다운 숫자 크기 및 정렬 */
 #lobby-countdown-display {
@@ -289,10 +337,10 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #f1c40f;
+    color: var(--color-accent-yellow);
     font-size: 28px;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 2px var(--color-shadow);
 }
 
 /* 준비 버튼 */
@@ -300,9 +348,9 @@ h2 {
     min-height: 42px;
     font-size: 18px;
     margin: 0;
-    background-color: #27ae60;
+    background-color: var(--color-btn-success);
 }
-#lobby-ready-btn:hover { background-color: #2ecc71; }
+#lobby-ready-btn:hover { background-color: var(--color-btn-success-hover); }
 
 /* 하단 패널 (관전자 및 로그 전체 배치 최적화) */
 .lobby-bottom-panel {
@@ -311,10 +359,10 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background: #34495e;
+    background: var(--color-bg-surface);
     padding: 12px;
     border-radius: 8px;
-    border: 2px solid var(--background-color);
+    border: 2px solid var(--color-bg-base);
     margin-bottom: 20px; /* 뒤로가기 버튼과 겹침을 미연에 차단하기 위한 하단 마진 확보 */
 }
 
@@ -329,9 +377,9 @@ h2 {
     margin: 0;
     padding: 8px;
     font-size: 13px;
-    background-color: #7f8c8d;
+    background-color: var(--color-btn-secondary);
 }
-.spectator-row button:hover { background-color: #95a5a6; }
+.spectator-row button:hover { background-color: var(--color-btn-secondary-hover); }
 
 .spectator-row input {
     width: 100%;
@@ -339,9 +387,9 @@ h2 {
     font-size: 14px;
     font-weight: bold;
     border-radius: 4px;
-    border: 1px solid var(--background-color);
-    background-color: #ecf0f1;
-    color: var(--background-color);
+    border: 1px solid var(--color-bg-base);
+    background-color: var(--color-text-light);
+    color: var(--color-bg-base);
     text-align: center;
 }
 
@@ -354,9 +402,9 @@ h2 {
     line-height: 1.4;
     resize: none;
     border-radius: 4px;
-    background-color: #1a1a1a !important;
-    color: #2ecc71 !important;
-    border: 1px solid var(--background-color);
+    background-color: var(--color-bg-root) !important;
+    color: var(--color-btn-success-hover) !important; /* 초록 로그 텍스트 */
+    border: 1px solid var(--color-bg-base);
 }
 
 /* =================================================================
@@ -370,11 +418,11 @@ h2 {
 }
 
 #enhance-card {
-    background: #34495e;
+    background: var(--color-bg-surface);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    border: 2px solid #f1c40f;
+    border: 2px solid var(--color-accent-yellow);
 }
 
 #display {
@@ -399,31 +447,31 @@ h2 {
     flex-shrink: 0; /* 필드가 좁아지지 않도록 고정 */
     width: 660px; /* 너비 고정 */
     position: relative;
-    background-color: #87ceeb; /* 임시 필드 배경색 */
+    background-color: var(--color-field-sky-bg); /* 임시 필드 배경색 */
     height: 100%;
 
-    overflow-x: auto; 
+    overflow-x: auto;
     overflow-y: hidden;
 }
 
 /* ⚔️ 핵심: 디펜스 라인 필드 */
 #field {
     width: 100%;
-    background-color: #34495e;
-    background-image: linear-gradient(#7b94ad 70%, var(--background-color) 70%); /* 하늘과 땅 분할 연출 */
+    background-color: var(--color-bg-surface);
+    background-image: linear-gradient(var(--color-field-sky) 70%, var(--color-bg-base) 70%); /* 하늘과 땅 분할 연출 */
     height: 100%;
     position: relative;
     overflow: hidden; /* 필드 밖으로 나가는 유닛 숨김 */
-    border-bottom: 4px solid var(--background-color);
+    border-bottom: 4px solid var(--color-bg-base);
 }
 
 #forge-panel {
     flex: 0 0 260px;
-    background-color: var(--background-color);
+    background-color: var(--color-bg-base);
     display: flex;
     flex-direction: column;
     padding: 15px;
-    color: white;
+    color: var(--color-text-white);
     box-sizing: border-box;
     overflow-y: auto;
     height: 100%;
@@ -451,14 +499,14 @@ h2 {
 }
 
 .forge-header {
-    color: #f1c40f;
+    color: var(--color-accent-yellow);
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 12px;
 }
 
 .storage-title {
-    color: #ecf0f1;
+    color: var(--color-text-light);
     font-size: 13px;
     font-weight: bold;
     margin-bottom: 8px;
@@ -471,24 +519,24 @@ h2 {
     width: 100px;
     height: 140px;
     z-index: 10;
-    background-color: #7f8c8d;
+    background-color: var(--color-btn-secondary);
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    border: 3px solid #34495e;
+    border: 3px solid var(--color-border);
 }
 
-#playerBase { 
-    right: 0; 
-    background-color: #27ae60; 
-    border-radius: 20px 0 0 0; 
+#playerBase {
+    right: 0;
+    background-color: var(--color-btn-success);
+    border-radius: 20px 0 0 0;
 }
 
-#enemyBase { 
-    left: 0; 
-    background-color: #c0392b; 
-    border-radius: 0 20px 0 0; 
+#enemyBase {
+    left: 0;
+    background-color: var(--color-btn-danger);
+    border-radius: 0 20px 0 0;
 }
 
 /* 🐹 소환되는 개체(Creature) 스타일 */
@@ -498,10 +546,10 @@ h2 {
     height: 60px;
     pointer-events: none; /* 클릭 차단 */
     transition: left 0.05s linear; /* 부드러운 이동 */
-    
-    transform: translateX(-50%); /*계산 기준을 중앙 축으로*/
-    
-    /*내부 이미지가 바닥에 붙도록 정렬*/
+
+    transform: translateX(-50%); /* 계산 기준을 중앙 축으로 */
+
+    /* 내부 이미지가 바닥에 붙도록 정렬 */
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -510,7 +558,7 @@ h2 {
 .creature img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /*비율 유지*/
+    object-fit: contain; /* 비율 유지 */
     display: block;
 }
 
@@ -523,7 +571,7 @@ h2 {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: var(--color-overlay);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -531,13 +579,13 @@ h2 {
 }
 
 .modal-content {
-    background-color: var(--background-color);
+    background-color: var(--color-bg-base);
     padding: 30px;
     border-radius: 10px;
-    border: 3px solid #34495e;
+    border: 3px solid var(--color-border);
     min-width: 300px;
     max-width: 500px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 25px var(--color-shadow);
 }
 
 .text-center {
@@ -547,7 +595,7 @@ h2 {
 #loading-text {
     margin-top: 20px;
     line-height: 1.5;
-    color: #f1c40f;
+    color: var(--color-accent-yellow);
     font-weight: bold;
 }
 
@@ -555,22 +603,22 @@ h2 {
 .spinner {
     width: 50px;
     height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #e74c3c;
+    border: 5px solid var(--color-border-light);
+    border-top: 5px solid var(--color-btn-primary);
     border-radius: 50%;
     margin: 0 auto;
     animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
+    0%   { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
 /* 통상 숨김 */
 #orientation-badge {
     display: none;
-    background-color: #1a1a1a; /* 배경을 완전히 어둡게 처리 */
+    background-color: var(--color-bg-root); /* 배경을 완전히 어둡게 처리 */
     z-index: 10000; /* 최상단에 위치 */
 }
 /* 모바일(터치 입력)에서 세로일때 회전 요청 */
