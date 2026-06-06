@@ -3,9 +3,10 @@
 ================================================================= */
 .enhance-container {
     display: flex;
-    gap: 40px;
+    gap: 20px;          /* 카드와 버튼 사이 간격 축소 */
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 0;   /* 하단 마진 제거 */
+    flex-shrink: 0;     /* 강화창 크기 고정 */
 }
 
 #enhance-card {
@@ -56,12 +57,13 @@
 
 /* 보관실 박스 */
 #storage-box {
-    margin-top: 30px;
-    border-top: 2px dashed #444;
-    padding-top: 20px;
+    margin-top: 0; /* 가로배치: 상단 마진 제거 */
+    border-left: 2px dashed #444; /* 경계선을 top에서 left로 이동 */
+    padding-left: 20px;
     text-align: left;
     width: 100%;
-    max-width: 500px;
+    max-width: 450px; /* 보관함 너비 제한 */
+    height: 100%; /* 부모 높이 */
     margin-left: auto;
     margin-right: auto;
 }
@@ -75,10 +77,14 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    flex: 1; /* 할당 세로 공간 채울 것 */
+    max-height: 260px; /* 576px 내에서 보관함 높이 제한 */
+    overflow-y: auto; /* 내부 세로 스크롤바 */
     min-height: 80px;
     background: var(--color-bg-base);
     padding: 15px;
     border-radius: 8px;
+    align-content: flex-start; /* 위에서 쌓이도록 */
 }
 
 /* 일시정지 버튼 */
@@ -263,3 +269,20 @@
     border-radius: 20px 0 0 0;
 }
 /* 기본(싱글/플레이어 우측) 상태는 main.css의 #playerBase/#enemyBase 규칙이 담당 */
+
+/* =================================================================
+   강화실 레이아웃 가로 정렬 및 넘침 방지 개선
+================================================================= */
+
+/* 1. 새로 추가한 가로 분할 레이아웃 */
+.upgrade-layout {
+    display: flex;
+    flex-direction: row; /* 가로로 배치 */
+    width: 100%;
+    gap: 30px;           /* 좌우 구역 간격 */
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 10px;
+    flex: 1;             /* 남은 세로 공간 효율적 활용 */
+    overflow: hidden;    /* 레이아웃 자체가 넘치는 것 방지 */
+}
