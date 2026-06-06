@@ -1,0 +1,54 @@
+/* =================================================================
+   0. 상수
+================================================================= */
+:root {
+  /* --- 배경 계열 --- */
+  --color-bg-root:       #1a1a1a; /* body 최하단 / 로그 배경 */
+  --color-bg-base:       #2c3e50; /* 게임 기본 배경 */
+  --color-bg-panel-dark: #1a252f; /* 로비 중앙 패널 */
+  --color-bg-surface:    #34495e; /* 카드·박스·필드 등 표면 */
+
+  /* --- 텍스트 / 입력 계열 --- */
+  --color-text-white:    #ffffff; /* 흰 글자·흰 배경 입력 */
+  --color-text-light:    #ecf0f1; /* 밝은 회색 텍스트·입력 배경 */
+
+  /* --- 포인트 컬러 --- */
+  --color-accent-yellow: #f1c40f; /* 강조 헤더·레이블·테두리 */
+
+  /* --- 버튼 – 주요 (Primary) --- */
+  --color-btn-primary:       #e74c3c;
+  --color-btn-primary-hover: #ff6b6b;
+
+  /* --- 버튼 – 복사 (Copy / Warm-Orange) --- */
+  --color-btn-copy:       #e67e22;
+  --color-btn-copy-hover: #f39c12;
+
+  /* --- 버튼 – 보조 (Secondary / Gray) --- */
+  --color-btn-secondary:       #7f8c8d;
+  --color-btn-secondary-hover: #95a5a6;
+
+  /* --- 버튼 – 블루 (Blue) --- */
+  --color-btn-blue:       #2980b9;
+  --color-btn-blue-hover: #3498db;
+
+  /* --- 버튼 – 성공 (Success / Green) --- */
+  --color-btn-success:       #27ae60;
+  --color-btn-success-hover: #2ecc71; /* 로그 텍스트 컬러와 공유 */
+
+  /* --- 버튼 – 위험 (Danger / Red) --- */
+  --color-btn-danger: #c0392b;
+
+  /* --- 테두리 --- */
+  --color-border:       #34495e; /* 공통 테두리 (bg-surface와 동일 값) */
+  --color-border-slot:  #5d6d7e; /* 로비 슬롯 전용 테두리 */
+  --color-border-light: #f3f3f3; /* 스피너 트랙 */
+
+  /* --- 필드 (인게임 배경) --- */
+  --color-field-sky:    #7b94ad; /* 필드 하늘 그라디언트 */
+  --color-field-sky-bg: #87ceeb; /* 전투 필드 컨테이너 배경 */
+
+  /* --- 그림자 / 오버레이 --- */
+  --color-shadow:        rgba(0, 0, 0, 0.5);
+  --color-shadow-heavy:  rgba(0, 0, 0, 0.6);
+  --color-overlay:       rgba(0, 0, 0, 0.75);
+}

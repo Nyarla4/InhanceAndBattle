@@ -1,0 +1,265 @@
+/* =================================================================
+   강화실 레이아웃
+================================================================= */
+.enhance-container {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#enhance-card {
+    background: var(--color-bg-surface);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid var(--color-accent-yellow);
+}
+
+#display {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* =================================================================
+   5. 강화실 동적 생성 요소 클래스
+================================================================= */
+
+/* 강화 그룹 탭 목록 컨테이너 */
+#enhance-group-list {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* 강화 대상 이름 */
+#enhance-name {
+    margin: 10px 0;
+    color: var(--color-accent-yellow);
+}
+
+/* 강화 확률 텍스트 */
+#enhance-percentage {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #bdc3c7;
+}
+
+/* 하락 확률 텍스트 */
+#drop-percentage {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #cc2e2e;
+}
+
+/* 보관실 박스 */
+#storage-box {
+    margin-top: 30px;
+    border-top: 2px dashed #444;
+    padding-top: 20px;
+    text-align: left;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#storage-box > h3 {
+    color: var(--color-text-light);
+    margin-bottom: 10px;
+}
+
+/* 보관실 목록 */
+#storage-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    min-height: 80px;
+    background: var(--color-bg-base);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* 일시정지 버튼 */
+#pause-battle-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+}
+
+/* 모달 내부 버튼 행 */
+.modal-btn-row {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* 방향 전환 안내 메시지 */
+.orientation-msg {
+    margin-top: 15px;
+    font-weight: bold;
+    color: var(--color-accent-yellow);
+}
+
+/* 강화 그룹 탭 버튼 (메인 강화소) */
+.enhance-group-tab {
+    padding: 8px 16px;
+    font-size: 14px;
+    background: var(--color-text-light);
+    color: #333;
+}
+.enhance-group-tab.is-active {
+    background: var(--color-btn-blue-hover);
+    color: var(--color-text-white);
+}
+
+/* 강화 액션 버튼 (메인 강화소) */
+#action-upgrade-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background: var(--color-btn-success-hover);
+    border: none;
+    color: var(--color-text-white);
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 4px;
+}
+#action-store-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #9b59b6;
+    border: none;
+    color: var(--color-text-white);
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 4px;
+}
+
+/* 창고 카드 (메인 강화소) */
+.storage-card {
+    background: var(--color-bg-surface);
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    width: 90px;
+    box-shadow: 0 2px 5px var(--color-shadow);
+}
+.storage-card img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 5px;
+}
+.storage-card-name {
+    font-size: 11px;
+    color: var(--color-text-white);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.storage-card-withdraw-btn {
+    margin-top: 5px;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--color-btn-copy);
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+/* 인게임 강화실(forge) 그룹 탭 버튼 */
+.forge-group-tab {
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    background: var(--color-bg-surface);
+    color: var(--color-text-white);
+}
+.forge-group-tab.is-active {
+    background: var(--color-accent-yellow);
+    color: #000;
+}
+
+/* 인게임 강화 액션 버튼 */
+#forge-action-upgrade-btn {
+    padding: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    background: var(--color-btn-success-hover);
+    border: none;
+    color: var(--color-text-white);
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+#forge-action-store-btn {
+    padding: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    background: #9b59b6;
+    border: none;
+    color: var(--color-text-white);
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+/* 인게임 보관함 카드 */
+.forge-storage-card {
+    background: var(--color-bg-base);
+    border: 1px solid var(--color-bg-surface);
+    padding: 6px;
+    border-radius: 6px;
+    text-align: center;
+    width: 75px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+.forge-storage-card:hover {
+    transform: scale(1.05);
+}
+.forge-storage-card img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 3px;
+}
+.forge-storage-card-name {
+    font-size: 10px;
+    color: var(--color-accent-yellow);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: bold;
+}
+.forge-storage-card-action {
+    font-size: 9px;
+    color: var(--color-btn-success-hover);
+    margin-top: 2px;
+}
+
+/* 전투 결과 메시지 컬러 변형 */
+.battle-result--victory { color: var(--color-btn-success-hover); }
+.battle-result--defeat  { color: var(--color-btn-primary); }
+
+/* 기지 레이아웃 변형 (멀티: 플레이어 좌측 배치) */
+#playerBase.side-left {
+    left: 0;
+    right: auto;
+    border-radius: 0 20px 0 0;
+}
+#enemyBase.side-left {
+    left: auto;
+    right: 0;
+    border-radius: 20px 0 0 0;
+}
+/* 기본(싱글/플레이어 우측) 상태는 main.css의 #playerBase/#enemyBase 규칙이 담당 */
