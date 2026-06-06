@@ -8,7 +8,6 @@ import {
     handleCreateRoom,
     handleDisconnect,
     handleJoinRoom,
-    handleMatchRequest,
     handleReturnToLobby,
     handleUpdateLobbyPlayer,
     broadcastToOpponent
@@ -61,9 +60,6 @@ wss.on('connection', (ws) => {
                     break;
                 case 'RETURN_TO_LOBBY':
                     handleReturnToLobby(ws);
-                    break;
-                case 'MATCH_REQUEST':
-                    handleMatchRequest(ws, packet);
                     break;
                 case EVENTS.C2S_SUMMON:
                     broadcastToOpponent(ws, {

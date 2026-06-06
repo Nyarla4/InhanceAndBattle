@@ -85,12 +85,6 @@ class SocketClient {
        [클라이언트 -> 서버] 이벤트 발송 메서드 인터페이스
     ================================================================= */
 
-    /** 1. 대전 모드 입장 및 매칭 요청 발송 */
-    requestMatch(playerId, enhanceLevel, roomCode = '') {
-        // playerId: 유저 식별값, enhanceLevel: localStorage 등에서 불러온 현재 강화 단계
-        this.sendPacket('MATCH_REQUEST', { playerId, enhanceLevel, roomCode });
-    }
-
     createRoom(playerName, enhanceLevel) {
         this.setNickname(playerName);
         this.sendPacket(EVENTS.LOBBY_CREATED, {

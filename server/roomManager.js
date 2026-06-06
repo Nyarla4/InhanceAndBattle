@@ -307,16 +307,6 @@ export function handleReturnToLobby(ws) {
     broadcastLobby(room);
 }
 
-/** 기존 대기열 매칭 요청 처리: 현재는 코드방 로비로 유도하기 전 호환용으로 유지 */
-export function handleMatchRequest(ws, packet) {
-    if (packet.roomCode) {
-        handleJoinRoom(ws, packet);
-        return;
-    }
-
-    handleCreateRoom(ws, packet);
-}
-
 export function handleDisconnect(ws) {
     const qIndex = waitingQueue.indexOf(ws);
     if (qIndex !== -1) {
