@@ -17,11 +17,9 @@ export function initModeView() {
     UI.multiModeBtn.addEventListener('click', () => {
         sceneManager.showScreen(UI.multiRoomScreen);
     });
-
     UI.createRoomBtn.addEventListener('click', () => {
         requestCreateRoom();
     });
-
     UI.joinRoomBtn.addEventListener('click', () => {
         const roomCode = UI.roomCodeInput.value.trim();
         if (!roomCode) {
@@ -30,10 +28,16 @@ export function initModeView() {
         }
         requestJoinRoom(roomCode);
     });
-
     UI.multiRoomBackBtn.addEventListener('click', () => {
         sceneManager.showScreen(UI.modeSelectorScreen);
     });
+
+    const roomCode = new URLSearchParams(location.search).get('room');
+    if (roomCode) {
+        sceneManager.showScreen(UI.multiRoomScreen);
+        UI.roomCodeInput.value = roomCode;
+        requestJoinRoom(roomCode);
+    }
 }
 
 function requestCreateRoom() {

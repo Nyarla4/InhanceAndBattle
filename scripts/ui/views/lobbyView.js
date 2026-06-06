@@ -48,10 +48,14 @@ export function initLobbyView() {
 
     UI.copyRoomCodeBtn.addEventListener('click', () => {
         window.navigator.clipboard.writeText(UI.lobbyRoomCodeDisplay.value);
+        alert("방 코드가 복사되었습니다.");
     });
 
     UI.copyRoomAddressBtn.addEventListener('click', () => {
-        alert("기능 미구현");
+        const roomCode = UI.lobbyRoomCodeDisplay.value;
+        const inviteUrl = `${location.origin}${location.pathname}?room=${encodeURIComponent(roomCode)}`;
+        window.navigator.clipboard.writeText(inviteUrl);
+        alert("방 주소가 복사되었습니다.");
     });
 
     eventBus.on('LOBBY_ENTERED', ({ lobby }) => {
