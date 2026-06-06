@@ -5,13 +5,13 @@ InhancementAndBattle
 │└core
 ││└config.js : eventBus에서 사용할 EVENTS 정의, 강화 그룹 데이터 정의
 ││└eventBus.js : on, off, emit, once 등으로 콜백 처리
-││└state.js : 강화관련상태(localStorage) 및 전투상태 관리(일부 enhancement로 이동 필요)
+││└state.js : 강화관련상태(localStorage) 및 전투상태 관리
 │└game
 ││└battle.js : 전투 시작, 전투 루프, 전투 종료 처리
-││└enhancement.js
-││└summon.js
+││└enhancement.js : 강화 시도, 실패시 하락
+││└summon.js : 이벤트 기준 소환요청 송수신, 적 소환 스케줄 초기화, 보관함에서 아군 소환 처리, 이벤트로 수신받은 요청/스테이지에 따라 적 소환, "소환"
 │└network
-││└socketClient.js
+││└socketClient.js : sendPacket으로 C2S 이벤트 보냄, S2C 이벤트 받음
 │└ui
 ││└views
 │││└enhanceView.js
@@ -25,7 +25,7 @@ InhancementAndBattle
 └server
 │└package.json
 │└roomManager.js
-│└server.js
+│└server.js : ws로 C2S 이벤트 받고, S2C 이벤트 보냄
 └style
 │└main.css
 └index.html : 핵심 html

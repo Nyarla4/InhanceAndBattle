@@ -46,10 +46,10 @@ wss.on('connection', (ws) => {
             const packet = JSON.parse(message);
             
             switch (packet.type) {
-                case 'CREATE_ROOM':
+                case EVENTS.LOBBY_CREATED:
                     handleCreateRoom(ws, packet);
                     break;
-                case 'JOIN_ROOM':
+                case EVENTS.LOBBY_JOINED:
                     handleJoinRoom(ws, packet);
                     break;
                 case 'CHANGE_LOBBY_SLOT':
@@ -72,6 +72,13 @@ wss.on('connection', (ws) => {
                 case EVENTS.C2S_BASE_DAMAGE:
                     broadcastToOpponent(ws, {
                         type: EVENTS.S2C_BASE_DAMAGE,
+                        damage: packet.damage
+                    });
+                    break;
+                case EVENTS.C2S_DAMAGE:
+                     broadcastToOpponent(ws, {
+                        type: EVENTS.S2C_DAMAGE,
+                        targetId: packet.targetId,
                         damage: packet.damage
                     });
                     break;

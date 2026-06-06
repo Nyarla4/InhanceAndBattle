@@ -3,7 +3,7 @@
 
 /** 클라이언트의 config의 EVENTS 내용 복사해서 처리 */
 export const EVENTS = Object.freeze({
-    /** 소켓 연결중 */
+     /** 소켓 연결중 */
     SOCKET_CONNECTING: 'SOCKET_CONNECTING',
     /** 소켓 연결 완료 */
     SOCKET_CONNECTED: 'SOCKET_CONNECTED',
@@ -24,6 +24,15 @@ export const EVENTS = Object.freeze({
     S2C_SUMMON: 'S2C_SUMMON',
     /** 상대의 소환 동기화 */
     RES_SUMMON: 'RES_SUMMON',
+
+    /** 플레이어의 "개체 공격" */
+    REQ_DAMAGE: 'REQ_DAMAGE',
+    /** 공격 패킷(플레이어가 공격>상대 개체 피해) */
+    C2S_DAMAGE: 'C2S_DAMAGE',
+    /** 공격 패킷(상대가 공격>플레이어 개체 피해) */
+    S2C_DAMAGE: 'S2C_DAMAGE',
+    /** 상대의 "개체 공격" 동기화 */
+    RES_DAMAGE: 'RES_DAMAGE',
 
     /** 플레이어의 "기지 공격" */
     REQ_BASE_DAMAGE: 'REQ_BASE_DAMAGE',

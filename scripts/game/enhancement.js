@@ -1,7 +1,7 @@
 // 확률형 강화 및 열화 연산
 // scripts/game/enhancement.js
 import { ENHANCE_GROUPS } from "../core/config.js";
-import { downgradeGroupProgress, enhanceState } from "../core/state.js";
+import { enhanceState } from "../core/state.js";
 
 /** 강화 시도 로직 */
 export function tryUpgrade(groupKey) {
@@ -33,4 +33,19 @@ export function tryUpgrade(groupKey) {
         }
         return { success: false, message: "강화 실패!" };
     }
+}
+
+/** 강화 등급 하락 */
+function downgradeGroupProgress(groupKey, maxIdx) {
+    const currentIdx = enhanceState.levels[groupKey];
+    
+    // 이미 최하위 등급(기본 상태)이라면 더 하락하지 않음
+    if (currentIdx >= maxIdx) {
+        return false; 
+    }
+
+    // 인덱스 증가 = 등급 하락
+    enhanceState.levels[groupKey] += 1;
+    localStorage.setItem(`enhance_cur_${groupKey}`, enhanceState.levels[groupKey]);
+    return true;
 }

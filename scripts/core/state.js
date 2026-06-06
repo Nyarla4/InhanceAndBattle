@@ -101,21 +101,6 @@ export function resetGroupProgress(groupKey) {
     localStorage.setItem(`enhance_cur_${groupKey}`, maxIdx);
 }
 
-/** 강화 등급 하락 */
-export function downgradeGroupProgress(groupKey, maxIdx) {
-    const currentIdx = enhanceState.levels[groupKey];
-    
-    // 이미 최하위 등급(기본 상태)이라면 더 하락하지 않음
-    if (currentIdx >= maxIdx) {
-        return false; 
-    }
-
-    // 인덱스 증가 = 등급 하락
-    enhanceState.levels[groupKey] += 1;
-    localStorage.setItem(`enhance_cur_${groupKey}`, enhanceState.levels[groupKey]);
-    return true;
-}
-
 // 외부에서 직접 수정할 수 없도록 내부(캡슐화) 변수로 관리
 let currentGameState = null;
 

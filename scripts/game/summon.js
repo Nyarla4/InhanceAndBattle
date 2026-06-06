@@ -26,7 +26,7 @@ export function initSummonListener() {
     });
 }
 
-/** 스테이지 시작 시 적 소환 스케줄을 초기화합니다. */
+/** 스테이지 시작 시 적 소환 스케줄 초기화 */
 export function initStageSpawnQueue(enemies = []) {
     stageTimer = 0;
     spawnQueue = [...enemies];
@@ -34,23 +34,28 @@ export function initStageSpawnQueue(enemies = []) {
 
 /** 보관함 개체 클릭 시 실행되는 아군 소환 로직 */
 export function handleStorageSummon({ itemId }, gameState, isBattleRunning) {
+    // 게임 중이고 소환이 가능할 때만 처리
     if (!gameState || !isBattleRunning) return;
     if (!gameState.canPlayerSummon) return;
 
+    // 강화 보관함에서 소환할 개체 탐색
     const storageItem = enhanceState.storage.find(item => item.id === itemId);
     if (!storageItem) return;
 
+    // 개체 ID 작성 및 DB에서 ID에 맞는 데이터 획득
     const creatureId = `${storageItem.groupKey}_${storageItem.levelIdx}`;
     const template = creaturesData[creatureId];
 
-    if (!template) {
+    if (!template) { // DB에 해당 데이터 없으면 미처리
         console.error("데이터베이스에 해당 개체가 없습니다:", creatureId);
         return;
     }
 
+    // 보관함에서 소모 처리
     const isConsumed = consumeStoredCreature(itemId);
     if (!isConsumed) return;
 
+    // 신규 생성
     const newCreature = createCreatureInstance({
         creatureId,
         template,
@@ -58,16 +63,18 @@ export function handleStorageSummon({ itemId }, gameState, isBattleRunning) {
         position: gameState.playerSpawnX
     });
 
+    // 세션에 처리 및 렌더
     var playerCreatures = [...gameState.playerCreatures];
     playerCreatures.push(newCreature);
     setPlayerCreature(playerCreatures);
     renderCreature(newCreature, playerCreatures);
 
+    // 보관함에 소모 처리 요청
     eventBus.emit(EVENTS.STORAGE_STATE_CHANGED, {});
     return { creatureId, level: storageItem.levelIdx, syncId: newCreature.id };
 }
 
-/** 네트워크로 수신한 상대 소환을 적군 개체로 반영 */
+/** 멀티용 적 소환 */
 export function summonOpponentCreature({ creatureId, level, syncId }, gameState) {
     if (!gameState) return false;
 
@@ -108,7 +115,8 @@ export function updateStageSpawner(deltaTime, gameState) {
     }
 }
 
-function summonEnemy(creatureId, gameState) {
+/** 싱글용 적 소환 */
+function summonEnemy(creatureId, gameState, syncId) {
     const template = creaturesData[creatureId];
     if (!template) return;
 
@@ -125,6 +133,7 @@ function summonEnemy(creatureId, gameState) {
     renderCreature(newEnemy, enemyCreatures);
 }
 
+/** 개체 인스턴스 생성 */
 function createCreatureInstance({ creatureId, template, isPlayer, position, syncId = null }) {
     const creatureData = {
         ...template,

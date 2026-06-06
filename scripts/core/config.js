@@ -26,6 +26,15 @@ export const EVENTS = Object.freeze({
     /** 상대의 소환 동기화 */
     RES_SUMMON: 'RES_SUMMON',
 
+    /** 플레이어의 "개체 공격" */
+    REQ_DAMAGE: 'REQ_DAMAGE',
+    /** 공격 패킷(플레이어가 공격>상대 개체 피해) */
+    C2S_DAMAGE: 'C2S_DAMAGE',
+    /** 공격 패킷(상대가 공격>플레이어 개체 피해) */
+    S2C_DAMAGE: 'S2C_DAMAGE',
+    /** 상대의 "개체 공격" 동기화 */
+    RES_DAMAGE: 'RES_DAMAGE',
+
     /** 플레이어의 "기지 공격" */
     REQ_BASE_DAMAGE: 'REQ_BASE_DAMAGE',
     /** 공격 패킷(플레이어가 공격>상대 기지 피해) */

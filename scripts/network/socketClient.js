@@ -93,7 +93,7 @@ class SocketClient {
 
     createRoom(playerName, enhanceLevel) {
         this.setNickname(playerName);
-        this.sendPacket('CREATE_ROOM', {
+        this.sendPacket(EVENTS.LOBBY_CREATED, {
             playerId: this.myPlayerId,
             nickname: this.myNickname,
             enhanceLevel
@@ -102,7 +102,7 @@ class SocketClient {
 
     joinRoom(roomCode, playerName, enhanceLevel) {
         this.setNickname(playerName);
-        this.sendPacket('JOIN_ROOM', {
+        this.sendPacket(EVENTS.LOBBY_JOINED, {
             roomCode,
             playerId: this.myPlayerId,
             nickname: this.myNickname,
@@ -129,12 +129,17 @@ class SocketClient {
         localStorage.setItem('battle_player_name', this.myNickname);
     }
 
-    /** 2. 내 유닛 소환 이벤트 상대방에게 동기화 요청 */
+    /** 내 유닛 소환 이벤트 상대방에게 동기화 요청 */
     sendSpawnCreature(creatureId, level, syncId) {
         this.sendPacket(EVENTS.C2S_SUMMON, { creatureId, level, syncId });
     }
 
-    /** 3. 상대방 기지 타격(데미지 판정) 동기화 요청 */
+    /** 상대방 타격(데미지 판정) 동기화 요청 */
+    sendDamage(targetId, damage) {
+        this.sendPacket(EVENTS.C2S_DAMAGE, { targetId, damage });
+    }
+
+    /** 상대방 기지 타격(데미지 판정) 동기화 요청 */
     sendBaseDamage(damage) {
         this.sendPacket(EVENTS.C2S_BASE_DAMAGE, { damage });
     }
@@ -193,6 +198,11 @@ class SocketClient {
                 console.log('[네트워크] 내 기지가 데미지를 입었습니다.');
                 // 내 체력 차감 로직 연동
                 eventBus.emit(EVENTS.RES_BASE_DAMAGE, { damage: packet.damage });
+                break;
+            case EVENTS.S2C_DAMAGE:
+                console.log(`[네트워크] 내 ${packet.targetId}가 데미지를 입었습니다.`);
+                // 내 개체 체력 차감 로직 연동
+                eventBus.emit(EVENTS.RES_DAMAGE, { targetId:packet.targetId, damage: packet.damage });
                 break;
 
             case 'OPPONENT_DISCONNECTED':

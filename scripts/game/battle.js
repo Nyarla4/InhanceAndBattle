@@ -52,7 +52,7 @@ export function startBattle(stageData) {
     if (!isEventBound) {
         // 멀티 처리
         eventBus.on(EVENTS.REQ_BASE_DAMAGE, ({ damage }) => { // 자신의 "기지 공격" 요청
-            if (socketClient.isConnected) { // 멀티인 경우
+            if (socketClient.isConnected) { // 연결된 경우
                 socketClient.sendBaseDamage(damage);
             }
         });
@@ -62,6 +62,23 @@ export function startBattle(stageData) {
             renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
             checkGameOver();
         });
+        eventBus.on(EVENTS.REQ_DAMAGE, ({targetId, damage})=> { // 자신의 "개체 공격" 요청
+            if (socketClient.isConnected) { // 연결된 경우
+                socketClient.sendDamage(targetId, damage);
+            }
+        })
+        eventBus.on(EVENTS.RES_DAMAGE, ({ targetId, damage }) => { // 상대의 "개체 공격" 요청의 반응
+            if (!getGameState() || !isBattleRunning) return;
+            var playerCreatures = [...getGameState().playerCreatures];
+            var target = playerCreatures.find(f => f.id === targetId);
+            target.hp -= damage;
+            if (target.hp <= 0) {
+                target.isAlive = false;
+                removeCreatureView(target);
+                playerCreatures.splice(i, 1);
+            }
+            setPlayerCreature(playerCreatures);
+        })
         eventBus.on(EVENTS.OPPONENT_LEFT, handleOpponentLeft);
 
         // 일시정지 버튼 처리
@@ -140,12 +157,9 @@ function pause(isPause) {
 
 /** 상대 탈주 처리(승리 처리) */
 function handleOpponentLeft() {
-    if(!isBattleRunning) return;
-
     stopBattleLoop();
-
     alert("상대방이 게임에서 퇴장했습니다. 당신의 승리입니다!");
-    showBattleResult(true, true);
+    showBattleResult(true, isMulti);
 }
 
 /** 모바일에서 전체화면 가로 처리 */
@@ -221,7 +235,7 @@ function processCreatures(deltaTime, now) {
     allCreatures.forEach(creature => {
         if (!creature.isAlive) return; // 죽었으면 행동 없음
 
-        // [흐름 1] 시각적 공격 연출 유지 시간 체크 및 복구
+        // 후딜(공격 마무리, 공격 이미지 끝나면 이동가능 처리)
         if (creature.isAttackingVisual) {
             const duration = creature.data.attackDuration || 200;
 
@@ -231,17 +245,18 @@ function processCreatures(deltaTime, now) {
             }
         }
 
-        // 적대 대상
+        // 적 개체
         const opponents = creature.isPlayer ? enemies : players;
 
         // 사거리 내 대상
-        const target = findTargetInRange(creature, opponents);
-        const isBaseInRange = checkBaseInRange(creature);
-        const isTargetExist = target.length > 0;
+        const target = findTargetInRange(creature, opponents); // 공격 대상
+        const isBaseInRange = checkBaseInRange(creature); // 기지 공격 가능 여부
+        const isTargetExist = target.length > 0; // 공격 대상 존재여부
         if (isTargetExist || isBaseInRange) { // 대상이 있는 경우: 이동 중지 및 쿨타임 체크
+            // 마지막 공격 시간 undefine이나 null이면 0으로 초기화
             if (!creature.lastAttackTime) creature.lastAttackTime = 0;
 
-            if (now - creature.lastAttackTime >= creature.data.attackTerm) {
+            if (now - creature.lastAttackTime >= creature.data.attackTerm) { // 공격 쿨이 돌았음
 
                 if (isTargetExist) { // 대상이 있다면 대상 공격
                     attackTarget(creature, target);
@@ -271,8 +286,9 @@ function processCreatures(deltaTime, now) {
     setEnemyCreature(enemies);
 }
 
+/** 기본 레이아웃 처리 */
 function applyBaseLayout(playerSide) {
-    if (playerSide === 'left') {
+    if (playerSide === 'left') { // 멀티에서 왼쪽에 위치하는 경우
         playerBase.style.left = '0';
         playerBase.style.right = 'auto';
         playerBase.style.borderRadius = '0 20px 0 0';
@@ -300,13 +316,13 @@ function findTargetInRange(attacker, opponents) {
         // 절대값으로 거리 연산 (서로 마주보고 전진하므로 단순 좌표 차이 사용)
         const distance = Math.abs(attacker.position - opponent.position);
 
-        if (distance <= attacker.data.attackRange) {
-            targets.push(opponent);
+        if (distance <= attacker.data.attackRange) { // 사거리 내인 경우
+            targets.push(opponent); // 공격 대상으로 넣는다
             if (!attacker.data.canAttackMultipleTargets) // 다중 공격이 아닌 경우
-                return targets; // 사거리 내에 들어온 첫 번째 대상 반환
+                return targets; // 첫 번째만 반환
         }
     }
-    return targets; // 사거리 내에 들어온 모든 대상 반환
+    return targets; // 공격 대상 반환
 }
 
 /** 기지가 사거리 내에 있는지 확인 */
@@ -320,13 +336,16 @@ function checkBaseInRange(creature) {
     return distance <= creature.data.attackRange;
 }
 
-/** 기지 타격 처리 (상태값 변경 및 콘솔 출력) */
+/** 기지 타격 처리 (상태값 변경 및 콘솔 출력)
+ @param creature  공격자
+ */
 function attackBase(creature) {
     const damage = creature.data.attackDamage;
 
     if (creature.isPlayer) {
         setEnemyHp(getGameState().enemyHp - damage);
-        eventBus.emit(EVENTS.REQ_BASE_DAMAGE, { damage: damage });
+        if (isMulti)
+            eventBus.emit(EVENTS.REQ_BASE_DAMAGE, { damage: damage });
     } else {
         if (!isMulti) { // 멀티가 아닌 경우
             setPlayerHp(getGameState().playerHp - damage);
@@ -335,19 +354,31 @@ function attackBase(creature) {
     renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
 }
 
-/** 공격 연산 처리 및 콘솔 출력 */
+/** 대상 공격 */
 function attackTarget(attacker, targets) {
     const damage = attacker.data.attackDamage;
-    for (let idx = 0; idx < targets.length; idx++) {
-        const target = targets[idx]
-        target.hp -= damage;
-        // 멀티의 경우 이것도 기지 타격처럼 eventBus로 처리해야 양측에서 개체 처리 동기화가 잘 될듯
-
-        const attackerName = `[${attacker.isPlayer ? '아군' : '적군'}] ${attacker.data.name}`;
-        const targetName = `[${target.isPlayer ? '아군' : '적군'}] ${target.data.name}`;
-
-        console.log(`⚔️ ${attackerName} -> ${targetName} 공격! (피해량: ${damage}, 남은 HP: ${Math.max(0, target.hp)})`);
+    if(attacker.isPlayer) { // 플레이어가 때릴 때
+        for (let idx = 0; idx < targets.length; idx++) {
+            const target = targets[idx]
+            target.hp -= damage;
+            if (isMulti) {
+                eventBus.emit(EVENTS.REQ_DAMAGE, {targetId: target.id, damage: damage });
+            }
+        }
     }
+    else { // 플레이어가 맞을 때
+        if (!isMulti) {
+            for (let idx = 0; idx < targets.length; idx++) {
+                const target = targets[idx]
+                target.hp -= damage;
+            }
+        }
+    }
+
+    // 디버그용
+    const attackerName = `[${attacker.isPlayer ? '아군' : '적군'}] ${attacker.data.name}`;
+    const targetName = `[${target.isPlayer ? '아군' : '적군'}] ${target.data.name}`;
+    console.log(`⚔️ ${attackerName} -> ${targetName} 공격! (피해량: ${damage}, 남은 HP: ${Math.max(0, target.hp)})`);
 }
 
 /** 체력이 0 이하인 개체 처리 */
@@ -400,6 +431,7 @@ function syncView() {
     });
 }
 
+/** 배틀 루프 종료 */
 export function stopBattleLoop() {
     isBattleRunning = false;
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
@@ -420,5 +452,6 @@ export function stopBattleLoop() {
         enemyCreatures.splice(i, 1);
     }
     setEnemyCreature(enemyCreatures);
+    // 세션 정리
     clearBattleSession();
 }
