@@ -118,9 +118,9 @@ export function renderBaseHp(currentStage, playerMaxHp, enemyMaxHp) {
 export function showBattleResult(isVictory, isMulti) {
    if (!battleResultPanel) return;
     
-    // 텍스트 흐름 변경
     battleResultMessage.textContent = isVictory ? (isMulti ? "WIN" : "STAGE CLEAR!") : (isMulti ? "LOSE" : "GAME OVER...");
-    battleResultMessage.style.color = isVictory ? "#2ecc71" : "#e74c3c";
+    battleResultMessage.classList.toggle('battle-result--victory', isVictory);
+    battleResultMessage.classList.toggle('battle-result--defeat', !isVictory);
 
     // 패널 노출
     battleResultPanel.classList.remove('hidden');

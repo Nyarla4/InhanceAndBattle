@@ -37,8 +37,6 @@ export function initEnhanceView() {
         const tabBtn = document.createElement('button');
         tabBtn.className = 'enhance-group-tab';
         tabBtn.textContent = ENHANCE_GROUPS[groupKey].name;
-        tabBtn.style.padding = '8px 16px';
-        tabBtn.style.fontSize = '14px';
         tabBtn.dataset.group = groupKey;
         
         tabBtn.addEventListener('click', () => {
@@ -54,7 +52,6 @@ export function initEnhanceView() {
     const goUpgradeBtn = document.createElement('button');
     goUpgradeBtn.id = 'action-upgrade-btn';
     goUpgradeBtn.textContent = '강화하기';
-    goUpgradeBtn.style.cssText = 'padding:10px 20px; font-size:16px; font-weight:bold; background:#2ecc71; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     goUpgradeBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
         const result = tryUpgrade(groupKey);
@@ -66,7 +63,6 @@ export function initEnhanceView() {
     const storeBtn = document.createElement('button');
     storeBtn.id = 'action-store-btn';
     storeBtn.textContent = '보관하기';
-    storeBtn.style.cssText = 'padding:10px 20px; font-size:16px; font-weight:bold; background:#9b59b6; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     storeBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
         const result = storeCurrentCreature(groupKey);
@@ -93,13 +89,7 @@ export function renderEnhanceUI() {
     // 활성화된 탭 하이라이트 토글
     const tabs = UI.enhanceGroupList.querySelectorAll('.enhance-group-tab');
     tabs.forEach(btn => {
-        if (btn.dataset.group === groupKey) {
-            btn.style.background = '#3498db';
-            btn.style.color = '#fff';
-        } else {
-            btn.style.background = '#ecf0f1';
-            btn.style.color = '#333';
-        }
+        btn.classList.toggle('is-active', btn.dataset.group === groupKey);
     });
 
     if (!currentItem) {
@@ -114,7 +104,6 @@ export function renderEnhanceUI() {
         
         if (upBtn instanceof HTMLButtonElement) {
             upBtn.disabled = true;
-            upBtn.style.opacity = "0.5";
         }
         renderStorageUI();
         return;
@@ -147,7 +136,6 @@ export function renderEnhanceUI() {
     // 완강(최고등급 0번 인덱스) 도달 시 버튼 잠금 제어
     if (upBtn instanceof HTMLButtonElement) {
         upBtn.disabled = (currentIdx === 0);
-        upBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
     }
 
     // 메인 창고 목록 렌더링 호출
@@ -166,15 +154,15 @@ function renderStorageUI() {
 
     enhanceState.storage.forEach((item) => {
         const card = document.createElement('div');
-        card.style.cssText = 'background: #34495e; padding: 10px; border-radius: 6px; text-align: center; width: 90px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);';
+        card.className = 'storage-card';
         card.innerHTML = `
-            <img src="${item.img}" style="width: 40px; height: 40px; object-fit: contain; display:block; margin:0 auto 5px;">
-            <div style="font-size: 11px; color: #fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.name}</div>
+            <img src="${item.img}" alt="${item.name}">
+            <div class="storage-card-name">${item.name}</div>
         `;
 
         const withdrawBtn = document.createElement('button');
         withdrawBtn.textContent = '꺼내기';
-        withdrawBtn.style.cssText = 'margin-top: 5px; font-size: 10px; padding: 2px 6px; background: #e67e22; border: none; color: white; cursor: pointer; border-radius:3px;';
+        withdrawBtn.className = 'storage-card-withdraw-btn';
         withdrawBtn.addEventListener('click', () => {
             const result = withdrawCreature(item.id);
             //alert(result.message);
@@ -202,9 +190,6 @@ export function initForgeView() {
         const tabBtn = document.createElement('button');
         tabBtn.className = 'forge-group-tab';
         tabBtn.textContent = ENHANCE_GROUPS[groupKey].name;
-        tabBtn.style.padding = '6px 12px';
-        tabBtn.style.fontSize = '12px';
-        tabBtn.style.cursor = 'pointer';
         tabBtn.dataset.group = groupKey;
 
         tabBtn.addEventListener('click', () => {
@@ -220,7 +205,6 @@ export function initForgeView() {
     const forgeUpgradeBtn = document.createElement('button');
     forgeUpgradeBtn.id = 'forge-action-upgrade-btn';
     forgeUpgradeBtn.textContent = '실시간 강화';
-    forgeUpgradeBtn.style.cssText = 'padding:8px; font-size:13px; font-weight:bold; background:#2ecc71; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     forgeUpgradeBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
         const result = tryUpgrade(groupKey);
@@ -232,7 +216,6 @@ export function initForgeView() {
     const forgeStoreBtn = document.createElement('button');
     forgeStoreBtn.id = 'forge-action-store-btn';
     forgeStoreBtn.textContent = '보관하기';
-    forgeStoreBtn.style.cssText = 'padding:8px; font-size:13px; font-weight:bold; background:#9b59b6; border:none; color:#fff; cursor:pointer; border-radius:4px;';
     forgeStoreBtn.addEventListener('click', () => {
         const groupKey = enhanceState.currentGroup;
         const result = storeCurrentCreature(groupKey);
@@ -259,13 +242,7 @@ function renderForgeUI() {
 
     const tabs = UI.forgeGroupList.querySelectorAll('.forge-group-tab');
     tabs.forEach(btn => {
-        if (btn.dataset.group === groupKey) {
-            btn.style.background = '#f1c40f';
-            btn.style.color = '#000';
-        } else {
-            btn.style.background = '#34495e';
-            btn.style.color = '#fff';
-        }
+        btn.classList.toggle('is-active', btn.dataset.group === groupKey);
     });
 
     if (!currentItem) {
@@ -278,7 +255,6 @@ function renderForgeUI() {
 
         if (forgeUpBtn instanceof HTMLButtonElement) {
             forgeUpBtn.disabled = true;
-            forgeUpBtn.style.opacity = "0.5";
         }
         renderForgeStorageUI();
         return;
@@ -295,7 +271,6 @@ function renderForgeUI() {
 
     if (forgeUpBtn instanceof HTMLButtonElement) {
         forgeUpBtn.disabled = (currentIdx === 0);
-        forgeUpBtn.style.opacity = (currentIdx === 0) ? "0.5" : "1";
     }
 
     renderForgeStorageUI();
@@ -313,23 +288,14 @@ function renderForgeStorageUI() {
 
     enhanceState.storage.forEach((item) => {
         const card = document.createElement('div');
-        // 클릭해서 즉시 전장에 내보낼 수 있는 느낌을 주도록 인터랙티브 스타일링 적용
-        card.style.cssText = `
-            background: #2c3e50; border: 1px solid #34495e; padding: 6px; 
-            border-radius: 6px; text-align: center; width: 75px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer; transition: transform 0.1s;
-        `;
+        card.className = 'forge-storage-card';
         card.title = "클릭 시 코스트를 소모해 전장에 소환합니다!";
 
         card.innerHTML = `
-            <img src="${item.img}" style="width: 35px; height: 35px; object-fit: contain; display:block; margin:0 auto 3px;">
-            <div style="font-size: 10px; color: #f1c40f; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:bold;">${item.name}</div>
-            <div style="font-size: 9px; color: #2ecc71; margin-top:2px;">소환(소모)</div>
+            <img src="${item.img}" alt="${item.name}">
+            <div class="forge-storage-card-name">${item.name}</div>
+            <div class="forge-storage-card-action">소환(소모)</div>
         `;
-
-        // 마우스 호버 효과
-        card.addEventListener('mouseenter', () => card.style.transform = 'scale(1.05)');
-        card.addEventListener('mouseleave', () => card.style.transform = 'scale(1)');
 
         // 🔥 [핵심 기획 반영] 인게임 보관함 개체 클릭 -> 소환 및 소모 처리
         card.addEventListener('click', () => {

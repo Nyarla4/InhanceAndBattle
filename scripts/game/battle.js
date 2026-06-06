@@ -288,22 +288,9 @@ function processCreatures(deltaTime, now) {
 
 /** 기본 레이아웃 처리 */
 function applyBaseLayout(playerSide) {
-    if (playerSide === 'left') { // 멀티에서 왼쪽에 위치하는 경우
-        playerBase.style.left = '0';
-        playerBase.style.right = 'auto';
-        playerBase.style.borderRadius = '0 20px 0 0';
-        enemyBase.style.left = 'auto';
-        enemyBase.style.right = '0';
-        enemyBase.style.borderRadius = '20px 0 0 0';
-        return;
-    }
-
-    playerBase.style.left = 'auto';
-    playerBase.style.right = '0';
-    playerBase.style.borderRadius = '20px 0 0 0';
-    enemyBase.style.left = '0';
-    enemyBase.style.right = 'auto';
-    enemyBase.style.borderRadius = '0 20px 0 0';
+    const isLeft = playerSide === 'left';
+    playerBase.classList.toggle('side-left', isLeft);
+    enemyBase.classList.toggle('side-left', isLeft);
 }
 
 /** 사거리 내의 적 탐색 */
