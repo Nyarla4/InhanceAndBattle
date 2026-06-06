@@ -4,7 +4,7 @@
         "description": "대장",
         "maxHp": 777,
         "attackDamage": 77, "attackRange": 170,
-        "attackTerm": 70, "attackDuration": 27,
+        "attackTerm": 777, "attackDuration": 777,
         "moveSpeed": 70,
         "canAttackMultipleTargets": true
     },
@@ -13,7 +13,7 @@
         "description": "최고위 보스 / 초헤비 탱커",
         "maxHp": 3500,
         "attackDamage": 180, "attackRange": 160,
-        "attackTerm": 220, "attackDuration": 110,
+        "attackTerm": 3667, "attackDuration": 1833,
         "moveSpeed": 45,
         "canAttackMultipleTargets": false
     },
@@ -22,7 +22,7 @@
         "description": "고위 파괴자 / 저속 광역 딜러",
         "maxHp": 1800,
         "attackDamage": 350, "attackRange": 140,
-        "attackTerm": 420, "attackDuration": 180,
+        "attackTerm": 7000, "attackDuration": 3000,
         "moveSpeed": 48,
         "canAttackMultipleTargets": true
     },
@@ -31,7 +31,7 @@
         "description": "고위 전사 / 광역 딜러 (해머보다 빠름)",
         "maxHp": 1500,
         "attackDamage": 260, "attackRange": 150,
-        "attackTerm": 350, "attackDuration": 150,
+        "attackTerm": 5833, "attackDuration": 2500,
         "moveSpeed": 52,
         "canAttackMultipleTargets": true
     },
@@ -40,7 +40,7 @@
         "description": "중위 정예 / 상급 통상형",
         "maxHp": 1100,
         "attackDamage": 120, "attackRange": 110,
-        "attackTerm": 260, "attackDuration": 130,
+        "attackTerm": 4333, "attackDuration": 2167,
         "moveSpeed": 58,
         "canAttackMultipleTargets": false
     },
@@ -49,7 +49,7 @@
         "description": "중위 보병 / 표준 통상형 (밸런스 기준점)",
         "maxHp": 850,
         "attackDamage": 90, "attackRange": 90,
-        "attackTerm": 240, "attackDuration": 120,
+        "attackTerm": 4000, "attackDuration": 2000,
         "moveSpeed": 60,
         "canAttackMultipleTargets": false
     },
@@ -58,7 +58,7 @@
         "description": "하위 보병 / 하급 통상형",
         "maxHp": 600,
         "attackDamage": 65, "attackRange": 80,
-        "attackTerm": 220, "attackDuration": 110,
+        "attackTerm": 3667, "attackDuration": 1833,
         "moveSpeed": 62,
         "canAttackMultipleTargets": false
     },
@@ -67,7 +67,7 @@
         "description": "하위 기습병 / 경량 암살자",
         "maxHp": 400,
         "attackDamage": 45, "attackRange": 60,
-        "attackTerm": 140, "attackDuration": 70,
+        "attackTerm": 2333, "attackDuration": 1167,
         "moveSpeed": 75,
         "canAttackMultipleTargets": false
     },
@@ -76,7 +76,7 @@
         "description": "최하위 암살자 / 초경량 고속 딜러",
         "maxHp": 250,
         "attackDamage": 30, "attackRange": 50,
-        "attackTerm": 100, "attackDuration": 50,
+        "attackTerm": 1667, "attackDuration": 833,
         "moveSpeed": 85,
         "canAttackMultipleTargets": false
     },
@@ -85,7 +85,7 @@
         "description": "최하위 물량 유닛 / 대량 소환 및 교란용",
         "maxHp": 120,
         "attackDamage": 15, "attackRange": 40,
-        "attackTerm": 80, "attackDuration": 40,
+        "attackTerm": 1333, "attackDuration": 667,
         "moveSpeed": 95,
         "canAttackMultipleTargets": false
     },
@@ -95,7 +95,7 @@
         "description": "가장 표준적인 적 보병. 중위 네즈밍(4~6번)과 호각으로 싸우는 기준점.",
         "maxHp": 700,
         "attackDamage": 60, "attackRange": 70,
-        "attackTerm": 230, "attackDuration": 115,
+        "attackTerm": 3833, "attackDuration": 1917,
         "moveSpeed": 55,
         "canAttackMultipleTargets": false
     },
@@ -104,7 +104,7 @@
         "description": "높은 체력과 광역 공격을 가진 중장갑 유닛. 9번 물량 소환을 카운터치는 천적.",
         "maxHp": 2500,
         "attackDamage": 130, "attackRange": 100,
-        "attackTerm": 380, "attackDuration": 190,
+        "attackTerm": 6333, "attackDuration": 3167,
         "moveSpeed": 35,
         "canAttackMultipleTargets": true
     },
@@ -113,7 +113,7 @@
         "description": "체력은 낮지만 빠른 속도로 후방을 노리는 유닛. 7~8번 암살자 네즈밍과의 속도전 유도.",
         "maxHp": 300,
         "attackDamage": 35, "attackRange": 50,
-        "attackTerm": 120, "attackDuration": 60,
+        "attackTerm": 2000, "attackDuration": 1000,
         "moveSpeed": 85,
         "canAttackMultipleTargets": false
     }
