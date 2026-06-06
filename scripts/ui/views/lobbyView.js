@@ -13,8 +13,11 @@ const SLOT_LABELS = {
 };
 
 let currentLobby = null;
+let hasRequestedLobbyReset = false;
 
 export function initLobbyView() {
+    observeLobbyScreenReturn();
+
     UI.moveLeftSlotBtn.addEventListener('click', () => socketClient.changeLobbySlot('left'));
     UI.moveRightSlotBtn.addEventListener('click', () => socketClient.changeLobbySlot('right'));
     UI.moveSpectatorSlotBtn.addEventListener('click', () => socketClient.changeLobbySlot('spectator'));
@@ -45,6 +48,9 @@ export function initLobbyView() {
 
     eventBus.on('LOBBY_SYNC', (lobby) => {
         currentLobby = lobby;
+        if (!currentLobby.isStarted) {
+            hasRequestedLobbyReset = false;
+        }
         renderLobby();
     });
 
@@ -60,6 +66,7 @@ export function initLobbyView() {
     });
 
     eventBus.on('LOBBY_GAME_START', ({ role }) => {
+        hasRequestedLobbyReset = false;
         console.log(`[로비] ${SLOT_LABELS[role] || '관전'} 역할로 게임을 시작합니다.`);
         sceneManager.showScreen(UI.stageScreen);
         startBattle({
@@ -72,6 +79,27 @@ export function initLobbyView() {
             isMulti: true
         });
     });
+}
+
+function observeLobbyScreenReturn() {
+    if (!UI.multiLobbyScreen) return;
+
+    const observer = new MutationObserver(() => {
+        requestLobbyResetIfNeeded();
+    });
+    observer.observe(UI.multiLobbyScreen, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+}
+
+function requestLobbyResetIfNeeded() {
+    if (UI.multiLobbyScreen.classList.contains('hidden')) return;
+    if (!currentLobby?.isStarted) return;
+    if (hasRequestedLobbyReset) return;
+
+    hasRequestedLobbyReset = true;
+    socketClient.returnToLobby();
 }
 
 function updateNickname() {

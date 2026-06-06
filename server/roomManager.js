@@ -293,6 +293,20 @@ export function handleUpdateLobbyPlayer(ws, packet) {
     refreshCountdown(room);
 }
 
+export function handleReturnToLobby(ws) {
+    const room = rooms.get(ws.roomId);
+    const player = room?.players.find(target => target.ws === ws);
+
+    if (!room || !player) return;
+
+    clearCountdown(room);
+    room.isStarted = false;
+    room.players.forEach(target => {
+        target.isReady = false;
+    });
+    broadcastLobby(room);
+}
+
 /** 기존 대기열 매칭 요청 처리: 현재는 코드방 로비로 유도하기 전 호환용으로 유지 */
 export function handleMatchRequest(ws, packet) {
     if (packet.roomCode) {

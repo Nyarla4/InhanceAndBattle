@@ -121,6 +121,10 @@ class SocketClient {
         this.sendPacket('UPDATE_LOBBY_PLAYER', data);
     }
 
+    returnToLobby() {
+        this.sendPacket('RETURN_TO_LOBBY');
+    }
+
     setNickname(nickname) {
         const nextName = String(nickname || '').trim();
         if (!nextName) return;

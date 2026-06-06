@@ -9,6 +9,7 @@ import {
     handleDisconnect,
     handleJoinRoom,
     handleMatchRequest,
+    handleReturnToLobby,
     handleUpdateLobbyPlayer,
     broadcastToOpponent
 } from './roomManager.js';
@@ -57,6 +58,9 @@ wss.on('connection', (ws) => {
                     break;
                 case 'UPDATE_LOBBY_PLAYER':
                     handleUpdateLobbyPlayer(ws, packet);
+                    break;
+                case 'RETURN_TO_LOBBY':
+                    handleReturnToLobby(ws);
                     break;
                 case 'MATCH_REQUEST':
                     handleMatchRequest(ws, packet);
