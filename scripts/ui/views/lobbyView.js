@@ -39,6 +39,13 @@ export function initLobbyView() {
         sceneManager.showScreen(UI.multiRoomScreen);
     });
 
+    UI.resultTitleBtn.addEventListener('click', () => {
+        if (socketClient.isConnected) {
+            socketClient.disconnect();
+            currentLobby = null;
+        }
+    })
+
     eventBus.on('LOBBY_ENTERED', ({ lobby }) => {
         currentLobby = lobby;
         UI.lobbyNameInput.value = socketClient.myNickname;
