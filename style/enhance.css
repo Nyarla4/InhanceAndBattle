@@ -2,7 +2,6 @@
    강화실 레이아웃
 ================================================================= */
 .enhance-container {
-    display: flex;
     gap: 20px;          /* 카드와 버튼 사이 간격 축소 */
     align-items: center;
     margin-bottom: 0;   /* 하단 마진 제거 */
@@ -64,8 +63,6 @@
     width: 100%;
     max-width: 450px; /* 보관함 너비 제한 */
     height: 100%; /* 부모 높이 */
-    margin-left: auto;
-    margin-right: auto;
 }
 #storage-box > h3 {
     color: var(--color-text-light);
