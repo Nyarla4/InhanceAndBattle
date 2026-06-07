@@ -19,7 +19,7 @@ export function renderCreature(creature, sameSideCreatures) {
     
     var innerHTML = "";
     if(creature.isPlayer) {
-        innerHTML = `<img src="${creature.data.walk}" alt="${creature.data.name}" onerror="this.onerror=null; this.src='${creature.data.idle}';"`;
+        innerHTML = `<img src="${creature.data.walk}" alt="${creature.data.name}" onerror="this.onerror=null; this.src='${creature.data.idle}';">`;
     }
     else {
         innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}" onerror="this.onerror=null; this.src='${ENEMY_FALLBACK_IMAGE}';">`;
