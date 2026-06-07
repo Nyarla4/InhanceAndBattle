@@ -5,7 +5,7 @@
         "maxHp": 777,
         "attackDamage": 77, "attackRange": 170,
         "attackTerm": 777, "attackDuration": 777,
-        "moveSpeed": 70,
+        "moveSpeed": 77,
         "canAttackMultipleTargets": true
     },
     "nezming_1": {
@@ -87,6 +87,16 @@
         "attackDamage": 15, "attackRange": 40,
         "attackTerm": 1333, "attackDuration": 667,
         "moveSpeed": 95,
+        "canAttackMultipleTargets": false
+    },
+
+    "majitomo_0": {
+        "name": "마지나이 쿠로카",
+        "description": "마지토모 아내임",
+        "maxHp": 666,
+        "attackDamage": 66, "attackRange": 160,
+        "attackTerm": 666, "attackDuration": 666,
+        "moveSpeed": 66,
         "canAttackMultipleTargets": false
     },
     
