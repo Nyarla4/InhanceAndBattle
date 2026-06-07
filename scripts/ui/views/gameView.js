@@ -3,8 +3,6 @@
 import { getGameState } from '../../core/state.js';
 import { enemyBaseHp, field, playerBaseHp, battleResultPanel, battleResultMessage } from '../uiElements.js';
 
-const ENEMY_FALLBACK_IMAGE = './img/default_enemy.png';
-
 /** 개체(아군/적군)를 필드 DOM에 추가 */
 export function renderCreature(creature, sameSideCreatures) {
     const count = sameSideCreatures.filter((target) => target.data.id === creature.data.id).length;
@@ -22,7 +20,7 @@ export function renderCreature(creature, sameSideCreatures) {
         innerHTML = `<img src="${creature.data.walk}" alt="${creature.data.name}" onerror="this.onerror=null; this.src='${creature.data.idle}';">`;
     }
     else {
-        innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}" onerror="this.onerror=null; this.src='${ENEMY_FALLBACK_IMAGE}';">`;
+        innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}">`;
     }
     creature.element.innerHTML = innerHTML;
 
@@ -86,11 +84,6 @@ export function setCreatureAttackView(creature, restart = false) {
                 imgEl.src = creature.data.attackFallback;
                 return;
             }
-            if(!creature.isPlayer){
-                imgEl.onerror = null;
-                imgEl.src = ENEMY_FALLBACK_IMAGE;
-                return;
-            }
             imgEl.src = creature.data.idle;
             creature.element.style.filter = "invert(100%)";
         }
@@ -112,13 +105,6 @@ export function setCreatureIdleView(creature) {
         imgEl.onerror = () => {
             imgEl.onerror = null;
             imgEl.src = creature.data.idle;
-        };
-    }
-    else {
-        imgEl.src = creature.data.idle;
-        imgEl.onerror = () => { // idle 이미지가 없는 경우
-            imgEl.onerror = null;
-            imgEl.src = ENEMY_FALLBACK_IMAGE; // 임시 이미지 처리
         };
     }
     setCreatureImageDirection(creature);

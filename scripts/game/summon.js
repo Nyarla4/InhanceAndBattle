@@ -135,13 +135,14 @@ function summonEnemy(creatureId, gameState, syncId) {
 
 /** 개체 인스턴스 생성 */
 function createCreatureInstance({ creatureId, template, isPlayer, position, syncId = null }) {
+    const folder = creatureId.includes("enemy")?"enemy":creatureId.split("_")[0];
     const creatureData = {
         ...template,
         id: creatureId,
-        idle: `./img/battle/${creatureId}_idle.png`,
-        walk: `./img/battle/gif/${creatureId}_walk.gif`,
-        attack: `./img/battle/gif/${creatureId}_attack.gif`,
-        attackFallback: `./img/battle/${creatureId}_attack.png`
+        idle: `./img/battle/${folder}/${creatureId}_idle.png`,
+        walk: `./img/battle/${folder}/gif/${creatureId}_walk.gif`,
+        attack: `./img/battle/${folder}/gif/${creatureId}_attack.gif`,
+        attackFallback: `./img/battle/${folder}/${creatureId}_attack.png`
     };
 
     return {
