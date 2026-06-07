@@ -69,13 +69,16 @@ export function startBattle(stageData) {
         })
         eventBus.on(EVENTS.RES_DAMAGE, ({ targetId, damage }) => { // 상대의 "개체 공격" 요청의 반응
             if (!getGameState() || !isBattleRunning) return;
-            var playerCreatures = [...getGameState().playerCreatures];
-            var target = playerCreatures.find(f => f.id === targetId);
+            const playerCreatures = [...getGameState().playerCreatures];
+            const targetIdx = playerCreatures.findIndex(f => f.id === targetId);
+            if (targetIdx === -1) return;
+
+            const target = playerCreatures[targetIdx];
             target.hp -= damage;
             if (target.hp <= 0) {
                 target.isAlive = false;
                 removeCreatureView(target);
-                playerCreatures.splice(i, 1);
+                playerCreatures.splice(targetIdx, 1);
             }
             setPlayerCreature(playerCreatures);
         })
@@ -235,16 +238,6 @@ function processCreatures(deltaTime, now) {
     allCreatures.forEach(creature => {
         if (!creature.isAlive) return; // 죽었으면 행동 없음
 
-        // 후딜(공격 마무리, 공격 이미지 끝나면 이동가능 처리)
-        if (creature.isAttackingVisual) {
-            const duration = creature.data.attackDuration || 200;
-
-            if (now - creature.lastAttackTime >= duration) {
-                creature.isAttackingVisual = false;
-                setCreatureIdleView(creature); // 뷰 레이어에 idle 상태 복구 요청
-            }
-        }
-
         // 적 개체
         const opponents = creature.isPlayer ? enemies : players;
 
@@ -252,27 +245,45 @@ function processCreatures(deltaTime, now) {
         const target = findTargetInRange(creature, opponents); // 공격 대상
         const isBaseInRange = checkBaseInRange(creature); // 기지 공격 가능 여부
         const isTargetExist = target.length > 0; // 공격 대상 존재여부
-        if (isTargetExist || isBaseInRange) { // 대상이 있는 경우: 이동 중지 및 쿨타임 체크
-            // 마지막 공격 시간 undefine이나 null이면 0으로 초기화
-            if (!creature.lastAttackTime) creature.lastAttackTime = 0;
+        if (isTargetExist || isBaseInRange) { // 대상이 있는 경우: GIF 공격 사이클 처리
+            if (!creature.isAttackingVisual) {
+                creature.isAttackingVisual = true;
+                creature.currentVisualState = 'attack';
+                creature.attackCycleStartTime = now;
+                creature.hasDealtDamage = false;
+                setCreatureAttackView(creature, true);
+            }
 
-            if (now - creature.lastAttackTime >= creature.data.attackTerm) { // 공격 쿨이 돌았음
+            const elapsedTime = now - creature.attackCycleStartTime; // gif 진행중 현재 위치
+            const attackHitDelay = creature.data.attackHitDelay || 0; // 선딜
+            const attackCycleDuration = creature.data.attackCycleDuration || attackHitDelay || 1000; // 전체 gif 길이(후딜 포함)
 
-                if (isTargetExist) { // 대상이 있다면 대상 공격
+            if (elapsedTime >= attackHitDelay && !creature.hasDealtDamage) { // 선딜 지났으면 딜 처리
+                if (isTargetExist) {
                     attackTarget(creature, target);
-                    if (creature.data.canAttackMultipleTargets && isBaseInRange) { // 다중 공격이 가능한 경우 기지도 공격
+                    if (creature.data.canAttackMultipleTargets && isBaseInRange) {
                         attackBase(creature);
                     }
-                }
-                else if (isBaseInRange) { // 대상이 없고 기지가 있다면 기지 공격
+                } else if (isBaseInRange) {
                     attackBase(creature);
                 }
-
-                creature.lastAttackTime = now; // 쿨타임 초기화
-                creature.isAttackingVisual = true; // 공격 이미지로 변환 요청
-                setCreatureAttackView(creature); // 뷰 레이어에 attack 상태 전환 요청
+                creature.hasDealtDamage = true;
             }
-        } else if (!creature.isAttackingVisual) { // 대상이 없고 공격 이미지가 아닌 경우에만 이동
+
+            if (elapsedTime >= attackCycleDuration) { // 후딜 끝났으면 다시 선딜 시작
+                creature.attackCycleStartTime = now;
+                creature.hasDealtDamage = false;
+                setCreatureAttackView(creature, true);
+            }
+        } else {
+            if (creature.isAttackingVisual) {
+                creature.isAttackingVisual = false;
+                creature.currentVisualState = 'idle';
+                creature.attackCycleStartTime = 0;
+                creature.hasDealtDamage = false;
+                setCreatureIdleView(creature);
+            }
+
             // 초당 이동 속도 보정
             const moveDistance = creature.data.moveSpeed * (deltaTime / 1000);
 

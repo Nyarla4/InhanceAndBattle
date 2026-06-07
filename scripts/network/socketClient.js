@@ -205,7 +205,7 @@ class SocketClient {
 
             case 'OPPONENT_DISCONNECTED':
                 console.log('[네트워크] 상대방이 게임을 종료(탈주)했습니다.');
-                eventBus.emit('MATCH_OPPONENT_LEFT');
+                eventBus.emit(EVENTS.OPPONENT_LEFT);
                 break;
 
             default:

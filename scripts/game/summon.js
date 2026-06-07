@@ -140,7 +140,8 @@ function createCreatureInstance({ creatureId, template, isPlayer, position, sync
         id: creatureId,
         idle: `./img/battle/${creatureId}_idle.png`,
         walk: `./img/battle/gif/${creatureId}_walk.gif`,
-        attack: `./img/battle/${creatureId}_attack.png`
+        attack: `./img/battle/gif/${creatureId}_attack.gif`,
+        attackFallback: `./img/battle/${creatureId}_attack.png`
     };
 
     return {
@@ -153,7 +154,8 @@ function createCreatureInstance({ creatureId, template, isPlayer, position, sync
         position,
         element: document.createElement('div'),
         currentVisualState: 'idle',
-        lastAttackTime: 0,
+        attackCycleStartTime: 0,
+        hasDealtDamage: false,
         isAttackingVisual: false
     };
 }

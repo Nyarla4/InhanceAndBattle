@@ -65,7 +65,7 @@ export function removeCreatureView(creature) {
 }
 
 /** 개체를 공격 연출 이미지 또는 필터 상태로 변경 */
-export function setCreatureAttackView(creature) {
+export function setCreatureAttackView(creature, restart = false) {
     if (!creature.element) return;
     const imgEl = creature.element.querySelector("img");
     if (!imgEl) return;
@@ -75,20 +75,27 @@ export function setCreatureAttackView(creature) {
     if (!attackTarget) {
         creature.element.style.filter = "invert(100%)";
     } else {
-        // 일반 주소인 경우 이미지 경로 변경
+        if (restart) {
+            imgEl.src = '';
+            void imgEl.offsetWidth;
+        }
         imgEl.src = attackTarget;
 
-        imgEl.onerror = () => { // attack 이미지가 없는 경우
-            if(!creature.isPlayer){
-                imgEl.onerror = () => { // idle 이미지도 없는 경우
-                    imgEl.onerror = null; // 무한 루프 최종 방어
-                    imgEl.src = FALLBACK_IMAGE; // 최후의 수단인 대체 이미지로 스왑
-                };
+        imgEl.onerror = () => {
+            if (creature.data.attackFallback && imgEl.src !== creature.data.attackFallback) {
+                imgEl.src = creature.data.attackFallback;
+                return;
             }
-            imgEl.src = creature.data.idle; // idle 이미지로 처리
-            creature.element.style.filter = "invert(100%)"; // idle에 이미지 반전 처리
+            if(!creature.isPlayer){
+                imgEl.onerror = null;
+                imgEl.src = ENEMY_FALLBACK_IMAGE;
+                return;
+            }
+            imgEl.src = creature.data.idle;
+            creature.element.style.filter = "invert(100%)";
         }
     }
+    setCreatureImageDirection(creature);
 }
 
 /** 개체를 기본 대기(idle) 상태로 복구 */
@@ -114,6 +121,7 @@ export function setCreatureIdleView(creature) {
             imgEl.src = ENEMY_FALLBACK_IMAGE; // 임시 이미지 처리
         };
     }
+    setCreatureImageDirection(creature);
 }
 
 export function renderBaseHp(currentStage, playerMaxHp, enemyMaxHp) {
