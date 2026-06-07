@@ -99,6 +99,42 @@
         "moveSpeed": 66,
         "canAttackMultipleTargets": false
     },
+    "majitomo_1": {
+        "name": "되어있지않아",
+        "description": "임시1",
+        "maxHp": 600,
+        "attackDamage": 65, "attackRange": 80,
+        "attackTerm": 3667, "attackDuration": 1833,
+        "moveSpeed": 62,
+        "canAttackMultipleTargets": false
+    },
+    "majitomo_2": {
+        "name": "준비가",
+        "description": "임시2",
+        "maxHp": 400,
+        "attackDamage": 45, "attackRange": 60,
+        "attackTerm": 2333, "attackDuration": 1167,
+        "moveSpeed": 75,
+        "canAttackMultipleTargets": false
+    },
+    "majitomo_3": {
+        "name": "아직은",
+        "description": "임시3",
+        "maxHp": 250,
+        "attackDamage": 30, "attackRange": 50,
+        "attackTerm": 1667, "attackDuration": 833,
+        "moveSpeed": 85,
+        "canAttackMultipleTargets": false
+    },
+    "majitomo_4": {
+        "name": "미안 마지토모",
+        "description": "임시4",
+        "maxHp": 120,
+        "attackDamage": 15, "attackRange": 40,
+        "attackTerm": 1333, "attackDuration": 667,
+        "moveSpeed": 95,
+        "canAttackMultipleTargets": false
+    },
     
     "enemy_01": {
         "name": "일반 경비병 (임시 적1)",

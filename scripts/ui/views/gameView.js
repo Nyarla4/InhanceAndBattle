@@ -17,12 +17,12 @@ export function renderCreature(creature, sameSideCreatures) {
     // Y축 랜덤 오버랩 방지 (구조적 수치가 아닌 단순 시각적 렌더링 흐름)
     creature.element.style.bottom = (Math.floor(Math.random() * 3) * 10) + "px";
     
-    var innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}"`;
+    var innerHTML = "";
     if(creature.isPlayer) {
-        innerHTML += ">";
+        innerHTML = `<img src="${creature.data.walk}" alt="${creature.data.name}" onerror="this.onerror=null; this.src='${creature.data.idle}';"`;
     }
     else {
-        innerHTML += ` onerror="this.onerror=null; this.src='${ENEMY_FALLBACK_IMAGE}';">`;
+        innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}" onerror="this.onerror=null; this.src='${ENEMY_FALLBACK_IMAGE}';">`;
     }
     creature.element.innerHTML = innerHTML;
 
@@ -99,9 +99,16 @@ export function setCreatureIdleView(creature) {
 
     // 공격 시 적용되었던 필터와 이미지를 모두 원래대로 원복
     creature.element.style.filter = "none";
-    imgEl.src = creature.data.idle;
 
-    if(!creature.isPlayer) { // enemy가
+    if (creature.isPlayer) {
+        imgEl.src = creature.data.walk;
+        imgEl.onerror = () => {
+            imgEl.onerror = null;
+            imgEl.src = creature.data.idle;
+        };
+    }
+    else {
+        imgEl.src = creature.data.idle;
         imgEl.onerror = () => { // idle 이미지가 없는 경우
             imgEl.onerror = null;
             imgEl.src = ENEMY_FALLBACK_IMAGE; // 임시 이미지 처리

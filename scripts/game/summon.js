@@ -139,6 +139,7 @@ function createCreatureInstance({ creatureId, template, isPlayer, position, sync
         ...template,
         id: creatureId,
         idle: `./img/battle/${creatureId}_idle.png`,
+        walk: `./img/battle/gif/${creatureId}_walk.gif`,
         attack: `./img/battle/${creatureId}_attack.png`
     };
 
