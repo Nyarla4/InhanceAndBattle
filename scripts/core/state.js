@@ -109,6 +109,8 @@ export function createBattleSession(stageData, fieldDimensions = { width: 800, p
     const playerSide = stageData.playerSide === 'left' ? 'left' : 'right';
     const isPlayerLeft = playerSide === 'left';
 
+    const rewards = !stageData.isMulti ? stageData.rewards : null;
+
     currentGameState = {
         playerHp: personalEnhanceState.playerMaxHp,
         playerMaxHp: personalEnhanceState.playerMaxHp,
@@ -126,7 +128,8 @@ export function createBattleSession(stageData, fieldDimensions = { width: 800, p
         fieldWidth: fieldDimensions.width,
         playerBaseWidth: fieldDimensions.playerBaseWidth,
         enemyBaseWidth: fieldDimensions.enemyBaseWidth,
-        isMulti: !!stageData.isMulti
+        isMulti: !!stageData.isMulti,
+        rewards: rewards
     };
     return currentGameState;
 }

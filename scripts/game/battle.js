@@ -1,7 +1,7 @@
 // scripts/game/battle.js
 
 import { eventBus } from "../core/eventBus.js";
-import { createBattleSession, clearBattleSession, getGameState, setPlayerHp, setEnemyHp, setPlayerCreature, setEnemyCreature } from "../core/state.js";
+import { createBattleSession, clearBattleSession, getGameState, setPlayerHp, setEnemyHp, setPlayerCreature, setEnemyCreature, getGold } from "../core/state.js";
 import { initForgeView } from "../ui/views/enhanceView.js";
 import { EVENTS } from "../core/config.js";
 import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
@@ -446,6 +446,12 @@ export function stopBattleLoop() {
         enemyCreatures.splice(i, 1);
     }
     setEnemyCreature(enemyCreatures);
+
+    // 보상 처리
+    if(getGameState().rewards) {
+        getGold(getGameState().rewards.gold);
+    }
+
     // 세션 정리
     clearBattleSession();
 }
