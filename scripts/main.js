@@ -62,6 +62,9 @@ function initGame() {
     // 전투 종료 -> 타이틀
     setButtonToScreen(UI.resultTitleBtn, UI.titleScreen);
 
+    // 전투 화면 -> 타이틀 화면
+    setButtonToScreen(UI.orientationBackBtn, UI.titleScreen);
+
     // 타이틀 스크린만 보이도록 초기화
     sceneManager.showScreen(UI.titleScreen);
 }

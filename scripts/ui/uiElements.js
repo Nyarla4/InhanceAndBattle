@@ -34,6 +34,7 @@ export const multiRoomBackBtn = getElement("multi-room-back-btn"); // 멀티방 
 export const lobbyBackBtn = getElement("lobby-back-btn"); // 로비 -> 방 생성/진입 백버튼
 export const stageBackBtn = getElement("stage-back-btn"); // 스테이지선택 -> 모드선택 백버튼
 export const dictionaryBackBtn = getElement("dictionary-back-btn"); // 도감 -> 모드선택 백버튼
+export const orientationBackBtn = getElement("orientation-back-btn"); // 전투 화면 -> 모드선택 백버튼
 
 // 3. 모드 선택 화면 버튼들
 export const soloModeBtn = getElement("solo-mode-btn");
