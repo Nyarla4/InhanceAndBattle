@@ -25,6 +25,7 @@ export function renderCreature(creature, sameSideCreatures) {
 
     creature.isRevMissing = false; // _rev 에셋이 깨진 적이 있는 개체인지 여부
     creature.isWalkMissing = false; // walk 에셋이 깨진 적이 있는 개체인지 여부
+    creature.isAttackMissing = false; // attack 에셋이 깨진 적이 있는 개체인지 여부
 
     var innerHTML = `<img src="" alt="${creature.data.name}">`;
     creature.element.innerHTML = innerHTML;
@@ -39,7 +40,11 @@ export function renderCreature(creature, sameSideCreatures) {
             }
             else if(imgImg.src.includes("walk") || imgImg.src === creature.data.walk) { // walk 에셋이 깨진 경우
                 creature.isWalkMissing = true;
-                setCreatureSrc(creature, curState); // 현재 상태 그대로 통상 버전 재출력 요청
+                setCreatureSrc(creature, curState); // 내부 로직에 의해 idle로 우회
+            }
+            else if(imgImg.src.includes("attack") || imgImg.src === creature.data.attack) { // attack 에셋이 깨진 경우
+                creature.isAttackMissing = true;
+                setCreatureSrc(creature, curState); // 내부 로직에 의해 fallback으로 우회
             }
             else {
                 imgImg.onerror = null; // 무한 루프 방지 위해 onerror 제거
@@ -70,6 +75,9 @@ export function setCreatureSrc(creature, stateType) {
 
     if(stateType === 'walk' && creature.isWalkMissing) {
         finalState = 'idle'; // walk 에셋이 깨진 경우 idle로 대체
+    }
+    else if(stateType === 'attack' && creature.isAttackMissing) {
+        finalState = 'attackFallback'; // attack 에셋이 깨진 경우 fallback으로 대체
     }
 
     // 만약 한 번이라도 _rev 에셋이 깨진 적이 있는 개체라면
