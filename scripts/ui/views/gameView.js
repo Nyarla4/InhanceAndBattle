@@ -15,35 +15,45 @@ export function renderCreature(creature, sameSideCreatures) {
     // Y축 랜덤 오버랩 방지 (구조적 수치가 아닌 단순 시각적 렌더링 흐름)
     creature.element.style.bottom = (Math.floor(Math.random() * 3) * 10) + "px";
     
-    var innerHTML = "";
-    if(creature.isPlayer) {
-        innerHTML = `<img src="${creature.data.walk}" alt="${creature.data.name}" onerror="this.onerror=null; this.src='${creature.data.idle}';">`;
-    }
-    else {
-        innerHTML = `<img src="${creature.data.idle}" alt="${creature.data.name}">`;
-    }
+    const isUserCreature = creature.isPlayer || creature.isNetworkOpponent;
+    const direction = getGameState() ? (creature.isPlayer ? getGameState().playerDirection : getGameState().enemyDirection) : -1;
+    
+    creature.idle = direction === 1 ? creature.data.rev_idle : creature.data.idle;
+    creature.walk = direction === 1 ? creature.data.rev_walk : creature.data.walk;
+    creature.attack = direction === 1 ? creature.data.rev_attack : creature.data.attack;
+    creature.attackFallback = direction === 1 ? creature.data.rev_attackFallback : creature.data.attackFallback;
+
+    creature.isRevMissing = false; // _rev 에셋이 깨진 적이 있는 개체인지 여부
+
+    var innerHTML = `<img src="" alt="${creature.data.name}">`;
     creature.element.innerHTML = innerHTML;
 
-    setCreatureImageDirection(creature);
+    const imgImg = creature.element.querySelector("img");
+    if(imgImg) {
+    }
+
+    const initStateType = isUserCreature ? "walk" : "idle";
+    setCreatureSrc(creature, initStateType);
+
     field.appendChild(creature.element);
 }
 
-/** 적군 이미지 좌우 반전 처리 */
-export function setCreatureImageDirection(creature) {
-    const creatureImg = creature.element.querySelector("img");
-    if (!(creatureImg instanceof HTMLImageElement)) return;
+/** 개체 이미지 소스 설정 */
+export function setCreatureSrc(creature, stateType) {
+    const imgImg = creature.element.querySelector("img");
+    if (!imgImg) return;
 
     const gameState = getGameState();
-    if (!gameState) return;
+    const direction = gameState ? (creature.isPlayer ? gameState.playerDirection : gameState.enemyDirection) : -1;
 
-    // 해당 개체의 실제 전진 방향 (1: 우측 전진, -1: 좌측 전진)
-    const direction = creature.isPlayer ? gameState.playerDirection : gameState.enemyDirection;
-
-    // 기본 에셋이 [좌측]을 보므로, 우측(1)으로 전진할 때만 이미지를 반전
-    if (direction === 1) {
-        creatureImg.style.transform = "scaleX(-1)"; // 우측 전진 시 반전 (우측 바라봄)
+    // 만약 한 번이라도 _rev 에셋이 깨진 적이 있는 개체라면
+    if (creature.isRevMissing && direction === 1) {
+        imgImg.style.transform = "scaleX(-1)";        // CSS 반전 강제 적용
+        imgImg.src = creature.data[stateType];         // 통상 에셋 경로 주입 (walk, attack 등)
     } else {
-        creatureImg.style.transform = "scaleX(1)";  // 좌측 전진 시 원본 (좌측 바라봄)
+        // 정상 상태 (좌측 전진이거나, _rev 에셋이 잘 존재하는 경우)
+        imgImg.style.transform = direction === 1 ? "scaleX(1)" : "scaleX(1)"; // _rev 에셋 자체에 이미 방향이 반영되어 있으므로 기본은 scaleX(1)
+        imgImg.src = creature[stateType];              // direction에 따라 계산되어 있던 경로 주입 (rev_walk, walk 등)
     }
 }
 
@@ -60,54 +70,6 @@ export function removeCreatureView(creature) {
     if (creature.element && creature.element.parentNode) {
         creature.element.parentNode.removeChild(creature.element);
     }
-}
-
-/** 개체를 공격 연출 이미지 또는 필터 상태로 변경 */
-export function setCreatureAttackView(creature, restart = false) {
-    if (!creature.element) return;
-    const imgEl = creature.element.querySelector("img");
-    if (!imgEl) return;
-
-    const attackTarget = creature.data.attack;
-
-    if (!attackTarget) {
-        creature.element.style.filter = "invert(100%)";
-    } else {
-        if (restart) {
-            imgEl.src = '';
-            void imgEl.offsetWidth;
-        }
-        imgEl.src = attackTarget;
-
-        imgEl.onerror = () => {
-            if (creature.data.attackFallback && imgEl.src !== creature.data.attackFallback) {
-                imgEl.src = creature.data.attackFallback;
-                return;
-            }
-            imgEl.src = creature.data.idle;
-            creature.element.style.filter = "invert(100%)";
-        }
-    }
-    setCreatureImageDirection(creature);
-}
-
-/** 개체를 기본 대기(idle) 상태로 복구 */
-export function setCreatureIdleView(creature) {
-    if (!creature.element) return;
-    const imgEl = creature.element.querySelector("img");
-    if (!imgEl) return;
-
-    // 공격 시 적용되었던 필터와 이미지를 모두 원래대로 원복
-    creature.element.style.filter = "none";
-
-    if (creature.isPlayer) {
-        imgEl.src = creature.data.walk;
-        imgEl.onerror = () => {
-            imgEl.onerror = null;
-            imgEl.src = creature.data.idle;
-        };
-    }
-    setCreatureImageDirection(creature);
 }
 
 export function renderBaseHp(currentStage, playerMaxHp, enemyMaxHp) {

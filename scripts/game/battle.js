@@ -4,7 +4,7 @@ import { eventBus } from "../core/eventBus.js";
 import { createBattleSession, clearBattleSession, getGameState, setPlayerHp, setEnemyHp, setPlayerCreature, setEnemyCreature, getGold } from "../core/state.js";
 import { initForgeView } from "../ui/views/enhanceView.js";
 import { EVENTS } from "../core/config.js";
-import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureAttackView, setCreatureIdleView, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
+import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureSrc, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
 import { initStageSpawnQueue, updateStageSpawner } from './summon.js';
 import { socketClient } from "../network/socketClient.js";
 import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn, pauseModal, pauseBattleBtn, resumeBattleBtn, exitBattleBtn, multiLobbyScreen } from "../ui/uiElements.js";
@@ -251,7 +251,7 @@ function processCreatures(deltaTime, now) {
                 creature.currentVisualState = 'attack';
                 creature.attackCycleStartTime = now;
                 creature.hasDealtDamage = false;
-                setCreatureAttackView(creature, true);
+                setCreatureSrc(creature, 'attack');
             }
 
             const elapsedTime = now - creature.attackCycleStartTime; // gif 진행중 현재 위치
@@ -273,7 +273,7 @@ function processCreatures(deltaTime, now) {
             if (elapsedTime >= attackCycleDuration) { // 후딜 끝났으면 다시 선딜 시작
                 creature.attackCycleStartTime = now;
                 creature.hasDealtDamage = false;
-                setCreatureAttackView(creature, true);
+                setCreatureSrc(creature, 'attack');
             }
         } else {
             if (creature.isAttackingVisual) {
@@ -281,7 +281,7 @@ function processCreatures(deltaTime, now) {
                 creature.currentVisualState = 'idle';
                 creature.attackCycleStartTime = 0;
                 creature.hasDealtDamage = false;
-                setCreatureIdleView(creature);
+                setCreatureSrc(creature, (creature.isPlayer || creature.isNetworkOpponent) ? 'walk' : 'idle');
             }
 
             // 초당 이동 속도 보정

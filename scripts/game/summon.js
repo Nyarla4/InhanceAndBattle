@@ -140,9 +140,13 @@ function createCreatureInstance({ creatureId, template, isPlayer, position, sync
         ...template,
         id: creatureId,
         idle: `./img/battle/${folder}/${creatureId}_idle.png`,
+        rev_idle: `./img/battle/${folder}/${creatureId}_idle_rev.png`,
         walk: `./img/battle/${folder}/gif/${creatureId}_walk.gif`,
+        rev_walk: `./img/battle/${folder}/gif/${creatureId}_walk_rev.gif`,
         attack: `./img/battle/${folder}/gif/${creatureId}_attack.gif`,
-        attackFallback: `./img/battle/${folder}/${creatureId}_attack.png`
+        rev_attack: `./img/battle/${folder}/gif/${creatureId}_attack_rev.gif`,
+        attackFallback: `./img/battle/${folder}/${creatureId}_attack.png`,
+        rev_attackFallback: `./img/battle/${folder}/${creatureId}_attack_rev.png`
     };
 
     return {
