@@ -35,11 +35,11 @@ export function renderCreature(creature, sameSideCreatures) {
             const curState = creature.currentVisualState || (isUserCreature ? "walk" : "idle");
             if(imgImg.src.includes("_rev")) { // _rev 에셋이 깨진 경우
                 creature.isRevMissing = true; // 플래그 처리
-                setCreatureSrc(creature, currentState); // 현재 상태 그대로 통상 버전 재출력 요청
+                setCreatureSrc(creature, curState); // 현재 상태 그대로 통상 버전 재출력 요청
             }
             else if(imgImg.src.includes("walk") || imgImg.src === creature.data.walk) { // walk 에셋이 깨진 경우
                 creature.isWalkMissing = true;
-                setCreatureSrc(creature, currentState); // 현재 상태 그대로 통상 버전 재출력 요청
+                setCreatureSrc(creature, curState); // 현재 상태 그대로 통상 버전 재출력 요청
             }
             else {
                 imgImg.onerror = null; // 무한 루프 방지 위해 onerror 제거
@@ -75,11 +75,11 @@ export function setCreatureSrc(creature, stateType) {
     // 만약 한 번이라도 _rev 에셋이 깨진 적이 있는 개체라면
     if (creature.isRevMissing && direction === 1) {
         imgImg.style.transform = "scaleX(-1)";        // CSS 반전 강제 적용
-        imgImg.src = creature.data[stateType];         // 통상 에셋 경로 주입 (walk, attack 등)
+        imgImg.src = creature.data[finalState];         // 통상 에셋 경로
     } else {
         // 정상 상태 (좌측 전진이거나, _rev 에셋이 잘 존재하는 경우)
         imgImg.style.transform = direction === 1 ? "scaleX(1)" : "scaleX(1)"; // _rev 에셋 자체에 이미 방향이 반영되어 있으므로 기본은 scaleX(1)
-        imgImg.src = creature[stateType];              // direction에 따라 계산되어 있던 경로 주입
+        imgImg.src = creature[finalState];              // direction에 따라 계산되어 있던 경로
     }
 }
 
