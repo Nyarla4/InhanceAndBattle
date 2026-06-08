@@ -24,12 +24,28 @@ export function renderCreature(creature, sameSideCreatures) {
     creature.attackFallback = direction === 1 ? creature.data.rev_attackFallback : creature.data.attackFallback;
 
     creature.isRevMissing = false; // _rev 에셋이 깨진 적이 있는 개체인지 여부
+    creature.isWalkMissing = false; // walk 에셋이 깨진 적이 있는 개체인지 여부
 
     var innerHTML = `<img src="" alt="${creature.data.name}">`;
     creature.element.innerHTML = innerHTML;
 
     const imgImg = creature.element.querySelector("img");
     if(imgImg) {
+        imgImg.onerror = () => {
+            const curState = creature.currentVisualState || (isUserCreature ? "walk" : "idle");
+            if(imgImg.src.includes("_rev")) { // _rev 에셋이 깨진 경우
+                creature.isRevMissing = true; // 플래그 처리
+                setCreatureSrc(creature, currentState); // 현재 상태 그대로 통상 버전 재출력 요청
+            }
+            else if(imgImg.src.includes("walk") || imgImg.src === creature.data.walk) { // walk 에셋이 깨진 경우
+                creature.isWalkMissing = true;
+                setCreatureSrc(creature, currentState); // 현재 상태 그대로 통상 버전 재출력 요청
+            }
+            else {
+                imgImg.onerror = null; // 무한 루프 방지 위해 onerror 제거
+                imgImg.src = creature.data.idle; // 일단 idle로 대체 시도
+            }
+        };
     }
 
     const initStateType = isUserCreature ? "walk" : "idle";
@@ -43,8 +59,18 @@ export function setCreatureSrc(creature, stateType) {
     const imgImg = creature.element.querySelector("img");
     if (!imgImg) return;
 
+    // battle.js의 allCreatures.forEach에서 설정하고는 있는데 쓰긴하나싶다
+    creature.currentVisualState = stateType;
+
     const gameState = getGameState();
     const direction = gameState ? (creature.isPlayer ? gameState.playerDirection : gameState.enemyDirection) : -1;
+
+    // 최종 상태
+    let finalState = stateType;
+
+    if(stateType === 'walk' && creature.isWalkMissing) {
+        finalState = 'idle'; // walk 에셋이 깨진 경우 idle로 대체
+    }
 
     // 만약 한 번이라도 _rev 에셋이 깨진 적이 있는 개체라면
     if (creature.isRevMissing && direction === 1) {
@@ -53,7 +79,7 @@ export function setCreatureSrc(creature, stateType) {
     } else {
         // 정상 상태 (좌측 전진이거나, _rev 에셋이 잘 존재하는 경우)
         imgImg.style.transform = direction === 1 ? "scaleX(1)" : "scaleX(1)"; // _rev 에셋 자체에 이미 방향이 반영되어 있으므로 기본은 scaleX(1)
-        imgImg.src = creature[stateType];              // direction에 따라 계산되어 있던 경로 주입 (rev_walk, walk 등)
+        imgImg.src = creature[stateType];              // direction에 따라 계산되어 있던 경로 주입
     }
 }
 
