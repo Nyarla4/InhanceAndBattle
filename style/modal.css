@@ -57,10 +57,10 @@
     background-color: var(--color-bg-root); /* 배경을 완전히 어둡게 처리 */
     z-index: 10000; /* 최상단에 위치 */
 }
-/* 모바일(터치 입력)에서 전투 화면(#stage-screen)에 진입했을 때 */
+/* 모바일(터치 입력)에서 전투 화면(#modeSelector-screen)에 진입했을 때 */
 @media (pointer: coarse) {
-    /* 부모인 stage-screen이 hidden 상태가 아닐 때 내부의 뱃지를 띄움 */
-    #stage-screen:not(.hidden) #orientation-badge {
+    /* 부모인 modeSelector-screen이 hidden 상태가 아닐 때 내부의 뱃지를 띄움 */
+    #modeSelector-screen:not(.hidden) #orientation-badge {
         display: flex !important;
     }
 }
