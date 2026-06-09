@@ -1,54 +1,66 @@
 /* =================================================================
-   0. 상수
+   0. 상수 — 재작성
+   방향: 깊은 먹색 계열 배경 + 낡은 양피지 계열 액센트
+   AI 클리셰(보라 그라디언트, 청록, 네온) 전면 배제
 ================================================================= */
 :root {
   /* --- 배경 계열 --- */
-  --color-bg-root:       #1a1a1a; /* body 최하단 / 로그 배경 */
-  --color-bg-base:       #2c3e50; /* 게임 기본 배경 */
-  --color-bg-panel-dark: #1a252f; /* 로비 중앙 패널 */
-  --color-bg-surface:    #34495e; /* 카드·박스·필드 등 표면 */
+  --color-bg-root:       #0d0f0e; /* body 최하단 — 거의 검정에 가까운 숲 흑 */
+  --color-bg-base:       #131a16; /* 게임 기본 배경 — 밤 숲 느낌 */
+  --color-bg-panel-dark: #0f1512; /* 로비 중앙 패널 */
+  --color-bg-surface:    #1e2820; /* 카드·박스·필드 — 약간 들뜬 면 */
 
-  /* --- 텍스트 / 입력 계열 --- */
-  --color-text-white:    #ffffff; /* 흰 글자·흰 배경 입력 */
-  --color-text-light:    #ecf0f1; /* 밝은 회색 텍스트·입력 배경 */
+  /* --- 텍스트 계열 --- */
+  --color-text-white:    #e8e0d0; /* 주 텍스트 — 순백 아닌 따뜻한 아이보리 */
+  --color-text-light:    #c4bfb5; /* 보조 텍스트 */
+  --color-text-dim:      #6b6860; /* 흐린 텍스트 */
 
-  /* --- 포인트 컬러 --- */
-  --color-accent-yellow: #f1c40f; /* 강조 헤더·레이블·테두리 */
+  /* --- 포인트 컬러 — 낡은 금박 / 세피아 계열 --- */
+  --color-accent:        #c8a86b; /* 강조 헤더·레이블 — 바랜 금색 */
+  --color-accent-hover:  #dbbf82;
 
-  /* --- 버튼 – 주요 (Primary) --- */
-  --color-btn-primary:       #e74c3c;
-  --color-btn-primary-hover: #ff6b6b;
+  /* --- 버튼 – 주요 (공격적 행동) --- */
+  --color-btn-primary:       #8b3a2a; /* 진한 벽돌 적색 */
+  --color-btn-primary-hover: #a84432;
 
-  /* --- 버튼 – 복사 (Copy / Warm-Orange) --- */
-  --color-btn-copy:       #e67e22;
-  --color-btn-copy-hover: #f39c12;
+  /* --- 버튼 – 복사 (중립 행동) --- */
+  --color-btn-copy:       #5a4a30;
+  --color-btn-copy-hover: #6e5c3c;
 
-  /* --- 버튼 – 보조 (Secondary / Gray) --- */
-  --color-btn-secondary:       #7f8c8d;
-  --color-btn-secondary-hover: #95a5a6;
+  /* --- 버튼 – 보조 (비활성·뒤로가기) --- */
+  --color-btn-secondary:       #2e3530;
+  --color-btn-secondary-hover: #3a4238;
 
-  /* --- 버튼 – 블루 (Blue) --- */
-  --color-btn-blue:       #2980b9;
-  --color-btn-blue-hover: #3498db;
+  /* --- 버튼 – 정보 행동 (방 참여 등) --- */
+  --color-btn-blue:       #2d4a5e;
+  --color-btn-blue-hover: #365a72;
 
-  /* --- 버튼 – 성공 (Success / Green) --- */
-  --color-btn-success:       #27ae60;
-  --color-btn-success-hover: #2ecc71; /* 로그 텍스트 컬러와 공유 */
+  /* --- 버튼 – 성공 (준비·소환) --- */
+  --color-btn-success:       #2d5c3a;
+  --color-btn-success-hover: #38724a;
 
-  /* --- 버튼 – 위험 (Danger / Red) --- */
-  --color-btn-danger: #c0392b;
+  /* --- 버튼 – 위험 (적·파괴) --- */
+  --color-btn-danger: #6b2020;
 
   /* --- 테두리 --- */
-  --color-border:       #34495e; /* 공통 테두리 (bg-surface와 동일 값) */
-  --color-border-slot:  #5d6d7e; /* 로비 슬롯 전용 테두리 */
-  --color-border-light: #f3f3f3; /* 스피너 트랙 */
+  --color-border:       #2a342c;
+  --color-border-slot:  #374039;
+  --color-border-light: #3a3530;
+  --color-border-accent: #5a4e34;  /* 강조 테두리 */
 
   /* --- 필드 (인게임 배경) --- */
-  --color-field-sky:    #7b94ad; /* 필드 하늘 그라디언트 */
-  --color-field-sky-bg: #87ceeb; /* 전투 필드 컨테이너 배경 */
+  --color-field-sky:    #4a5c4e; /* 흐린 초록 하늘 */
+  --color-field-sky-bg: #3d5040; /* 전투 필드 컨테이너 */
 
   /* --- 그림자 / 오버레이 --- */
-  --color-shadow:        rgba(0, 0, 0, 0.5);
-  --color-shadow-heavy:  rgba(0, 0, 0, 0.6);
-  --color-overlay:       rgba(0, 0, 0, 0.75);
+  --color-shadow:        rgba(0, 0, 0, 0.6);
+  --color-shadow-heavy:  rgba(0, 0, 0, 0.8);
+  --color-overlay:       rgba(0, 0, 0, 0.82);
+
+  /* --- 타이포그래피 스케일 --- */
+  --font-primary: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  /* --- 트랜지션 --- */
+  --transition-fast:   0.12s ease;
+  --transition-normal: 0.2s ease;
 }

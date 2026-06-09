@@ -1,5 +1,5 @@
 /* =================================================================
-   4. 모달 및 서버 로딩 애니메이션 (Modal & Spinner)
+   4. 모달 및 로딩 스피너
 ================================================================= */
 .modal {
     position: fixed;
@@ -16,12 +16,15 @@
 
 .modal-content {
     background-color: var(--color-bg-base);
-    padding: 30px;
-    border-radius: 10px;
-    border: 3px solid var(--color-border);
-    min-width: 300px;
-    max-width: 500px;
-    box-shadow: 0 10px 25px var(--color-shadow);
+    padding: 28px 24px;
+    border-radius: 2px;
+    border: 1px solid var(--color-border-slot);
+    min-width: 280px;
+    max-width: 480px;
+
+    /* 상단 강조선 */
+    border-top: 2px solid var(--color-accent);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.7);
 }
 
 .text-center {
@@ -29,21 +32,22 @@
 }
 
 #loading-text {
-    margin-top: 20px;
-    line-height: 1.5;
-    color: var(--color-accent-yellow);
-    font-weight: bold;
+    margin-top: 16px;
+    line-height: 1.6;
+    color: var(--color-text-light);
+    font-size: 13px;
+    font-weight: 500;
 }
 
-/* 🔄 로딩 회전 스피너 */
+/* 스피너 — 테두리 없이 얇은 선 두 개 */
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid var(--color-border-light);
-    border-top: 5px solid var(--color-btn-primary);
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--color-border-slot);
+    border-top: 2px solid var(--color-accent);
     border-radius: 50%;
     margin: 0 auto;
-    animation: spin 1s linear infinite;
+    animation: spin 0.9s linear infinite;
 }
 
 @keyframes spin {
@@ -51,15 +55,14 @@
     100% { transform: rotate(360deg); }
 }
 
-/* 통상 숨김 */
+/* 방향 안내 배지 */
 #orientation-badge {
     display: none;
-    background-color: var(--color-bg-root); /* 배경을 완전히 어둡게 처리 */
-    z-index: 10000; /* 최상단에 위치 */
+    background-color: var(--color-bg-root);
+    z-index: 10000;
 }
-/* 모바일(터치 입력)에서 전투 화면(#modeSelector-screen)에 진입했을 때 */
+
 @media (pointer: coarse) {
-    /* 부모인 modeSelector-screen이 hidden 상태가 아닐 때 내부의 뱃지를 띄움 */
     #modeSelector-screen:not(.hidden) #orientation-badge {
         display: flex !important;
     }

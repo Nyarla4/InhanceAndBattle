@@ -5,8 +5,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-    user-select: none; /* 게임 중 드래그 방지 */
+    font-family: var(--font-primary);
+    user-select: none;
 }
 
 body {
@@ -20,7 +20,7 @@ body {
     overflow: hidden;
 }
 
-/* 게임 전체 화면을 감싸는 컨테이너 (16:9 비율 유지 권장) */
+/* 게임 전체 화면 컨테이너 (16:9) */
 .screen {
     width: 100%;
     max-width: 1024px;
@@ -32,29 +32,41 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 4px solid var(--color-border);
-    border-radius: 8px;
-    box-shadow: 0 10px 30px var(--color-shadow);
+
+    /* 테두리: 얇은 선 하나, 장식 없음 */
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+
+    /* 외곽 광채 제거 — 그림자 최소화 */
+    box-shadow:
+        0 0 0 1px rgba(200,168,107,0.06),
+        0 20px 60px rgba(0,0,0,0.7);
     padding: 20px;
 }
 
-/* 💡 SPA 화면 전환의 핵심: 숨김 처리 */
+/* SPA 화면 전환 */
 .hidden {
     display: none !important;
 }
 
-/* 공통 버튼 디자인 */
+/* ---------------------------------------------------------------
+   공통 버튼
+--------------------------------------------------------------- */
 button {
     background-color: var(--color-btn-primary);
     color: var(--color-text-white);
-    border: none;
-    padding: 12px;
-    margin: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 6px;
+    border: 1px solid transparent;
+    padding: 10px 16px;
+    margin: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border-radius: 2px;
     cursor: pointer;
-    transition: transform 0.1s, background-color 0.2s;
+    transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 button:hover {
@@ -62,43 +74,106 @@ button:hover {
 }
 
 button:active {
-    transform: translateY(4px);
-    box-shadow: none;
+    transform: translateY(2px);
 }
 
-/* 버튼 비활성화 상태 스타일 정의 */
 button:disabled {
     background-color: var(--color-btn-secondary) !important;
+    border-color: transparent !important;
+    color: var(--color-text-dim) !important;
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 1;
     transform: none !important;
 }
 
+/* 뒤로가기 버튼 */
 .back-btn {
     position: absolute;
     bottom: 20px;
     left: 20px;
     background-color: var(--color-btn-secondary);
-    margin: 0; /* 불필요한 마진 제거 */
-    padding: 10px 20px;
+    border: 1px solid var(--color-border);
+    margin: 0;
+    padding: 8px 18px;
+    font-size: 13px;
+    color: var(--color-text-light);
 }
-.back-btn:hover { background-color: var(--color-btn-secondary-hover); }
+.back-btn:hover {
+    background-color: var(--color-btn-secondary-hover);
+    border-color: var(--color-border-slot);
+    color: var(--color-text-white);
+}
 
+/* ---------------------------------------------------------------
+   제목류
+--------------------------------------------------------------- */
 h1 {
-    font-size: 36px;
-    margin-bottom: 40px;
-    text-shadow: 2px 2px 4px var(--color-shadow-heavy);
-    color: var(--color-accent-yellow);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 36px;
+    color: var(--color-accent);
+
+    /* 글자 광택 제거 — text-shadow 최소화 */
+    text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 }
 
 h2 {
-    font-size: 28px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     margin-bottom: 20px;
+    color: var(--color-text-light);
 }
 
-.menu-buttons, .mode-buttons {
+/* ---------------------------------------------------------------
+   메뉴 버튼 열
+--------------------------------------------------------------- */
+.menu-buttons,
+.mode-buttons {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    width: 250px;
+    gap: 8px;
+    width: 220px;
+}
+
+.menu-buttons button,
+.mode-buttons button {
+    margin: 0;
+    width: 100%;
+    text-align: left;
+    padding: 12px 18px;
+    font-size: 14px;
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-white);
+    border-radius: 2px;
+    position: relative;
+}
+
+.menu-buttons button::before,
+.mode-buttons button::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: var(--color-accent);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    border-radius: 2px 0 0 2px;
+}
+
+.menu-buttons button:hover,
+.mode-buttons button:hover {
+    background-color: var(--color-btn-secondary-hover);
+    border-color: var(--color-border-slot);
+    color: var(--color-text-white);
+}
+
+.menu-buttons button:hover::before,
+.mode-buttons button:hover::before {
+    opacity: 1;
 }
