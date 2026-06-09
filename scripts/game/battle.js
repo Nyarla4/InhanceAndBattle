@@ -4,7 +4,7 @@ import { eventBus } from "../core/eventBus.js";
 import { createBattleSession, clearBattleSession, getGameState, setPlayerHp, setEnemyHp, setPlayerCreature, setEnemyCreature, getGold } from "../core/state.js";
 import { initForgeView } from "../ui/views/enhanceView.js";
 import { EVENTS } from "../core/config.js";
-import { initBattleResult, removeCreatureView, renderBaseHp, setCreatureSrc, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
+import { initBattleResult, onCreatureHit, removeCreatureView, renderBaseHp, setCreatureSrc, showBattleResult, updateCreatureView } from '../ui/views/gameView.js';
 import { initStageSpawnQueue, updateStageSpawner } from './summon.js';
 import { socketClient } from "../network/socketClient.js";
 import { field, playerBase, enemyBase, stageScreen, stageSelectorScreen, titleScreen, resultStageBtn, resultTitleBtn, pauseModal, pauseBattleBtn, resumeBattleBtn, exitBattleBtn, multiLobbyScreen } from "../ui/uiElements.js";
@@ -75,6 +75,7 @@ export function startBattle(stageData) {
 
             const target = playerCreatures[targetIdx];
             target.hp -= damage;
+            onCreatureHit(target);
             if (target.hp <= 0) {
                 target.isAlive = false;
                 removeCreatureView(target);
@@ -362,6 +363,9 @@ function attackTarget(attacker, targets) {
             if (isMulti) {
                 eventBus.emit(EVENTS.REQ_DAMAGE, {targetId: target.id, damage: damage });
             }
+            else {
+                onCreatureHit(target);
+            }
         }
     }
     else { // 플레이어가 맞을 때
@@ -369,6 +373,7 @@ function attackTarget(attacker, targets) {
             for (let idx = 0; idx < targets.length; idx++) {
                 const target = targets[idx]
                 target.hp -= damage;
+                onCreatureHit(target);
             }
         }
     }

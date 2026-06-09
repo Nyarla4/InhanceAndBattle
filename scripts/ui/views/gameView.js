@@ -2,6 +2,7 @@
 
 import { getGameState } from '../../core/state.js';
 import { enemyBaseHp, field, playerBaseHp, battleResultPanel, battleResultMessage } from '../uiElements.js';
+import { spawnHitDust } from './effectView.js';
 
 /** 개체(아군/적군)를 필드 DOM에 추가 */
 export function renderCreature(creature, sameSideCreatures) {
@@ -103,6 +104,15 @@ export function updateCreatureView(creature) {
 
     // 1. 위치 이동 동기화
     creature.element.style.left = `${creature.position}px`;
+}
+
+/**
+ * 피격 처리 시 호출 — 데미지 적용 후 이펙트 발생
+ * battle.js의 attackTarget / RES_DAMAGE 핸들러에서 호출
+ */
+export function onCreatureHit(target) {
+    const bottomPx = parseInt(target.element?.style.bottom) || 0;
+    spawnHitDust(target.position, bottomPx);
 }
 
 /** 사망한 개체를 전장 DOM에서 제거 */

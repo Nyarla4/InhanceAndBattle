@@ -140,3 +140,25 @@
     object-fit: contain;
     display: block;
 }
+
+/* 피격 먼지 이펙트 */
+.hit-dust {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 20;
+
+    background-image: url('./img/battle/effects/hit_dust.png'); /* 스프라이트 시트 경로 */
+    background-size: 600% 100%; /* 가로 6프레임 기준 예시 */
+    background-repeat: no-repeat;
+    background-position: 0% 0%;
+
+    animation: dust-anim 1s steps(6) forwards; /* 프레임 수에 맞게 조정 */
+}
+
+@keyframes dust-anim {
+    from { background-position: 0% 0%; }
+    to   { background-position: 100% 0%; }
+}
