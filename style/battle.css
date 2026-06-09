@@ -150,7 +150,7 @@
     pointer-events: none;
     z-index: 20;
 
-    background-image: url('./img/battle/effects/hit_dust.png'); /* 스프라이트 시트 경로 */
+    background-image: url('../img/battle/effects/hit_dust.png'); /* 스프라이트 시트 경로 */
     background-size: 600% 100%; /* 가로 6프레임 기준 예시 */
     background-repeat: no-repeat;
     background-position: 0% 0%;
