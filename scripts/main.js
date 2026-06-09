@@ -8,6 +8,7 @@ import { initLobbyView } from './ui/views/lobbyView.js';
 import { initEnhancement, initPersonalEnhancement } from './core/state.js';
 import { initBattleStorageListener, initEnhanceView } from './ui/views/enhanceView.js';
 import { initSummonListener } from './game/summon.js';
+import { initSettings } from './ui/settings.js';
 
 /** 게임 전체 시스템 초기화 및 시동 */
 function initGame() {
@@ -22,6 +23,7 @@ function initGame() {
     initLobbyView();
 
     // 리스너 등록
+    initSettings();
     initSummonListener();
     initBattleStorageListener();
     
