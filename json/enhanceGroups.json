@@ -69,31 +69,43 @@
         "items": [
             {
                 "name": "마지나이 쿠로카",
-                "img": "./img/kuroka/majitomo01.png",
+                "img": "./img/kuroka/01_쿠로카.png",
                 "percent": 0,
                 "dropPercentage": 0
             },
             {
-                "name": "되어있지않아",
-                "img": "./img/kuroka/majitomo02.png",
+                "name": "로로카",
+                "img": "./img/kuroka/02_로로카.png",
                 "percent": 15,
                 "dropPercentage": 0
             },
             {
-                "name": "준비가",
-                "img": "./img/kuroka/majitomo03.png",
+                "name": "미소녀 마지토모",
+                "img": "./img/kuroka/03_미소녀.png",
                 "percent": 35,
                 "dropPercentage": 0
             },
             {
-                "name": "아직은",
-                "img": "./img/kuroka/majitomo04.png",
+                "name": "마 지토모",
+                "img": "./img/kuroka/04_마_지토모.png",
                 "percent": 60,
                 "dropPercentage": 0
             },
             {
-                "name": "미안 마지토모",
-                "img": "./img/kuroka/majitomo05.png",
+                "name": "스핔 마지토모",
+                "img": "./img/kuroka/05_스핔.png",
+                "percent": 85,
+                "dropPercentage": 0
+            },
+            {
+                "name": "로로콘",
+                "img": "./img/kuroka/06_로로콘.png",
+                "percent": 85,
+                "dropPercentage": 0
+            },
+            {
+                "name": "마지토모",
+                "img": "./img/kuroka/07_마지토모.png",
                 "percent": 85,
                 "dropPercentage": 0
             }

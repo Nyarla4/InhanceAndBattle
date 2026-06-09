@@ -111,8 +111,8 @@
         "size": 1
     },
     "majitomo_1": {
-        "name": "되어있지않아",
-        "description": "임시1",
+        "name": "로로카",
+        "description": "로로콘 그 뭐냐 그거임",
         "maxHp": 600,
         "attackDamage": 65, "attackRange": 80,
         "attackCycleDuration": 3667, "attackHitDelay": 1833,
@@ -121,8 +121,8 @@
         "size": 1
     },
     "majitomo_2": {
-        "name": "준비가",
-        "description": "임시2",
+        "name": "미소녀 마지토모",
+        "description": "카와이이 얏타",
         "maxHp": 400,
         "attackDamage": 45, "attackRange": 60,
         "attackCycleDuration": 2333, "attackHitDelay": 1167,
@@ -131,8 +131,8 @@
         "size": 1
     },
     "majitomo_3": {
-        "name": "아직은",
-        "description": "임시3",
+        "name": "마 지토모",
+        "description": "데이터 없음",
         "maxHp": 250,
         "attackDamage": 30, "attackRange": 50,
         "attackCycleDuration": 1667, "attackHitDelay": 833,
@@ -141,8 +141,28 @@
         "size": 1
     },
     "majitomo_4": {
-        "name": "미안 마지토모",
-        "description": "임시4",
+        "name": "스핔 마지토모",
+        "description": "네르지마세요",
+        "maxHp": 120,
+        "attackDamage": 15, "attackRange": 40,
+        "attackCycleDuration": 1333, "attackHitDelay": 667,
+        "moveSpeed": 95,
+        "canAttackMultipleTargets": false,
+        "size": 1
+    },
+    "majitomo_5": {
+        "name": "로로콘",
+        "description": "으 로로콘",
+        "maxHp": 120,
+        "attackDamage": 15, "attackRange": 40,
+        "attackCycleDuration": 1333, "attackHitDelay": 667,
+        "moveSpeed": 95,
+        "canAttackMultipleTargets": false,
+        "size": 1
+    },
+    "majitomo_6": {
+        "name": "마지토모",
+        "description": "엉덩이 비비기 금지",
         "maxHp": 120,
         "attackDamage": 15, "attackRange": 40,
         "attackCycleDuration": 1333, "attackHitDelay": 667,
