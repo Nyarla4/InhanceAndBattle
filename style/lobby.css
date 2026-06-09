@@ -263,6 +263,10 @@
     width: 100%;
 }
 
+#join-room-btn {
+    width: 50%;
+}
+
 .room-code-row input {
     min-width: 0;
     flex: 1;
