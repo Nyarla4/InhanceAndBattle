@@ -57,6 +57,12 @@ export function renderCreature(creature, sameSideCreatures) {
     setCreatureSrc(creature, initStateType);
 
     field.appendChild(creature.element);
+
+    const size = creature.data.size ?? 1;
+    const basePx = 60;
+    const px = size * basePx;
+    creature.element.style.width = `${px}px`;
+    creature.element.style.height = `${px}px`;
 }
 
 /** 개체 이미지 소스 설정 */

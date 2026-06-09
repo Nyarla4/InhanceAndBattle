@@ -6,7 +6,8 @@
         "attackDamage": 77, "attackRange": 170,
         "attackCycleDuration": 777, "attackHitDelay": 777,
         "moveSpeed": 77,
-        "canAttackMultipleTargets": true
+        "canAttackMultipleTargets": true,
+        "size": 1
     },
     "nezming_1": {
         "name": "바오밥나무 네즈밍",
@@ -15,7 +16,8 @@
         "attackDamage": 180, "attackRange": 160,
         "attackCycleDuration": 3667, "attackHitDelay": 1833,
         "moveSpeed": 45,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 2
     },
     "nezming_2": {
         "name": "볼드의 대형 해머 네즈밍",
@@ -24,7 +26,8 @@
         "attackDamage": 350, "attackRange": 140,
         "attackCycleDuration": 7000, "attackHitDelay": 3000,
         "moveSpeed": 48,
-        "canAttackMultipleTargets": true
+        "canAttackMultipleTargets": true,
+        "size": 1
     },
     "nezming_3": {
         "name": "처형자의 대검 네즈밍",
@@ -33,7 +36,8 @@
         "attackDamage": 260, "attackRange": 150,
         "attackCycleDuration": 5833, "attackHitDelay": 2500,
         "moveSpeed": 52,
-        "canAttackMultipleTargets": true
+        "canAttackMultipleTargets": true,
+        "size": 1
     },
     "nezming_4": {
         "name": "클레이모어 네즈밍",
@@ -42,7 +46,8 @@
         "attackDamage": 120, "attackRange": 110,
         "attackCycleDuration": 4333, "attackHitDelay": 2167,
         "moveSpeed": 58,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "nezming_5": {
         "name": "바스타드 소드 네즈밍",
@@ -51,7 +56,8 @@
         "attackDamage": 90, "attackRange": 90,
         "attackCycleDuration": 4000, "attackHitDelay": 2000,
         "moveSpeed": 60,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "nezming_6": {
         "name": "야구빠따 네즈밍",
@@ -60,7 +66,8 @@
         "attackDamage": 65, "attackRange": 80,
         "attackCycleDuration": 3667, "attackHitDelay": 1833,
         "moveSpeed": 62,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "nezming_7": {
         "name": "커터칼 네즈밍",
@@ -69,7 +76,8 @@
         "attackDamage": 45, "attackRange": 60,
         "attackCycleDuration": 2333, "attackHitDelay": 1167,
         "moveSpeed": 75,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "nezming_8": {
         "name": "눈썹칼 네즈밍",
@@ -78,7 +86,8 @@
         "attackDamage": 30, "attackRange": 50,
         "attackCycleDuration": 1667, "attackHitDelay": 833,
         "moveSpeed": 85,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "nezming_9": {
         "name": "이쑤시개 네즈밍",
@@ -87,7 +96,8 @@
         "attackDamage": 15, "attackRange": 40,
         "attackCycleDuration": 1000, "attackHitDelay": 0,
         "moveSpeed": 95,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
 
     "majitomo_0": {
@@ -97,7 +107,8 @@
         "attackDamage": 66, "attackRange": 160,
         "attackCycleDuration": 666, "attackHitDelay": 666,
         "moveSpeed": 66,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "majitomo_1": {
         "name": "되어있지않아",
@@ -106,7 +117,8 @@
         "attackDamage": 65, "attackRange": 80,
         "attackCycleDuration": 3667, "attackHitDelay": 1833,
         "moveSpeed": 62,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "majitomo_2": {
         "name": "준비가",
@@ -115,7 +127,8 @@
         "attackDamage": 45, "attackRange": 60,
         "attackCycleDuration": 2333, "attackHitDelay": 1167,
         "moveSpeed": 75,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "majitomo_3": {
         "name": "아직은",
@@ -124,7 +137,8 @@
         "attackDamage": 30, "attackRange": 50,
         "attackCycleDuration": 1667, "attackHitDelay": 833,
         "moveSpeed": 85,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "majitomo_4": {
         "name": "미안 마지토모",
@@ -133,7 +147,8 @@
         "attackDamage": 15, "attackRange": 40,
         "attackCycleDuration": 1333, "attackHitDelay": 667,
         "moveSpeed": 95,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     
     "enemy_01": {
@@ -143,7 +158,8 @@
         "attackDamage": 60, "attackRange": 70,
         "attackCycleDuration": 3833, "attackHitDelay": 1917,
         "moveSpeed": 55,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     },
     "enemy_02": {
         "name": "거구의 돌격대장 (임시 적2)",
@@ -152,7 +168,8 @@
         "attackDamage": 130, "attackRange": 100,
         "attackCycleDuration": 6333, "attackHitDelay": 3167,
         "moveSpeed": 35,
-        "canAttackMultipleTargets": true
+        "canAttackMultipleTargets": true,
+        "size": 2
     },
     "enemy_03": {
         "name": "날쌘 정찰병 (임시 적3)",
@@ -161,6 +178,7 @@
         "attackDamage": 35, "attackRange": 50,
         "attackCycleDuration": 2000, "attackHitDelay": 1000,
         "moveSpeed": 85,
-        "canAttackMultipleTargets": false
+        "canAttackMultipleTargets": false,
+        "size": 1
     }
 }
