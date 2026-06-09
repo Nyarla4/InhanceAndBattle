@@ -1,0 +1,270 @@
+/* =================================================================
+   설정 모달
+================================================================= */
+.settings-modal-content {
+    min-width: 320px;
+    max-width: 400px;
+    padding: 22px 20px;
+}
+
+.settings-header {
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.settings-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-light);
+}
+
+/* 설정 행 */
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.settings-label-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.settings-label {
+    font-size: 13px;
+    color: var(--color-text-light);
+}
+
+.settings-sub {
+    font-size: 11px;
+    color: var(--color-text-dim);
+}
+
+.settings-divider {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 14px 0;
+}
+
+/* 토글 */
+.settings-toggle {
+    width: 36px;
+    height: 20px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border-slot);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.settings-toggle[data-on="true"] {
+    background: var(--color-btn-success);
+    border-color: var(--color-btn-success-hover);
+}
+.settings-toggle-thumb {
+    width: 14px;
+    height: 14px;
+    background: var(--color-text-dim);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: left var(--transition-fast), background var(--transition-fast);
+}
+.settings-toggle[data-on="true"] .settings-toggle-thumb {
+    left: 18px;
+    background: var(--color-text-white);
+}
+
+/* 푸터 */
+.settings-footer {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.settings-btn-close {
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: var(--color-btn-secondary);
+    border: 1px solid var(--color-border-slot);
+    border-radius: 2px;
+    color: var(--color-text-light);
+    margin: 0;
+}
+.settings-btn-close:hover {
+    background: var(--color-btn-secondary-hover);
+    color: var(--color-text-white);
+}
+
+.settings-btn-apply {
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: var(--color-btn-success);
+    border: 1px solid var(--color-btn-success-hover);
+    border-radius: 2px;
+    color: var(--color-text-white);
+    margin: 0;
+}
+.settings-btn-apply:hover {
+    background: var(--color-btn-success-hover);
+}
+
+/* =================================================================
+   팔레트 드롭다운
+================================================================= */
+.palette-dropdown {
+    position: relative;
+    width: 175px;
+}
+
+.palette-dd-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-slot);
+    border-radius: 2px;
+    padding: 7px 10px;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+.palette-dd-trigger:hover {
+    border-color: var(--color-border-accent);
+}
+.palette-dd-trigger.is-open {
+    border-color: var(--color-accent);
+    border-bottom-color: transparent;
+    border-radius: 2px 2px 0 0;
+}
+
+.palette-swatch-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.palette-dots {
+    display: flex;
+    gap: 3px;
+}
+
+.palette-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+}
+
+.palette-dd-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-white);
+}
+
+.palette-dd-chevron {
+    font-size: 12px;
+    color: var(--color-text-dim);
+    transition: transform var(--transition-fast);
+    line-height: 1;
+}
+.palette-dd-trigger.is-open .palette-dd-chevron {
+    transform: rotate(180deg);
+}
+
+/* 드롭다운 메뉴 */
+.palette-dd-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--color-bg-panel-dark);
+    border: 1px solid var(--color-accent);
+    border-top: none;
+    border-radius: 0 0 2px 2px;
+    overflow: hidden;
+    max-height: 0;
+    pointer-events: none;
+    transition: max-height 0.18s ease;
+}
+.palette-dd-menu.is-open {
+    max-height: 400px;
+    pointer-events: auto;
+}
+
+.palette-dd-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--transition-fast);
+}
+.palette-dd-option:last-child {
+    border-bottom: none;
+}
+.palette-dd-option:hover {
+    background: var(--color-bg-surface);
+}
+.palette-dd-option.is-selected {
+    background: var(--color-bg-base);
+}
+
+.palette-dd-option-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.palette-dd-option-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-white);
+}
+
+.palette-dd-option-desc {
+    font-size: 10px;
+    color: var(--color-text-dim);
+    margin-top: 1px;
+}
+
+.palette-dd-check {
+    font-size: 12px;
+    color: var(--color-accent);
+    opacity: 0;
+    flex-shrink: 0;
+}
+.palette-dd-option.is-selected .palette-dd-check {
+    opacity: 1;
+}
+
+/* 미리보기 스트립 */
+.palette-preview-strip {
+    display: flex;
+    gap: 2px;
+    border-radius: 2px;
+    overflow: hidden;
+    height: 5px;
+    margin-top: -6px;
+    margin-bottom: 2px;
+}
+.palette-preview-seg {
+    flex: 1;
+    transition: background 0.25s ease;
+}

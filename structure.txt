@@ -16,18 +16,19 @@ InhancementAndBattle
 ││└views
 │││└enhanceView.js
 │││└gameView.js
-│││└lobbyView.j
+│││└lobbyView.js
 │││└modeView.js
 │││└stageSelectorView.js
 ││└sceneManager.js : screen 요소들에 대해 단일 screen만 보이도록 처리, 서버 연결 여부에 따라 로딩 모달 여닫기 처리
-││└ui.Elements.js : html의 요소를 js변수화
+││└uiElements.js : html의 요소를 js변수화
+││└settings.js : 설정 모달에서 사용하는 요소 처리
 │└main.js : 초기화, 리스너 및 버튼 기능 등록
 └server
 │└package.json
 │└roomManager.js
 │└server.js : ws로 C2S 이벤트 받고, S2C 이벤트 보냄
 └style
-│└main.css
+│└main.css, tokens.css ...
 └index.html : 핵심 html
     메인 메뉴: 타이틀과 전투, 강화, 도감, 설정 4개 버튼 존재
     title-screen

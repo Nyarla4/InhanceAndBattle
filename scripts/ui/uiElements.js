@@ -84,23 +84,30 @@ export const forgeGroupList = getElement("forge-group-list");
 export const forgeDisplay = getElement("forge-display");
 export const forgeName = getElement("forge-name");
 export const forgeLevel = getElement("forge-level");
-export const forgeBtnContainer = document.getElementById('forge-btn-container');
+export const forgeBtnContainer = getElement("forge-btn-container");
 export const forgeStorageList = getElement("forge-storage-list");
 
 
 export const loadingText = getElement("loading-text");
 
 // 결과창 엘리먼트
-export const battleResultPanel = document.getElementById('battle-result-panel');
-export const battleResultMessage = document.getElementById('battle-result-message');
-export const resultStageBtn = document.getElementById('result-stage-btn');
-export const resultTitleBtn = document.getElementById('result-title-btn');
+export const battleResultPanel = getElement('battle-result-panel');
+export const battleResultMessage = getElement('battle-result-message');
+export const resultStageBtn = getElement('result-stage-btn');
+export const resultTitleBtn = getElement('result-title-btn');
 
 // 일시정지 엘리먼트
-export const pauseBattleBtn = document.getElementById('pause-battle-btn');
-export const pauseModal = document.getElementById('pause-modal');
-export const resumeBattleBtn = document.getElementById('resume-battle-btn');
-export const exitBattleBtn = document.getElementById('exit-battle-btn');
+export const pauseBattleBtn = getElement('pause-battle-btn');
+export const pauseModal = getElement('pause-modal');
+export const resumeBattleBtn = getElement('resume-battle-btn');
+export const exitBattleBtn = getElement('exit-battle-btn');
+
+export const settingsTrigger     = getElement('palette-dd-trigger');
+export const settingsMenuEl      = getElement('palette-dd-menu');
+export const settingsTriggerDots = getElement('palette-trigger-dots');
+export const settingsTriggerName = getElement('palette-trigger-name');
+export const settingsStripEl     = getElement('palette-preview-strip');
+export const applySettingsBtn = getElement("apply-settings");
 
 /** 화면(screen)들 */
 export const screens = [

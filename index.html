@@ -189,9 +189,51 @@
     </div>
 
     <div id="settings-modal" class="modal hidden">
-        <div class="modal-content">
-            <h3>게임 설정</h3>
-            <button id="close-settings">닫기</button>
+        <div class="modal-content settings-modal-content">        
+            <div class="settings-header">
+                <span class="settings-title">게임 설정</span>
+            </div>        
+            <!-- 사운드 (예시 토글 — JS 연결은 별도) -->
+            <div class="settings-row">
+                <div class="settings-label-group">
+                    <span class="settings-label">사운드</span>
+                    <span class="settings-sub">효과음 및 배경음악</span>
+                </div>
+                <div class="settings-toggle" id="toggle-sound" data-on="true">
+                    <div class="settings-toggle-thumb"></div>
+                </div>
+            </div>
+        
+            <div class="settings-divider"></div>
+        
+            <!-- 색상 팔레트 드롭다운 -->
+            <div class="settings-row">
+                <div class="settings-label-group">
+                    <span class="settings-label">색상 팔레트</span>
+                    <span class="settings-sub">UI 전체에 적용됩니다</span>
+                </div>
+                <div class="palette-dropdown" id="palette-dd">
+                    <div class="palette-dd-trigger" id="palette-dd-trigger">
+                        <div class="palette-swatch-row">
+                            <div class="palette-dots" id="palette-trigger-dots"></div>
+                            <span class="palette-dd-name" id="palette-trigger-name">먹녹</span>
+                        </div>
+                        <span class="palette-dd-chevron" id="palette-dd-chevron">▾</span>
+                    </div>
+                    <div class="palette-dd-menu" id="palette-dd-menu"></div>
+                </div>
+            </div>
+        
+            <!-- 미리보기 스트립 -->
+            <div class="palette-preview-strip" id="palette-preview-strip"></div>
+        
+            <div class="settings-divider"></div>
+        
+            <div class="settings-footer">
+                <button id="close-settings" class="settings-btn-close">닫기</button>
+                <button id="apply-settings" class="settings-btn-apply">적용</button>
+            </div>
+        
         </div>
     </div>
 
