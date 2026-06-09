@@ -180,40 +180,51 @@ const PALETTES = [
   { // 리액트KR
     id: 'dancheong', name: '단청', desc: '화려하고 전통적인 다색 계열',
     dots:  ['#1a1717', '#c22628', '#168f43'],
-    strip: ['#1a1717', '#7e7291', '#c22628', '#168f43', '#f6b655', '#e2f0fd', '#fcfafe'],
+    strip: ['#1a1717', '#7e7291', '#c22628', '#168f43', '#f6b655', '#252b27', '#fcfafe', '#eef6be'],
     vars: {
       // 배경 (제공된 어두운 색상 및 변형)
-      '--color-bg-root':       '#1a1717', // 제공된 색상
-      '--color-bg-base':       '#1a1717', // 제공된 색상
+      '--color-bg-root':       '#1a1717', 
+      '--color-bg-base':       '#1a1717', 
       '--color-bg-panel-dark': '#141212', 
       '--color-bg-surface':    '#252121', 
+      
+      // 텍스트 계열 오버라이드
+      '--color-text-white':    '#fcfafe', 
+      '--color-text-light':    '#e2f0fd', 
+      '--color-text-dim':      '#7e7291', 
+      
       // 액센트
-      '--color-accent':        '#f6b655', // 제공된 색상 (골드/오렌지 포인트)
+      '--color-accent':        '#f6b655', 
       '--color-accent-hover':  '#f8c575',
-      // 버튼
-      '--color-btn-primary':       '#c22628', // 제공된 색상 (강렬한 레드)
+      
+      // 버튼 (어두운 배경 + 밝은 텍스트 구조)
+      '--color-btn-primary':       '#c22628', 
       '--color-btn-primary-hover': '#dd3437',
-      '--color-btn-copy':          '#7e7291', // 제공된 색상 (차분한 보라)
-      '--color-btn-copy-hover':    '#9185a5',
-      '--color-btn-secondary':       '#c4bee2', // 제공된 색상 (연보라)
-      '--color-btn-secondary-hover': '#d5d0ed',
-      '--color-btn-blue':       '#7f97ac', // 제공된 색상 (뮤트 블루)
-      '--color-btn-blue-hover': '#92aac1',
-      '--color-btn-success':       '#168f43', // 제공된 색상 (그린)
+      '--color-btn-copy':          '#3a3242', 
+      '--color-btn-copy-hover':    '#4a4257',
+      '--color-btn-secondary':       '#252b27', 
+      '--color-btn-secondary-hover': '#323a35',
+      '--color-btn-blue':       '#222e3c', 
+      '--color-btn-blue-hover': '#2f3f52',
+      '--color-btn-success':       '#168f43', 
       '--color-btn-success-hover': '#1cb354',
-      '--color-btn-danger': '#c33e35', // 제공된 색상 (적벽돌색)
-      // 테두리
-      '--color-border':        '#f27127', // 제공된 색상 (오렌지 라인)
-      '--color-border-slot':   '#fff3b2', // 제공된 색상 (연노랑 슬롯)
-      '--color-border-light':  '#e2f0fd', // 제공된 색상 (아주 밝은 블루 블러)
-      '--color-border-accent': '#f6d3ff', // 제공된 색상 (핑크빛 라벤더)
-      // 필드
-      '--color-field-sky':    '#7f97ac', // 제공된 색상 재활용
-      '--color-field-sky-bg': '#eef6be', // 제공된 색상 (연두빛 필드 배경)
-      // 오버레이
+      '--color-btn-danger': '#c33e35', 
+      
+      // 테두리 및 슬롯 (전통 제공 색상 배치)
+      '--color-border':        '#f27127', 
+      '--color-border-slot':   '#fff3b2', // 연노랑 유지
+      '--color-border-light':  '#c4bee2', 
+      '--color-border-accent': '#f6d3ff', 
+      
+      // 필드 및 신규 반영 색상
+      '--color-field-sky':    '#7f97ac', 
+      '--color-field-sky-bg': '#1e2421', 
+      '--color-highlight-lime': '#eef6be',
+      
+      // 오버레이 및 그림자
       '--color-shadow':        'rgba(0, 0, 0, 0.65)',
       '--color-shadow-heavy':  'rgba(0, 0, 0, 0.85)',
-      '--color-overlay':       '#fcfafe', // 제공된 색상 (완전 밝은 배경 오버레이 필요시 사용 혹은 투명도 결합 권장)
+      '--color-overlay':       'rgba(26, 23, 23, 0.85)', 
     },
   },
   { // 에이더스
