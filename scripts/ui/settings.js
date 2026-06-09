@@ -177,6 +177,84 @@ const PALETTES = [
       '--color-overlay':       'rgba(0, 0, 0, 0.86)',
     },
   },
+  { // 리액트KR
+    id: 'dancheong', name: '단청', desc: '화려하고 전통적인 다색 계열',
+    dots:  ['#1a1717', '#c22628', '#168f43'],
+    strip: ['#1a1717', '#7e7291', '#c22628', '#168f43', '#f6b655', '#e2f0fd', '#fcfafe'],
+    vars: {
+      // 배경 (제공된 어두운 색상 및 변형)
+      '--color-bg-root':       '#1a1717', // 제공된 색상
+      '--color-bg-base':       '#1a1717', // 제공된 색상
+      '--color-bg-panel-dark': '#141212', 
+      '--color-bg-surface':    '#252121', 
+      // 액센트
+      '--color-accent':        '#f6b655', // 제공된 색상 (골드/오렌지 포인트)
+      '--color-accent-hover':  '#f8c575',
+      // 버튼
+      '--color-btn-primary':       '#c22628', // 제공된 색상 (강렬한 레드)
+      '--color-btn-primary-hover': '#dd3437',
+      '--color-btn-copy':          '#7e7291', // 제공된 색상 (차분한 보라)
+      '--color-btn-copy-hover':    '#9185a5',
+      '--color-btn-secondary':       '#c4bee2', // 제공된 색상 (연보라)
+      '--color-btn-secondary-hover': '#d5d0ed',
+      '--color-btn-blue':       '#7f97ac', // 제공된 색상 (뮤트 블루)
+      '--color-btn-blue-hover': '#92aac1',
+      '--color-btn-success':       '#168f43', // 제공된 색상 (그린)
+      '--color-btn-success-hover': '#1cb354',
+      '--color-btn-danger': '#c33e35', // 제공된 색상 (적벽돌색)
+      // 테두리
+      '--color-border':        '#f27127', // 제공된 색상 (오렌지 라인)
+      '--color-border-slot':   '#fff3b2', // 제공된 색상 (연노랑 슬롯)
+      '--color-border-light':  '#e2f0fd', // 제공된 색상 (아주 밝은 블루 블러)
+      '--color-border-accent': '#f6d3ff', // 제공된 색상 (핑크빛 라벤더)
+      // 필드
+      '--color-field-sky':    '#7f97ac', // 제공된 색상 재활용
+      '--color-field-sky-bg': '#eef6be', // 제공된 색상 (연두빛 필드 배경)
+      // 오버레이
+      '--color-shadow':        'rgba(0, 0, 0, 0.65)',
+      '--color-shadow-heavy':  'rgba(0, 0, 0, 0.85)',
+      '--color-overlay':       '#fcfafe', // 제공된 색상 (완전 밝은 배경 오버레이 필요시 사용 혹은 투명도 결합 권장)
+    },
+  },
+  { // 에이더스
+    id: 'neoncity', name: '네온', desc: '화려한 네온과 사이버펑크 계열',
+    dots:  ['#AF0D4E', '#4260FF', '#FFAC00'],
+    strip: ['#0d0b14', '#161224', '#201a34', '#9489D5', '#4260FF', '#FF59A9', '#FFAC00'],
+    vars: {
+      // 배경 (가장 어두운 보라/남색 계열 칩과 조화를 이루는 다크 톤)
+      '--color-bg-root':       '#0d0b14',
+      '--color-bg-base':       '#161224',
+      '--color-bg-panel-dark': '#110e1c',
+      '--color-bg-surface':    '#201a34',
+      // 액센트
+      '--color-accent':        '#FFAC00', // 제공된 색상 (오렌지 옐로우)
+      '--color-accent-hover':  '#ffbd33',
+      // 버튼
+      '--color-btn-primary':       '#AF0D4E', // 제공된 색상 (딥 마젠타)
+      '--color-btn-primary-hover': '#cf1962',
+      '--color-btn-copy':          '#9489D5', // 제공된 색상 (미디움 퍼플)
+      '--color-btn-copy-hover':    '#a89fdf',
+      '--color-btn-secondary':       '#2b2447',
+      '--color-btn-secondary-hover': '#3a315c',
+      '--color-btn-blue':       '#4260FF', // 제공된 색상 (네온 블루)
+      '--color-btn-blue-hover': '#667eff',
+      '--color-btn-success':       '#168f43', // (기존 forest 등에서 차용한 기본 그린)
+      '--color-btn-success-hover': '#1cb354',
+      '--color-btn-danger': '#9e1616',
+      // 테두리
+      '--color-border':        '#322952',
+      '--color-border-slot':   '#BFB8E8', // 제공된 색상 (연보라 회색)
+      '--color-border-light':  '#B3C8F6', // 제공된 색상 (연한 블루 그레이)
+      '--color-border-accent': '#FF59A9', // 제공된 색상 (핫 핑크)
+      // 필드
+      '--color-field-sky':    '#4260FF', // 제공된 색상 재활용
+      '--color-field-sky-bg': '#1b2247',
+      // 오버레이
+      '--color-shadow':        'rgba(0, 0, 0, 0.7)',
+      '--color-shadow-heavy':  'rgba(0, 0, 0, 0.9)',
+      '--color-overlay':       'rgba(8, 6, 13, 0.85)',
+    },
+  },
 ];
 
 const STORAGE_KEY = 'palette';
