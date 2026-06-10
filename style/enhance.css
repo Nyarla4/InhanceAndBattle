@@ -166,6 +166,10 @@
     color: var(--color-accent);
 }
 
+#upgrade-btn-list {
+    margin-top: 10px;
+}
+
 /* 메인 강화 액션 버튼 */
 #action-upgrade-btn {
     padding: 9px 18px;
@@ -176,7 +180,7 @@
     color: var(--color-text-white);
     cursor: pointer;
     border-radius: 2px;
-    margin: 0 3px;
+    margin: 0 5px 0 0;
     letter-spacing: 0.03em;
     transition: background-color var(--transition-fast);
 }
@@ -193,7 +197,7 @@
     color: var(--color-text-white);
     cursor: pointer;
     border-radius: 2px;
-    margin: 0 3px;
+    margin: 0 0 0 5px;
     letter-spacing: 0.03em;
     transition: background-color var(--transition-fast);
 }
