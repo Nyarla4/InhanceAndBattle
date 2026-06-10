@@ -177,93 +177,73 @@ const PALETTES = [
       '--color-overlay':       'rgba(0, 0, 0, 0.86)',
     },
   },
-  { // 리액트KR
-    id: 'dancheong', name: '단청', desc: '화려하고 전통적인 다색 계열',
-    dots:  ['#1a1717', '#c22628', '#168f43'],
-    strip: ['#1a1717', '#7e7291', '#c22628', '#168f43', '#f6b655', '#252b27', '#fcfafe', '#eef6be'],
+  { // 리KR
+    id: 'dancheong', name: '단청', desc: '전통 오방색 계열',
+    dots: ['#1a1717', '#f6b655', '#c22628'],
+    strip: ['#1a1717', '#241e1e', '#2e2525', '#f6b655', '#c22628', '#168f43', '#7e7291'],
     vars: {
-      // 배경 (제공된 어두운 색상 및 변형)
-      '--color-bg-root':       '#1a1717', 
-      '--color-bg-base':       '#1a1717', 
-      '--color-bg-panel-dark': '#141212', 
-      '--color-bg-surface':    '#252121', 
-      
-      // 텍스트 계열 오버라이드
-      '--color-text-white':    '#fcfafe', 
-      '--color-text-light':    '#e2f0fd', 
-      '--color-text-dim':      '#7e7291', 
-      
-      // 액센트
-      '--color-accent':        '#f6b655', 
-      '--color-accent-hover':  '#f8c575',
-      
-      // 버튼 (어두운 배경 + 밝은 텍스트 구조)
-      '--color-btn-primary':       '#c22628', 
-      '--color-btn-primary-hover': '#dd3437',
-      '--color-btn-copy':          '#3a3242', 
-      '--color-btn-copy-hover':    '#4a4257',
-      '--color-btn-secondary':       '#252b27', 
-      '--color-btn-secondary-hover': '#323a35',
-      '--color-btn-blue':       '#222e3c', 
-      '--color-btn-blue-hover': '#2f3f52',
-      '--color-btn-success':       '#168f43', 
-      '--color-btn-success-hover': '#1cb354',
-      '--color-btn-danger': '#c33e35', 
-      
-      // 테두리 및 슬롯 (전통 제공 색상 배치)
-      '--color-border':        '#f27127', 
-      '--color-border-slot':   '#fff3b2', // 연노랑 유지
-      '--color-border-light':  '#c4bee2', 
-      '--color-border-accent': '#f6d3ff', 
-      
-      // 필드 및 신규 반영 색상
-      '--color-field-sky':    '#7f97ac', 
-      '--color-field-sky-bg': '#1e2421', 
-      '--color-highlight-lime': '#eef6be',
-      
-      // 오버레이 및 그림자
-      '--color-shadow':        'rgba(0, 0, 0, 0.65)',
-      '--color-shadow-heavy':  'rgba(0, 0, 0, 0.85)',
-      '--color-overlay':       'rgba(26, 23, 23, 0.85)', 
+      '--color-bg-root': '#1a1717',
+      '--color-bg-base': '#1a1717',
+      '--color-bg-panel-dark': '#141111',
+      '--color-bg-surface': '#2e2525',
+      '--color-text-white': '#fcfafe',
+      '--color-text-light': '#e2f0fd',
+      '--color-text-dim': '#7e7291',
+      '--color-accent': '#f6b655',
+      '--color-accent-hover': '#f8c47a',
+      '--color-btn-primary': '#c22628',
+      '--color-btn-primary-hover': '#d93032',
+      '--color-btn-copy': '#5a4e72',
+      '--color-btn-copy-hover': '#6e6088',
+      '--color-btn-secondary': '#241e1e',
+      '--color-btn-secondary-hover': '#342828',
+      '--color-btn-blue': '#1e303e',
+      '--color-btn-blue-hover': '#284050',
+      '--color-btn-success': '#168f43',
+      '--color-btn-success-hover': '#1aaa50',
+      '--color-btn-danger': '#c33e35',
+      '--color-border': '#f27127',
+      '--color-border-slot': '#fff3b2',
+      '--color-border-light': '#c4bee2',
+      '--color-border-accent': '#f6d3ff',
+      '--color-field-sky': '#7f97ac',
+      '--color-field-sky-bg': '#1e2421',
+      '--color-shadow': 'rgba(0, 0, 0, 0.65)',
+      '--color-shadow-heavy': 'rgba(0, 0, 0, 0.85)',
+      '--color-overlay': 'rgba(26, 23, 23, 0.88)',
     },
   },
-  { // 에이더스
-    id: 'neoncity', name: '네온', desc: '화려한 네온과 사이버펑크 계열',
-    dots:  ['#AF0D4E', '#4260FF', '#FFAC00'],
-    strip: ['#0d0b14', '#161224', '#201a34', '#9489D5', '#4260FF', '#FF59A9', '#FFAC00'],
+  { // 엥덧
+    id: 'neoncity', name: '네온', desc: '사이버펑크 계열',
+    dots: ['#AF0D4E', '#4260FF', '#FFAC00'],
+    strip: ['#0d0b14', '#161224', '#201a34', '#4260FF', '#AF0D4E', '#FFAC00', '#9489D5'],
     vars: {
-      // 배경 (가장 어두운 보라/남색 계열 칩과 조화를 이루는 다크 톤)
-      '--color-bg-root':       '#0d0b14',
-      '--color-bg-base':       '#161224',
+      '--color-bg-root': '#0d0b14',
+      '--color-bg-base': '#161224',
       '--color-bg-panel-dark': '#110e1c',
-      '--color-bg-surface':    '#201a34',
-      // 액센트
-      '--color-accent':        '#FFAC00', // 제공된 색상 (오렌지 옐로우)
-      '--color-accent-hover':  '#ffbd33',
-      // 버튼
-      '--color-btn-primary':       '#AF0D4E', // 제공된 색상 (딥 마젠타)
+      '--color-bg-surface': '#201a34',
+      '--color-accent': '#FFAC00',
+      '--color-accent-hover': '#ffbd33',
+      '--color-btn-primary': '#AF0D4E',
       '--color-btn-primary-hover': '#cf1962',
-      '--color-btn-copy':          '#9489D5', // 제공된 색상 (미디움 퍼플)
-      '--color-btn-copy-hover':    '#a89fdf',
-      '--color-btn-secondary':       '#2b2447',
-      '--color-btn-secondary-hover': '#3a315c',
-      '--color-btn-blue':       '#4260FF', // 제공된 색상 (네온 블루)
+      '--color-btn-copy': '#9489D5',
+      '--color-btn-copy-hover': '#a89fdf',
+      '--color-btn-secondary': '#1e1830',
+      '--color-btn-secondary-hover': '#2a2242',
+      '--color-btn-blue': '#4260FF',
       '--color-btn-blue-hover': '#667eff',
-      '--color-btn-success':       '#168f43', // (기존 forest 등에서 차용한 기본 그린)
-      '--color-btn-success-hover': '#1cb354',
-      '--color-btn-danger': '#9e1616',
-      // 테두리
-      '--color-border':        '#322952',
-      '--color-border-slot':   '#BFB8E8', // 제공된 색상 (연보라 회색)
-      '--color-border-light':  '#B3C8F6', // 제공된 색상 (연한 블루 그레이)
-      '--color-border-accent': '#FF59A9', // 제공된 색상 (핫 핑크)
-      // 필드
-      '--color-field-sky':    '#4260FF', // 제공된 색상 재활용
-      '--color-field-sky-bg': '#1b2247',
-      // 오버레이
-      '--color-shadow':        'rgba(0, 0, 0, 0.7)',
-      '--color-shadow-heavy':  'rgba(0, 0, 0, 0.9)',
-      '--color-overlay':       'rgba(8, 6, 13, 0.85)',
+      '--color-btn-success': '#1a4a2a',
+      '--color-btn-success-hover': '#235e36',
+      '--color-btn-danger': '#AF0D4E',
+      '--color-border': '#2e2650',
+      '--color-border-slot': '#BFB8E8',
+      '--color-border-light': '#B3C8F6',
+      '--color-border-accent': '#FF59A9',
+      '--color-field-sky': '#4260FF',
+      '--color-field-sky-bg': '#1b1630',
+      '--color-shadow': 'rgba(0, 0, 0, 0.72)',
+      '--color-shadow-heavy': 'rgba(0, 0, 0, 0.90)',
+      '--color-overlay': 'rgba(8, 6, 13, 0.88)',
     },
   },
 ];
