@@ -139,6 +139,8 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
+
+    z-index: 10;
 }
 
 .creature img {
@@ -146,6 +148,8 @@
     height: 100%;
     object-fit: contain;
     display: block;
+
+    z-index: 10;
 }
 
 /* 피격 먼지 이펙트 */
@@ -162,7 +166,7 @@
     background-repeat: no-repeat;
     background-position: 0% 0%;
 
-    animation: dust-anim 10s forwards;
+    animation: dust-anim 0.2s forwards;
 }
 
 @keyframes dust-anim {
