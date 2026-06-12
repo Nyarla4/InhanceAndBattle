@@ -117,7 +117,7 @@ export function renderEnhanceUI() {
     if (UI.enhanceName) UI.enhanceName.textContent = currentItem.name;
     
     const currentGrade = totalLevels - currentIdx;
-    if (UI.currentLevel) UI.currentLevel.textContent = currentGrade.toString();
+    if (UI.currentLevel) UI.currentLevel.textContent = `${currentGrade}강 (${currentIdx + 1}위)`;
     if (UI.enhancePercentage) UI.enhancePercentage.textContent = `확률: ${currentItem.percent}%`;
     if (UI.dropPercentage) {
         if (currentItem.dropPercentage > 0) {
