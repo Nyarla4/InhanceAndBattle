@@ -60,7 +60,7 @@ export function startBattle(stageData) {
         eventBus.on(EVENTS.RES_BASE_DAMAGE, ({ damage }) => { // 상대의 "기지 공격" 요청의 반응
             if (!getGameState() || !isBattleRunning) return;
             setPlayerHp(getGameState().playerHp - damage);
-            spawnHitDust(playerSpawnX, 68);
+            spawnHitDust(getGameState().playerSpawnX, 68);
             renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
             checkGameOver();
         });
@@ -345,13 +345,13 @@ function attackBase(creature) {
 
     if (creature.isPlayer) {
         setEnemyHp(getGameState().enemyHp - damage);
-        spawnHitDust(enemySpawnX, 68);
+        spawnHitDust(getGameState().enemySpawnX, 68);
         if (isMulti)
             eventBus.emit(EVENTS.REQ_BASE_DAMAGE, { damage: damage });
     } else {
         if (!isMulti) { // 멀티가 아닌 경우
             setPlayerHp(getGameState().playerHp - damage);
-            spawnHitDust(playerSpawnX, 68);
+            spawnHitDust(getGameState().playerSpawnX, 68);
         }
     }
     renderBaseHp(getGameState(), playerMaxHp, enemyMaxHp);
