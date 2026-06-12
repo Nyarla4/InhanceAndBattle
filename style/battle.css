@@ -96,7 +96,7 @@
     bottom: 0;
     width: 96px;
     height: 136px;
-    z-index: 10;
+    z-index: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -119,6 +119,13 @@
     background-color: #4a1c1c;
     border-radius: 0 12px 0 0;
     color: #e07070;
+}
+
+.base span {
+    position: absolute;
+    left: 50%;
+    top: 25%; /* 위에서부터 25% 내려온 위치 (=밑에서 75% 위치) */
+    transform: translate(-50%, -50%); /* 가로/세로 정중앙 보정 */
 }
 
 /* 크리처 */
@@ -148,7 +155,7 @@
     height: 48px;
     transform: translateX(-50%);
     pointer-events: none;
-    z-index: 20;
+    z-index: 100;
 
     background-image: url('../img/battle/effects/hit_dust.png'); /* 스프라이트 시트 경로 */
     background-size: 600% 100%; /* 가로 6프레임 기준 예시 */
