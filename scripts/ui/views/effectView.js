@@ -2,7 +2,7 @@
 
 import { field } from '../uiElements.js';
 
-const DUST_DURATION = 1000; // ms
+const DUST_DURATION = 200; // ms
 
 /**
  * 피격 위치에 먼지 이펙트 스프라이트 표시
