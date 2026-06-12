@@ -155,10 +155,10 @@
     background-repeat: no-repeat;
     background-position: 0% 0%;
 
-    animation: dust-anim 1s steps(6) forwards; /* 프레임 수에 맞게 조정 */
+    animation: dust-anim 0.2s forwards;
 }
 
 @keyframes dust-anim {
-    from { background-position: 0% 0%; }
-    to   { background-position: 100% 0%; }
+    from { opacity: 1; }
+    to   { opacity: 0; }
 }
